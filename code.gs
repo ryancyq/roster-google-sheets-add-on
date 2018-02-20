@@ -1,4 +1,44 @@
 /*
+ * Helper function to get selected range in current active sheet
+ */
+function getSelectedRange() {
+    try {
+        var sheet = SpreadsheetApp.getActiveSheet();
+        return sheet.getActiveRange().getA1Notation();
+    } catch (e) {
+        throw "No range selected.";
+    }
+}
+
+/*
+ * Helper function to get range via A1 Notation in current active sheet
+ */
+function getRange(A1Notation) {
+    try {
+        var sheet = SpreadsheetApp.getActiveSheet();
+        return sheet.getRange(A1Notation);
+    } catch (e) {
+        throw "Invalid A1 Notation [" + A1Notation + "] for range.";
+    }
+}
+
+/*
+ * Helper function to determine if given range contains only 1 column
+ */
+function isSingleColumn(range) {
+    var rangeColumn = range.getNumColumns();
+    return rangeColumn === 1;
+}
+
+/*
+ * Helper function to determine if given range contains only 1 row
+ */
+function isSingleRow(range) {
+    var rangeRow = range.getNumRows();
+    return rangeRow === 1;
+}
+
+/*
  * Helper function to get the default configurations
  */
 function geDefaultConfig() {
@@ -48,7 +88,7 @@ function readConfigFromProperties(props) {
         config.data_retention.expiry_days = props.getProperty('DATE_RETENTION_EXPIRY_DAYS');
 
     } catch (e) {
-        throw "Unable to read config for the sheet"
+        throw "Unable to read config for the sheet."
     }
 }
 
@@ -74,6 +114,6 @@ function saveConfigToProperties(config, props) {
         });
 
     } catch (e) {
-        throw "Unable to save config for the sheet"
+        throw "Unable to save config for the sheet."
     }
 }
