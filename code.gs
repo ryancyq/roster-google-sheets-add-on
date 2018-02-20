@@ -104,8 +104,6 @@ function saveConfigToDocumentProperties(config) {
       props.setProperty('IS_INITIALIZED', config.is_initialized);
     }
     props.setProperties({
-      // 'IS_INITIALIZED' : config.is_initialized,
-
       'LOOKUP_SHEET_NAME': config.lookup.sheet_name,
       'LOOKUP_RANGE_PERSON_NAME': config.lookup.range.person_name,
       'LOOKUP_RANGE_TIMESLOT': config.lookup.range.timeslot,
