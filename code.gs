@@ -1,3 +1,77 @@
+function onInstall(e) {
+    onOpen(e);
+
+    // Perform additional setup as needed.
+}
+
+function onOpen(e) {
+    var ui = SpreadsheetApp.getUi();
+    var menu = ui.createAddonMenu();
+    var props = readConfigFromDocumentProperties();
+
+    if (e && e.authMode == ScriptApp.AuthMode.NONE || !props.isInitialized) {
+        menu.addSubMenu(
+            ui.createMenu('Create')
+            .addItem('New', 'showCreateNewSidebar')
+            .addItem('From Existing Data', 'showCreateFromExistingSidebar')
+        );
+    } else {
+        menu.addItem('Refresh', 'refresh');
+        menu.addItem('Purge', 'purge');
+        menu.addSeparator();
+        menu.addItem('Options', 'showEditOptionsSidebar');
+    }
+
+    menu.addSeparator();
+    //menu.addItem('Help', '');
+    menu.addToUi();
+}
+
+/**
+ * Opens a sidebar. The sidebar structure is described in the CreateNewSidebar.html
+ * project file.
+ */
+function showCreateNewSidebar() {
+    var ui = HtmlService.createTemplateFromFile('CreateNewSidebar')
+        .evaluate()
+        .setTitle('Create New Roster');
+    SpreadsheetApp.getUi().showSidebar(ui);
+}
+
+/**
+ * Opens a sidebar. The sidebar structure is described in the CreateFromExistingSidebar.html
+ * project file.
+ */
+function showCreateNewSidebar() {
+    var ui = HtmlService.createTemplateFromFile('CreateFromExistingSidebar')
+        .evaluate()
+        .setTitle('Create New Roster');
+    SpreadsheetApp.getUi().showSidebar(ui);
+}
+
+/**
+ * Opens a sidebar. The sidebar structure is described in the EditOptionsSidebar.html
+ * project file.
+ */
+function showEditOptionsSidebar() {
+    var ui = HtmlService.createTemplateFromFile('EditOptionsSidebar')
+        .evaluate()
+        .setTitle('Edit Roster');
+    SpreadsheetApp.getUi().showSidebar(ui);
+}
+
+function refresh() {
+    var ui = SpreadsheetApp.getUi();
+    // Or DocumentApp or FormApp.
+    ui.alert('You clicked the first menu item!');
+}
+
+function purge() {
+    var ui = SpreadsheetApp.getUi();
+    // Or DocumentApp or FormApp.
+    ui.alert('You clicked the first menu item!');
+}
+
 /*
  * Helper function to get selected range in current active sheet
  */
