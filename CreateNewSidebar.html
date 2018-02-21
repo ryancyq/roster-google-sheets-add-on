@@ -19,12 +19,12 @@
     </tr>
     <tr>
       <td>
-       <span style="cursor:help" title="Select roster frequency.">Frequency: </span>
+       <label style="cursor:help" title="Select roster frequency." for="sidebar-fillup-frequency">Frequency:</label>
       </td>
       <td>
-        <select id="sidebar-fillup-dates">
+        <select id="sidebar-fillup-frequency">
           <option value="d">Daily</option>
-          <option value="w">Weekly</option>
+          <option value="w" selected>Weekly</option>
           <option value="m">Monthly</option>
           <option value="c">Custom</option>
         </select>
@@ -35,56 +35,56 @@
        <span style="cursor:help" title="Select days of the week.">Days: </span>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-1" value="1">
-        <span>Monday</span>
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-1">
+        <label for="sidebar-fillup-dates-weekly-1">Monday</label>
       </td>
     </tr>
     <tr class="sidebar-fillup-dates-weekly">
       <td>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-2" value="2">
-        <span>Tuesday</span>
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-2">
+        <label for="sidebar-fillup-dates-weekly-2">Tuesday</label>
       </td>
     </tr>
     <tr class="sidebar-fillup-dates-weekly">
       <td>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-3" value="3">
-        <span>Wednesday</span>
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-3">
+        <label for="sidebar-fillup-dates-weekly-3">Wednesday</label>
       </td>
     </tr>
     <tr class="sidebar-fillup-dates-weekly">
       <td>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-4" value="4">
-        <span>Thursday</span>
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-4">
+        <label for="sidebar-fillup-dates-weekly-4">Thursday</label>
       </td>
     </tr>
     <tr class="sidebar-fillup-dates-weekly">
       <td>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-5" value="5">
-        <span>Friday</span>
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-5">
+        <label for="sidebar-fillup-dates-weekly-5">Friday</label>
       </td>
     </tr>
     <tr class="sidebar-fillup-dates-weekly">
       <td>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-6" value="6">
-        <span>Saturday</span>
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-6">
+        <label for="sidebar-fillup-dates-weekly-6">Saturday</label>
       </td>
     </tr>
     <tr class="sidebar-fillup-dates-weekly">
       <td>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-0" value="0">
-        <span>Sunday</span>
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-0">
+        <label for="sidebar-fillup-dates-weekly-0">Sunday</label>
       </td>
     </tr>
 
@@ -108,14 +108,24 @@
     <tr>
       <td width="66%">
       </td>
-      <td width="33%" style="text-align:right;" class="action">
+      <td width="33%" style="text-align:right;" class="create">
         <button id="sidebar-create-button">Create</button>
       </td>
     </tr>
-
   </table>
+  <div id="sidebar-status"></div>
 </div>
 
+<div class="sidebar bottom">
+  <div id="static" class="show-inline"><img class="logo" width="50" src="https://avatars.githubusercontent.com/ryancyq?v=3&s=80"></div>
+  <div id="loader" class="hidden">
+    <div class="loader">
+      <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      </svg>
+    </div>
+  </div>
+</div>
 
 <!-- Use a templated HTML printing scriptlet to import JavaScript. -->
 <?!= HtmlService.createHtmlOutputFromFile('CreateNewJavaScript').getContent(); ?>
