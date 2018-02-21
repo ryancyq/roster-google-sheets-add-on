@@ -1,0 +1,121 @@
+<?!= HtmlService.createHtmlOutputFromFile('CreateNewStyleSheet').getContent(); ?>
+
+<div class="sidebar roster-create-new">
+  <p>
+  Welcome to Roster Creation
+  </p>
+  <table id="roster-options-table" class="table sidebar-value-block" width="100%">
+    <tr>
+      <td colspan='3'><strong>Roster Options:</strong></td>
+    </tr>
+    <tr>
+      <td>
+       <span style="cursor:help" title='Roster sheet name'>Name: </span>
+      </td>
+      <td colspan='2'>
+        <? var currentDateTime = Utilities.formatDate(new Date(), SpreadsheetApp.getActive().getSpreadsheetTimeZone(), "dd-MMM-yyyy")?>
+        <input type="text" id="sidebar-fillup-sheetname" value="Roster <?!= currentDateTime ?>"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+       <span style="cursor:help" title="Select roster frequency.">Frequency: </span>
+      </td>
+      <td>
+        <select id="sidebar-fillup-dates">
+          <option value="d">Daily</option>
+          <option value="w">Weekly</option>
+          <option value="m">Monthly</option>
+          <option value="c">Custom</option>
+        </select>
+      </td>
+    </tr>
+    <tr class="sidebar-fillup-dates-weekly">
+      <td>
+       <span style="cursor:help" title="Select days of the week.">Days: </span>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-1" value="1">
+        <span>Monday</span>
+      </td>
+    </tr>
+    <tr class="sidebar-fillup-dates-weekly">
+      <td>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-2" value="2">
+        <span>Tuesday</span>
+      </td>
+    </tr>
+    <tr class="sidebar-fillup-dates-weekly">
+      <td>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-3" value="3">
+        <span>Wednesday</span>
+      </td>
+    </tr>
+    <tr class="sidebar-fillup-dates-weekly">
+      <td>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-4" value="4">
+        <span>Thursday</span>
+      </td>
+    </tr>
+    <tr class="sidebar-fillup-dates-weekly">
+      <td>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-5" value="5">
+        <span>Friday</span>
+      </td>
+    </tr>
+    <tr class="sidebar-fillup-dates-weekly">
+      <td>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-6" value="6">
+        <span>Saturday</span>
+      </td>
+    </tr>
+    <tr class="sidebar-fillup-dates-weekly">
+      <td>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-dates-weekly-0" value="0">
+        <span>Sunday</span>
+      </td>
+    </tr>
+
+    <tr class="sidebar-fillup-displayCount">
+      <td>
+       <span style="cursor:help" title="Number of days to display in timetable column.">Display Columns: </span>
+      </td>
+      <td colspan="2">
+        <input type="number" id="sidebar-fillup-displayCount" value="">
+      </td>
+    </tr>
+
+    <tr class="sidebar-fillup-showNext">
+      <td>
+       <span style="cursor:help" title="Show upcoming interval.">Show Upcoming: </span>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-showNext" value="show">
+      </td>
+    </tr>
+    <tr>
+      <td width="66%">
+      </td>
+      <td width="33%" style="text-align:right;" class="action">
+        <button id="sidebar-create-button">Create</button>
+      </td>
+    </tr>
+
+  </table>
+</div>
+
+
+<!-- Use a templated HTML printing scriptlet to import JavaScript. -->
+<?!= HtmlService.createHtmlOutputFromFile('CreateNewJavaScript').getContent(); ?>
