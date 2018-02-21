@@ -1,1 +1,44 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+
+  /**
+   * Displays the given status message in the sidebar.
+   *
+   * @param {String} msg The status message to display.
+   * @param {String} classId The message type (class id) that the message
+   *   should be displayed as.
+   */
+  function showStatus(msg, classId) {
+    $('#sidebar-status').removeClass().html(msg);
+    if (classId) {
+      $('#sidebar-status').addClass(classId);
+    }
+  }
+  
+  /* Custom */
+  
+  function disableButtons() {
+    $("#sidebar-create-button").prop('disabled', true);
+  }
+
+  function enableButtons() {
+    $("#sidebar-create-button").prop('disabled', false);
+  }
+
+  function enableLoader() {
+    $('#static').removeClass().addClass('hidden');
+    $('#loader').removeClass().addClass('show-inline');
+  }
+
+  function disableLoader() {
+    $('#loader').removeClass().addClass('hidden');
+    $('#static').removeClass().addClass('show-inline');
+  }
+
+  function failure(msg) {
+    showStatus(msg, 'error');
+    enableButtons();
+    disableLoader();
+  }
+</script>
