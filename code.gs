@@ -42,7 +42,7 @@ function showCreateNewSidebar() {
  * Opens a sidebar. The sidebar structure is described in the CreateFromExistingSidebar.html
  * project file.
  */
-function showCreateNewSidebar() {
+function showCreateFromExistingSidebar() {
     var ui = HtmlService.createTemplateFromFile('CreateFromExistingSidebar')
         .evaluate()
         .setTitle('Create New Roster');
