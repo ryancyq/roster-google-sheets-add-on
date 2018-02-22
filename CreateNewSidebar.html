@@ -6,15 +6,18 @@
   </p>
   <table id="roster-options-table" class="table sidebar-value-block" width="100%">
     <tr>
-      <td colspan='3'><strong>Roster Options:</strong></td>
+      <td colspan='3'>
+        <strong>Roster Options:</strong>
+      </td>
     </tr>
     <tr>
       <td>
-       <span style="cursor:help" title='Roster sheet name'>Name: </span>
+       <label style="cursor:help" title='Roster sheet name'>Name: </label>
       </td>
       <td colspan='2'>
         <? var currentDateTime = Utilities.formatDate(new Date(), SpreadsheetApp.getActive().getSpreadsheetTimeZone(), "dd-MMM-yyyy")?>
-        <input type="text" id="sidebar-fillup-sheetname" value="Roster <?!= currentDateTime ?>"/>
+        <input type="hidden" id="sidebar-fillup-sheetname-default" value="Roster <?!= currentDateTime ?>" disabled/>
+        <input type="text" id="sidebar-fillup-sheetname" value="" required/>
       </td>
     </tr>
     <tr>
@@ -24,85 +27,26 @@
       <td>
         <select id="sidebar-fillup-frequency">
           <option value="d">Daily</option>
-          <option value="w" selected>Weekly</option>
+          <option value="w">Weekly</option>
           <option value="m">Monthly</option>
           <option value="c">Custom</option>
         </select>
       </td>
     </tr>
-    <tr class="sidebar-fillup-dates-weekly">
+    <tr>
       <td>
-       <span style="cursor:help" title="Select days of the week.">Days: </span>
+       <label style="cursor:help" title="Number of days to display per interval.">Number of days: </label>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-1">
-        <label for="sidebar-fillup-dates-weekly-1">Monday</label>
+        <input type="number" id="sidebar-fillup-days-display" value="" required>
       </td>
     </tr>
-    <tr class="sidebar-fillup-dates-weekly">
+    <tr>
       <td>
+       <label style="cursor:help" title="Show upcoming timetable.">Show Upcoming: </label>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-2">
-        <label for="sidebar-fillup-dates-weekly-2">Tuesday</label>
-      </td>
-    </tr>
-    <tr class="sidebar-fillup-dates-weekly">
-      <td>
-      </td>
-      <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-3">
-        <label for="sidebar-fillup-dates-weekly-3">Wednesday</label>
-      </td>
-    </tr>
-    <tr class="sidebar-fillup-dates-weekly">
-      <td>
-      </td>
-      <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-4">
-        <label for="sidebar-fillup-dates-weekly-4">Thursday</label>
-      </td>
-    </tr>
-    <tr class="sidebar-fillup-dates-weekly">
-      <td>
-      </td>
-      <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-5">
-        <label for="sidebar-fillup-dates-weekly-5">Friday</label>
-      </td>
-    </tr>
-    <tr class="sidebar-fillup-dates-weekly">
-      <td>
-      </td>
-      <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-6">
-        <label for="sidebar-fillup-dates-weekly-6">Saturday</label>
-      </td>
-    </tr>
-    <tr class="sidebar-fillup-dates-weekly">
-      <td>
-      </td>
-      <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-dates-weekly-0">
-        <label for="sidebar-fillup-dates-weekly-0">Sunday</label>
-      </td>
-    </tr>
-
-    <tr class="sidebar-fillup-displayCount">
-      <td>
-       <span style="cursor:help" title="Number of days to display in timetable column.">Display Columns: </span>
-      </td>
-      <td colspan="2">
-        <input type="number" id="sidebar-fillup-displayCount" value="">
-      </td>
-    </tr>
-
-    <tr class="sidebar-fillup-showNext">
-      <td>
-       <span style="cursor:help" title="Show upcoming interval.">Show Upcoming: </span>
-      </td>
-      <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-showNext" value="show">
+        <input type="checkbox" id="sidebar-fillup-show-next" value="show">
       </td>
     </tr>
     <tr>
