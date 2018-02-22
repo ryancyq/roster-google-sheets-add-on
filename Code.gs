@@ -33,6 +33,24 @@ function showCreateNewSidebar() {
 }
 
 /**
+ * Create new roster sheet
+ *
+ * @param {String} sheetname - required.
+ * @param {String} frequency. Frequency of the inverval - required.
+ * @param {String} daysDisplay. Number of days to display per interval - required.
+ * @param {String} showNext. To show upcoming interval - required.
+ * @param {Array} daysInWeek. The days in a week for weekly/monthly frequency
+ * @param {String} customSheetname. The sheet name of custom range.
+ * @param {String} customRange. The A1 notion of the data rows.
+ */
+function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, customSheetname, customRange) {}
+
+/**
+ * Create new roster sheet from existing
+ */
+function createFromExisting(options) {}
+
+/**
  * Opens a sidebar. The sidebar structure is described in the CreateFromExistingSidebar.html
  * project file.
  */
@@ -73,6 +91,21 @@ function getSelectedRange() {
     try {
         var sheet = SpreadsheetApp.getActiveSheet();
         return sheet.getActiveRange().getA1Notation();
+    } catch (e) {
+        throw "No range selected.";
+    }
+}
+
+/*
+ * Helper function to get selected range with sheet name in current active sheet
+ */
+function getSelectedRangeWithSheetname() {
+    try {
+        var sheet = SpreadsheetApp.getActiveSheet();
+        return {
+            range: sheet.getActiveRange().getA1Notation(),
+            sheetname: sheet.getName()
+        };
     } catch (e) {
         throw "No range selected.";
     }
