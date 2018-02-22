@@ -33,6 +33,60 @@
         </select>
       </td>
     </tr>
+    <tr id="sidebar-fillup-frequency-custom">
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the range of custom dates.">Dates: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-frequency-custom-range', 'sidebar-fillup-frequency-custom-sheetname');">↘</button>
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-frequency-custom-sheetname">Sheet Name</label>
+          <input type="text" id="sidebar-fillup-frequency-custom-sheetname" value="">
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-frequency-custom-range">Range</label>
+          <input type="text" id="sidebar-fillup-frequency-custom-range" value="">
+        </div>
+
+      </td>
+    </tr>
+    <tr id="sidebar-fillup-days-in-week" class="hidden">
+      <td style="vertical-align:top">
+       <label style="cursor:help" title="Select days of the week.">Days: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-1" value="1">
+          <label for="sidebar-fillup-days-in-week-1">Monday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-2" value="2">
+          <label for="sidebar-fillup-days-in-week-2">Tuesday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-3" value="3">
+          <label for="sidebar-fillup-days-in-week-3">Wednesday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-4" value="4">
+          <label for="sidebar-fillup-days-in-week-4">Thursday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-5" value="5">
+          <label for="sidebar-fillup-days-in-week-5">Friday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-6" value="6">
+          <label for="sidebar-fillup-days-in-week-6">Saturday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-7" value="7">
+          <label for="sidebar-fillup-days-in-week-7">Sunday</label>
+        </div>
+      </td>
+    </tr>
     <tr>
       <td>
        <label style="cursor:help" title="Number of days to display per interval.">Number of days: </label>
