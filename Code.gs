@@ -43,12 +43,65 @@ function showCreateNewSidebar() {
  * @param {String} customSheetname. The sheet name of custom range.
  * @param {String} customRange. The A1 notion of the data rows.
  */
-function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, customSheetname, customRange) {}
+function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, customSheetname, customRange) {
+
+    if (!sheetname) {
+        throw "Invalid sheet name, " + sheetname;
+    }
+
+    if (!isValidFrequency(frequency)) {
+        throw "Invalid frequency, " + frequency;
+    }
+
+    if (frequency === 'w' && isValidDaysInWeek(daysInWeek)) {
+        throw "Invalid days [" + daysInWeek + "] for weekly frequency."
+    }
+
+    if (frequency === 'c' && !isValidRange(customSheetname, customRange)) {
+        throw "Invalid custom frequency, " + customSheetName + "[" + customRange + "]";
+    }
+
+    daysDisplay = Math.max(parseInt(0, daysDisplay) || 0);
+
+    var newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
+    newSheet.getRange(1, 1).setValue("Name");
+
+    createFromExisting();
+    showEditSidebar();
+}
 
 /**
  * Create new roster sheet from existing
  */
-function createFromExisting(options) {}
+function createFromExisting(sheetname) {}
+
+var FREQUENCY_DAILY = 'd';
+var FREQUENCY_WEEKLY = 'w';
+var FREQUENCY_MONTHLY = 'm';
+var FREQUENCY_CUSTOM = 'c';
+
+function isValidFrequency(freq) {
+    if (!freq) {
+        return false;
+    }
+    return freq === FREQUENCY_DAILY ||
+        freq === FREQUENCY_WEEKLY ||
+        freq === FREQUENCY_MONTHLY ||
+        freq === FREQUENCY_CUSTOM;
+}
+
+function isValidRange(sheetname, range) {
+    var customRange = getCustomRange(sheetname, range);
+    return customRange.getNumColumns() > 0 && customRange.getNumRows() > 0;
+}
+
+function isValidDaysInWeek(daysInWeek) {
+    if (!daysInWeek) {
+        return false;
+    }
+    var validDays = getValidDaysInWeek(daysInWeek);
+    return validDays && validDays.length > 0;
+}
 
 /**
  * Opens a sidebar. The sidebar structure is described in the CreateFromExistingSidebar.html
@@ -66,7 +119,7 @@ function showCreateFromExistingSidebar() {
  * project file.
  */
 function showEditSidebar() {
-    var ui = HtmlService.createTemplateFromFile('CreateFromExistingSidebar')
+    var ui = HtmlService.createTemplateFromFile('EditSidebar')
         .evaluate()
         .setTitle('Edit Roster');
     SpreadsheetApp.getUi().showSidebar(ui);
@@ -121,6 +174,45 @@ function getRange(A1Notation) {
     } catch (e) {
         throw "Invalid A1 Notation [" + A1Notation + "] for range.";
     }
+}
+
+/*
+ * Helper function to get range via A1 Notation in the given sheet nane
+ */
+function getCustomRange(sheetname, A1Notation) {
+    try {
+        var sheet = SpreadsheetApp.getActive().getSheetByName(sheetname);
+        return sheet.getRange(A1Notation);
+    } catch (e) {
+        throw "Invalid A1 Notation [" + A1Notation + "] for sheet [" + sheetname + "].";
+    }
+}
+
+/*
+ * Helper function to return valid days in week
+ */
+function getValidDaysInWeek(daysInWeek) {
+    var days = [];
+    if (typeof daysInWeek === 'string') {
+        days = daysInWeek.split(',');
+    } else if (daysInWeek.contstructor === Array) {
+        days = daysInWeek;
+    }
+
+    var validatedDays = {};
+    for (var d in days) {
+        var number = parseInt(days[d]);
+        if (number > 0 && number < 8) {
+            validatedDays[number] = 1;
+        }
+    }
+
+    var validated = [];
+    for (var d in validatedDays) {
+        validated.push(d);
+    }
+
+    return validated;
 }
 
 /*
