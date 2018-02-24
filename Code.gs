@@ -7,7 +7,7 @@ function onInstall(e) {
 function onOpen(e) {
     var ui = SpreadsheetApp.getUi();
     var menu = ui.createAddonMenu();
-    var props = readConfigFromDocumentProperties();
+    var props = readConfig();
 
     if (e && e.authMode == ScriptApp.AuthMode.NONE || !props.isInitialized) {
         menu.addItem('Create New', 'showCreateNewSidebar');
@@ -172,7 +172,7 @@ function getDefaultConfig() {
  * Helper function to read the configurations from Document properties service
  */
 function readConfig() {
-    var config = geDefaultConfig();
+    var config = getDefaultConfig();
     var props = PropertiesService.getDocumentProperties();
     try {
         config.is_initialized = props.getProperty('IS_INITIALIZED');
