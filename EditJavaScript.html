@@ -1,0 +1,178 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+  /**
+   * Displays the given status message in the sidebar.
+   *
+   * @param {String} msg The status message to display.
+   * @param {String} classId The message type (class id) that the message
+   *   should be displayed as.
+   */
+  function showStatus(msg, classId) {
+    $('#sidebar-status').removeClass().html(msg);
+    if (classId) {
+      $('#sidebar-status').addClass(classId);
+    }
+  }
+  
+  /* Custom */
+  
+  function disableButtons() {
+    $("#sidebar-create-button").prop('disabled', true);
+  }
+
+  function enableButtons() {
+    $("#sidebar-create-button").prop('disabled', false);
+  }
+
+  function enableLoader() {
+    $('#static').removeClass().addClass('hidden');
+    $('#loader').removeClass().addClass('show-inline');
+  }
+
+  function disableLoader() {
+    $('#loader').removeClass().addClass('hidden');
+    $('#static').removeClass().addClass('show-inline');
+  }
+
+  function failure(msg) {
+    showStatus(msg, 'error');
+    enableButtons();
+    disableLoader();
+  }
+  
+  /**
+   * Show/hide the selection of days in week
+   * if frequency not Weekly or Monthly
+   */
+  function updateDaysInWeek(){
+    var freq = $('#sidebar-fillup-frequency').find(":selected").val();
+    var $daysInWeek = $('#sidebar-fillup-days-in-week');
+    
+    if(freq === 'w' || freq === 'm'){
+      // weekly or monthly
+      $daysInWeek.removeClass('hidden');
+    }else{
+      // others
+      $daysInWeek.addClass('hidden');      
+    }
+  }
+  
+  /**
+   * Show/hide the sheet name and range for custom frequency
+   * if frequency not Weekly or Monthly
+   */
+  function updateFrequencyCustom(){
+    var freq = $('#sidebar-fillup-frequency').find(":selected").val();
+    var $customFreq = $('#sidebar-fillup-frequency-custom');
+    
+    if(freq === 'c'){
+      // custom frequency
+      $customFreq.removeClass('hidden');
+    }else{
+      // others
+      $customFreq.addClass('hidden');      
+    }
+  }
+  
+  $(function() {  
+    $('#sidebar-fillup-frequency').change(onFrequencyChanged);
+    $('#sidebar-update-button').click(onUpdateClick);
+    
+    google.script.run
+      .withSuccessHandler(function(msg) {
+        if(msg){
+         $('#sidebar-fillup-sheetname').val(msg.fillup.sheet_name);
+         $('#sidebar-fillup-frequency').val(msg.fillup.frequency);
+         $('#sidebar-fillup-frequency-custom-sheetname').val(msg.fillup.customsheetname);
+         $('#sidebar-fillup-frequency-custom-range').val('');
+         $('#sidebar-fillup-days-in-week input:checkbox').removeAttr('checked');
+         $('#sidebar-fillup-days-display').val('');
+         $('#sidebar-fillup-show-next input:checkbox').removeAttr('checked');
+         
+         updateFrequencyCustom();
+         updateDaysInWeek();
+         enableButtons();
+         showStatus('');
+      })
+      .withFailureHandler(function(msg) {
+        showStatus(msg, 'error');
+      })
+      .readConfig();
+  });
+  
+  function onFrequencyChanged() {
+    updateFrequencyCustom();
+    updateDaysInWeek();
+  }
+
+  function onUpdateClick() {
+    disableButtons();
+    enableLoader();
+
+    var updateOptions = getOptions();
+    
+    google.script.run
+      .withSuccessHandler(
+        function(msg) {
+          showStatus('Success! The roster timetable has been update');
+          disableLoader();
+        })
+      .withFailureHandler(
+        function(msg) {
+          showStatus(msg, 'error');
+          enableButtons();
+          disableLoader();
+        })
+      .update(createOptions.sheetname, createOptions.frequency, createOptions.daysDisplay, createOptions.showNext, createOptions.daysInWeek, createOptions.customSheetname, createOptions.customRange);
+  }
+  
+  function updateRange(range_element_id, sheetname_element_id) {
+    var $range_element = $('#'+range_element_id);
+    var $sheetname_element = $('#'+sheetname_element_id);
+    
+    google.script.run
+      .withSuccessHandler(function(msg) {
+        if(msg){
+          if(range_element_id){
+            if($range_element.val() != msg.range){
+              $range_element.val(msg.range);
+            }
+          }
+          if(sheetname_element_id){
+            if($sheetname_element.val() != msg.sheetname){
+              $sheetname_element.val(msg.sheetname);
+            }
+          }
+        }
+         showStatus('');
+      })
+      .withFailureHandler(function(msg) {
+        showStatus(msg, 'error');
+      })
+      .getSelectedRangeWithSheetname();
+  }
+
+  function getOptions() {
+    return {
+      sheetname : $('#sidebar-fillup-sheetname').val().trim(),
+      frequency : $('#sidebar-fillup-frequency').val(),
+      customSheetname : $('#sidebar-fillup-frequency-custom-sheetname').val(),
+      customRange : $('#sidebar-fillup-frequency-custom-range').val(),
+      daysInWeek : $.map($('#sidebar-fillup-days-in-week input:checkbox').find(':checked'), function(e){return $(e).val();}),
+      daysDisplay : $('#sidebar-fillup-days-display').val().trim(),
+      showNext : $('#sidebar-fillup-show-next input:checkbox').is(':checked')
+    };
+  }
+    
+  function clearOptions() {
+    $('#sidebar-fillup-sheetname').val("N.A");
+    $('#sidebar-fillup-frequency').val('w');
+    $('#sidebar-fillup-frequency-custom-sheetname').val('');
+    $('#sidebar-fillup-frequency-custom-range').val('');
+    $('#sidebar-fillup-days-in-week input:checkbox').removeAttr('checked');
+    $('#sidebar-fillup-days-display').val('');
+    $('#sidebar-fillup-show-next input:checkbox').removeAttr('checked');
+  }
+
+</script>
