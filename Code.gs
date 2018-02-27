@@ -198,7 +198,23 @@ function getCustomRange(sheetname, A1Notation) {
   }
 }
 
-/*
+/**
+ * Helper function to determine if given range contains only 1 column
+ */
+function isSingleColumnRange(range) {
+  var rangeColumn = range.getNumColumns();
+  return rangeColumn === 1;
+}
+
+/**
+ * Helper function to determine if given range contains only 1 row
+ */
+function isSingleRowRange(range) {
+  var rangeRow = range.getNumRows();
+  return rangeRow === 1;
+}
+
+/**
  * Helper function to return valid days in week
  */
 function getValidDaysInWeek(daysInWeek) {
@@ -223,22 +239,6 @@ function getValidDaysInWeek(daysInWeek) {
   }
 
   return validated;
-}
-
-/*
- * Helper function to determine if given range contains only 1 column
- */
-function isSingleColumn(range) {
-  var rangeColumn = range.getNumColumns();
-  return rangeColumn === 1;
-}
-
-/*
- * Helper function to determine if given range contains only 1 row
- */
-function isSingleRow(range) {
-  var rangeRow = range.getNumRows();
-  return rangeRow === 1;
 }
 
 /*
