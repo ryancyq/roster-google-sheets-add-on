@@ -241,6 +241,36 @@ function getValidDaysInWeek(daysInWeek) {
   return validated;
 }
 
+/**
+ * Helper function to add duration to JavaScript datetime
+ * supports only 's' seconds, 'm' minutes, 'h' hours, 'd' days
+ */
+function updateDate(date, time_unit, time_unit_scalar) {
+  if (!date || date.constructor !== Date) {
+    throw "Invalid date";
+  }
+
+  var time_unit_seconds = 0;
+  if (time_unit === 's') {
+    time_unit_seconds = 1;
+  } else if (time_unit === 'm') {
+    time_unit_seconds = 60;
+  } else if (time_unit === 'h') {
+    time_unit_seconds = 3600;
+  } else if (time_unit === 'd') {
+    time_unit_seconds = 86400;
+  } else {
+    throw "Unsupported time unit [" + time_unit + "]";
+  }
+
+  if (isNan(time_unit_scalar)) {
+    throw "Invalid scalar number for time unit";
+  }
+
+  var newMiliseconds = date.getTime() + (time_unit_scalar * time_unit_seconds * 1000)
+  return new Date(newMiliseconds);
+}
+
 /*
  * Helper function to get the default configurations
  */
