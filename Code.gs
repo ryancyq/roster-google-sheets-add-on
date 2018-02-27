@@ -16,7 +16,7 @@ function onOpen(e) {
     menu.addItem('Refresh', 'refresh');
     menu.addItem('Purge', 'purge');
     menu.addSeparator();
-    menu.addItem('Options', 'showCreateFromExistingSidebar');
+    menu.addItem('Options', 'showEditSidebar');
   }
   menu.addToUi();
 }
@@ -53,6 +53,10 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
     throw "Invalid frequency, " + frequency;
   }
 
+  if (!daysDisplay) {
+    throw "Invalid days to display, " + daysDisplay;
+  }
+
   if (frequency === 'w' && !isValidDaysInWeek(daysInWeek)) {
     throw "Invalid days [" + daysInWeek + "] for weekly frequency."
   }
@@ -63,7 +67,11 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
 
   daysDisplay = Math.max(parseInt(0, daysDisplay) || 0);
 
-  var newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
+  var newSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetname);
+  if (newSheet != null) {
+    throw "A sheet with name '" + sheetname + "' existed. Please rename/remove the sheet.";
+  }
+  newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
   newSheet.getRange(1, 1).setValue("Name");
 
   createFromExisting();
@@ -124,6 +132,8 @@ function showEditSidebar() {
     .setTitle('Edit Roster');
   SpreadsheetApp.getUi().showSidebar(ui);
 }
+
+function update() {}
 
 function refresh() {
   var ui = SpreadsheetApp.getUi();
@@ -275,8 +285,15 @@ function readConfig() {
     config.lookup.range.timestamp = props.getProperty('LOOKUP_RANGE_TIMESTAMP');
 
     config.fillup.sheet_name = props.getProperty('FILLUP_SHEET_NAME');
+    config.fillup.frequency = props.getProperty('FILLUP_FREQUENCY');
+
+    config.fillup.days_in_week = props.getProperty('FILLUP_DAYS_IN_WEEK');
+    config.fillup.days_display = props.getProperty('FILLUP_DAYS_DISPLAY');
+    config.fillup.show_next = props.getProperty('FILLUP_SHOW_NEXT');
+
     config.fillup.range.person_name = props.getProperty('FILLUP_RANGE_PERSON_NAME');
-    config.fillup.range.timetable_weekly = props.getProperty('FILLUP_RANGE_TIMETABLE_WEEKLY');
+    config.fillup.range.custom_sheet_name = props.getProperty('FILLUP_RANGE_DAYS_DISPLAY');
+    config.fillup.range.custom_timetable = props.getProperty('FILLUP_RANGE_DAYS_DISPLAY');
     config.fillup.range.timestamp = props.getProperty('FILLUP_RANGE_TIMESTAMP');
 
     config.data_retention.expiry_days = props.getProperty('DATE_RETENTION_EXPIRY_DAYS');
