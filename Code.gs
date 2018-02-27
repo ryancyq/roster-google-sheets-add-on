@@ -205,10 +205,10 @@ function getValidDaysInWeek(daysInWeek) {
   var days = [];
   if (typeof daysInWeek === 'string') {
     days = daysInWeek.split(',');
-  } else if (daysInWeek.contstructor === Array) {
+  } else if (daysInWeek.constructor === Array) {
     days = daysInWeek;
   }
-
+  
   var validatedDays = {};
   for (var d in days) {
     var number = parseInt(days[d]);
