@@ -53,7 +53,7 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
     throw "Invalid frequency, " + frequency;
   }
 
-  if (frequency === 'w' && isValidDaysInWeek(daysInWeek)) {
+  if (frequency === 'w' && !isValidDaysInWeek(daysInWeek)) {
     throw "Invalid days [" + daysInWeek + "] for weekly frequency."
   }
 
