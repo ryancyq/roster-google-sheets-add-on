@@ -69,7 +69,7 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
 
   var newSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetname);
   if (newSheet != null) {
-    throw "A sheet with name '" + sheetname + "' existed. Please rename/remove the sheet.";
+    throw "A sheet with name '" + sheetname + "' existed. Please use another name.";
   }
   newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
   newSheet.getRange(1, 1).setValue("Name");
