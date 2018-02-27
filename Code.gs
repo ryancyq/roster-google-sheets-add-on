@@ -58,11 +58,11 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
   }
 
   if (frequency === 'w' && !isValidDaysInWeek(daysInWeek)) {
-    throw "Invalid days [" + daysInWeek + "] for weekly frequency."
+    throw "Invalid days for weekly frequency."
   }
 
   if (frequency === 'c' && !isValidRange(customSheetname, customRange)) {
-    throw "Invalid custom frequency, " + customSheetName + "[" + customRange + "]";
+    throw "Invalid custom frequency, sheet:[" + customSheetName + "] range:[" + customRange + "]";
   }
 
   daysDisplay = Math.max(parseInt(0, daysDisplay) || 0);
