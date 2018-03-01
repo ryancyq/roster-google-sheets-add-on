@@ -337,6 +337,9 @@ function getValidDaysInWeek(daysInWeek) {
  * Helper function to add duration to JavaScript datetime
  * supports only 's' seconds, 'm' minutes, 'h' hours, 'd' days
  */
+MINUTE_IN_SECONDS = 60; 
+HOUR_IN_SECONDS = 3600;
+DAY_IN_SECONDS = 86400;
 function updateDate(date, time_unit, time_unit_scalar) {
   if (!date || date.constructor !== Date) {
     throw "Invalid date";
@@ -346,11 +349,11 @@ function updateDate(date, time_unit, time_unit_scalar) {
   if (time_unit === 's') {
     time_unit_seconds = 1;
   } else if (time_unit === 'm') {
-    time_unit_seconds = 60;
+    time_unit_seconds = MINUTE_IN_SECONDS;
   } else if (time_unit === 'h') {
-    time_unit_seconds = 3600;
+    time_unit_seconds = HOUR_IN_SECONDS;
   } else if (time_unit === 'd') {
-    time_unit_seconds = 86400;
+    time_unit_seconds = DAY_IN_SECONDS;
   } else {
     throw "Unsupported time unit [" + time_unit + "]";
   }
