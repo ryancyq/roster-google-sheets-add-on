@@ -151,7 +151,7 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
   // starts from Monday
   var nextDay = 1;
   var nextDayIndex = 0;
-  var nextDayMin = 10;
+  var nextDayMin = 7;
   var startDay = startDate.getDay();
   for (var i = 0; i < daysInWeek.length; i++) {
     // difference from start day to other days
@@ -173,7 +173,7 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
       }
     } else {
       // future day out of same week
-      var newDiff = (otherDay + 7) - startDay;
+      var newDiff = diff + 7;
       if (newDiff <= nextDayMin) {
         nextDay = otherDay;
         nextDayIndex = i;
@@ -186,26 +186,33 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
   var daysBetween = [];
   var daysBetweenPrevious;
   var daysBetweenCurrent;
-  for (var i = 0; i < daysInWeek.length; i++) {
-    daysBetweenCurrent = daysInWeek[i];
-    if (i > 0 && i < daysInWeek.length - 1) {
-      // difference in days withint same week
-      daysBetween.push(daysBetweenCurrent - daysBetweenPrevious);
-    } else if (i == daysInWeek.length - 1) {
-      // difference in days to next week
-      daysBetween.push(daysInWeek[0] + 7 - daysBetweenPrevious);
+  if (daysInWeek.length <= 1) {
+    // different in days to next week
+    daysBetween.push(7);
+  } else {
+    for (var i = 0; i < daysInWeek.length; i++) {
+      daysBetweenCurrent = daysInWeek[i];
+      if (i > 0 && i < daysInWeek.length - 1) {
+        // difference in days withint same week
+        daysBetween.push(daysBetweenCurrent - daysBetweenPrevious);
+      } else if (i == daysInWeek.length - 1) {
+        // difference in days to next week
+        daysBetween.push(daysInWeek[0] + 7 - daysBetweenPrevious);
+      }
+      daysBetweenPrevious = daysBetweenCurrent;
     }
-    daysBetweenPrevious = daysBetweenCurrent;
   }
 
   var dates = [];
+  var daysBetweenIndex = 0;
   var dateBegin = updateDate(startDate, 'd', nextDayMin);
   for (var i = 0; i < daysDisplay; i++) {
-    var d = new Date(dateBegin);
     if (i > 0) {
-      d = updateDate(d, 'd', daysBetween[i]);
+      dateBegin = updateDate(dateBegin, 'd', daysBetween[daysBetweenIndex]);
+      daysBetweenIndex++;
+      daysBetweenIndex %= daysBetween.length;
     }
-    dates.push(d);
+    dates.push(dateBegin);
   }
   return dates;
 }
