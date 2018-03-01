@@ -441,7 +441,7 @@ function updateDate(date, time_unit, time_unit_scalar) {
     throw "Unsupported time unit [" + time_unit + "]";
   }
 
-  if (isNan(time_unit_scalar)) {
+  if (isNaN(time_unit_scalar)) {
     throw "Invalid scalar number for time unit";
   }
 
