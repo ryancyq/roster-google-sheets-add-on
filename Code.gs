@@ -81,6 +81,15 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
         if (!isValidDaysInWeek(daysInWeek)) {
           throw "Invalid days for weekly frequency.";
         }
+
+        newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
+        newSheet.getRange(1, 1).setValue("Name");
+
+        // configure timetable headers
+        var headersRange = newSheet.getRange(1, 1 + daysDisplay).getA1Notation();
+        var dates = getDatesForWeekly(daysDisplay, daysInWeek);
+        updateTimetableHeaders(newSheet.getSheetName(), headersRange, dates);
+
         break;
       }
     case 'm':
@@ -115,6 +124,80 @@ function getDatesForDaily(daysDisplay, start) {
   var dates = [];
   for (var i = 0; i < daysDisplay; i++) {
     dates.push(updateDate(startDate, 'd', 1));
+  }
+  return dates;
+}
+
+/**
+ * Helper function to populate dates for weekly frequency
+ */
+function getDatesForWeekly(daysDisplay, daysInWeek, start) {
+  var startDate = new Date();
+  if (start && start.constructor === Date) {
+    startDate = new Date(start);
+  }
+
+  daysDisplay = normalizeDaysDisplay(daysDisplay);
+
+  // Calculate nearest future day w.r.t the given start date
+  // starts from Monday
+  var nextDay = 1;
+  var nextDayIndex = 0;
+  var nextDayMin = 10;
+  var startDay = startDate.getDay();
+  for (var i = 0; i < daysInWeek.length; i++) {
+    // difference from start day to other days
+    var otherDay = daysInWeek[i];
+    var diff = otherDay - startDay
+    if (diff == 0) {
+      // same day as current day
+      nextDay = otherDay;
+      nextDayIndex = i;
+      nextDayMin = diff;
+      break;
+    } else if (diff > 0) {
+      // future day within same week
+      // if min is the same, always take future day
+      if (diff <= nextDayMin) {
+        nextDay = otherDay;
+        nextDayIndex = i;
+        nextDayMin = diff;
+      }
+    } else {
+      // future day out of same week
+      var newDiff = (otherDay + 7) - startDay;
+      if (newDiff <= nextDayMin) {
+        nextDay = otherDay;
+        nextDayIndex = i;
+        nextDayMin = newDiff;
+      }
+    }
+  }
+
+  // Calculate days between dates
+  var daysBetween = [];
+  var daysBetweenPrevious;
+  var daysBetweenCurrent;
+  for (var i = 0; i < daysInWeek.length; i++) {
+    daysBetweenCurrent = daysInWeek[i];
+    if (i > 0 && i < daysInWeek.length - 1) {
+      // difference in days withint same week
+      daysBetween.push(daysBetweenCurrent - daysBetweenPrevious);
+    } else if (i == daysInWeek.length - 1) {
+      // difference in days to next week
+      daysBetween.push(daysInWeek[0] + 7 - daysBetweenPrevious);
+    }
+    daysBetweenPrevious = daysBetweenCurrent;
+  }
+
+  var dates = [];
+  var dateBegin = updateDate(startDate, 'd', nextDayMin);
+  for (var i = 0; i < daysDisplay; i++) {
+    var d = new Date(dateBegin);
+    if (i > 0) {
+      d = updateDate(d, 'd', daysBetween[i]);
+    }
+    dates.push(d);
   }
   return dates;
 }
