@@ -416,13 +416,13 @@ function getValidDaysInWeek(daysInWeek) {
   return validated;
 }
 
+MINUTE_IN_SECONDS = 60;
+HOUR_IN_SECONDS = 3600;
+DAY_IN_SECONDS = 86400;
 /**
  * Helper function to add duration to JavaScript datetime
  * supports only 's' seconds, 'm' minutes, 'h' hours, 'd' days
  */
-MINUTE_IN_SECONDS = 60; 
-HOUR_IN_SECONDS = 3600;
-DAY_IN_SECONDS = 86400;
 function updateDate(date, time_unit, time_unit_scalar) {
   if (!date || date.constructor !== Date) {
     throw "Invalid date";
