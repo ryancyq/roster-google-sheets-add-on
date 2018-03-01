@@ -66,6 +66,14 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
   switch (frequency) {
     case 'd':
       {
+        newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
+        newSheet.getRange(1, 1).setValue("Name");
+
+        // configure timetable headers
+        var headersRange = newSheet.getRange(1, 1 + daysDisplay).getA1Notation();
+        var dates = getDatesForDaily(daysDisplay);
+        updateTimetableHeaders(newSheet.getSheetName(), headersRange, dates);
+
         break;
       }
     case 'w':
@@ -91,11 +99,53 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
       }
   }
 
-  newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
-  newSheet.getRange(1, 1).setValue("Name");
-
   createFromExisting();
-  showEditSidebar();
+}
+
+/**
+ * Helper function to populate dates for daily frequency
+ */
+function getDatesForDaily(daysDisplay, start) {
+  var startDate = new Date();
+  if (start && start.constructor === Date) {
+    startDate = new Date(start);
+  }
+
+  daysDisplay = normalizeDaysDisplay(daysDisplay);
+  var dates = [];
+  for(var i = 0; i < daysDisplay; i++){
+    dates.push(updateDate(startDate, 'd', 1));
+  }
+}
+
+/**
+ * Helper function to normalize days display to natural number
+ */
+function normalizeDaysDisplay(daysDisplay) {
+  var days = parseInt(daysDisplay);
+  return Math.max(0, isNaN(days) ? 0 : days);
+}
+
+/**
+ * Helper function to populate roster timeable headers
+ */
+function updateTimetableHeaders(sheetname, A1Notation, dates) {
+  var sheet = SpreadsheetApp.getActive().getSheetByName(sheetname);
+  if (sheet == null) {
+    throw "No such sheet:[" + sheetname + "]";
+  }
+
+  var range = sheet.getRange(A1Notation);
+  if (!isSingleRowRange(range)) {
+    throw "Range give for timable headers must only be a single row."
+  }
+
+  if (!dates || dates.constructor !== Array || dates.length) {
+    throw "Insufficent dates given for timetable headers"
+  }
+
+  var numColumns = range.getNumColumns();
+  // TODO: populate dates in range
 }
 
 /**
