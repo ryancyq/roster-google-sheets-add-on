@@ -56,21 +56,41 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
   if (!daysDisplay) {
     throw "Invalid days to display, " + daysDisplay;
   }
-
-  if (frequency === 'w' && !isValidDaysInWeek(daysInWeek)) {
-    throw "Invalid days for weekly frequency."
-  }
-
-  if (frequency === 'c' && !isValidRange(customSheetname, customRange)) {
-    throw "Invalid custom frequency, sheet:[" + customSheetName + "] range:[" + customRange + "]";
-  }
-
-  daysDisplay = Math.max(parseInt(0, daysDisplay) || 0);
+  daysDisplay = normalizeDaysDisplay(daysDisplay)
 
   var newSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetname);
   if (newSheet != null) {
     throw "A sheet with name '" + sheetname + "' existed. Please use another name.";
   }
+
+  switch (frequency) {
+    case 'd':
+      {
+        break;
+      }
+    case 'w':
+      {
+        if (!isValidDaysInWeek(daysInWeek)) {
+          throw "Invalid days for weekly frequency.";
+        }
+        break;
+      }
+    case 'm':
+      {
+        if (!isValidDaysInWeek(daysInWeek)) {
+          throw "Invalid days for monthly frequency.";
+        }
+        break;
+      }
+    case 'c':
+      {
+        if (!isValidRange(customSheetname, customRange)) {
+          throw "Invalid custom frequency, sheet:[" + customSheetName + "] range:[" + customRange + "]";
+        };
+        break;
+      }
+  }
+
   newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
   newSheet.getRange(1, 1).setValue("Name");
 
