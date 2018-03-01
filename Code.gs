@@ -145,7 +145,28 @@ function updateTimetableHeaders(sheetname, A1Notation, dates) {
   }
 
   var numColumns = range.getNumColumns();
-  // TODO: populate dates in range
+  if (numColumns !== dates.length) {
+    throw "Dates given does not match with the give range"
+  }
+
+  var datesInText = [];
+  var datesFormat = [];
+
+  for (var i = 0; i < numColumns; i++) {
+
+    var dateFormat = "ddd (d-mmm)";
+    var dateValue = "";
+
+    if (dates[i] && dates[i].constructor === Date) {
+      dateValue = new Date(dates[i]);
+    }
+
+    datesFormat.push(dateFormat);
+    datesInText.push(dateValue);
+  }
+
+  range.setNumberFormats();
+  range.setValues(datesInText);
 }
 
 /**
@@ -294,7 +315,7 @@ function getValidDaysInWeek(daysInWeek) {
   } else if (daysInWeek.constructor === Array) {
     days = daysInWeek;
   }
-  
+
   var validatedDays = {};
   for (var d in days) {
     var number = parseInt(days[d]);
