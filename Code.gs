@@ -155,17 +155,21 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
   var startDay = startDate.getDay();
   for (var i = 0; i < daysInWeek.length; i++) {
     // difference from start day to other days
-    var otherDay = daysInWeek[i];
-    var diff = otherDay - startDay
+    var otherDay = parseInt(daysInWeek[i]);
+    var diff = otherDay - startDay;
     if (diff == 0) {
       // same day as current day
       nextDay = otherDay;
       nextDayIndex = i;
       nextDayMin = diff;
+      Logger.log('Next day is today');
+      Logger.log("startDay:" + startDay + ", otherDay:" + otherDay + ", diff:" + diff);
       break;
     } else if (diff > 0) {
       // future day within same week
       // if min is the same, always take future day
+      Logger.log('Next day is located later in the current week');
+      Logger.log("startDay:" + startDay + ", otherDay:" + otherDay + ", diff:" + diff);
       if (diff <= nextDayMin) {
         nextDay = otherDay;
         nextDayIndex = i;
@@ -174,6 +178,8 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
     } else {
       // future day out of same week
       var newDiff = diff + 7;
+      Logger.log('Next day is located in the upcoming week');
+      Logger.log("startDay:" + startDay + ", otherDay:" + otherDay + ", diff:" + newDiff);
       if (newDiff <= nextDayMin) {
         nextDay = otherDay;
         nextDayIndex = i;
@@ -181,6 +187,9 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
       }
     }
   }
+  Logger.log('Calculation of Next Day');
+  Logger.log('nextDay:' + nextDay + ', nextDayIndex:' + nextDayIndex + ", nextDayMin:" + nextDayMin);
+
 
   // Calculate days between dates
   var daysBetween = [];
@@ -191,20 +200,24 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
     daysBetween.push(7);
   } else {
     for (var i = 0; i < daysInWeek.length; i++) {
-      daysBetweenCurrent = daysInWeek[i];
-      if (i > 0 && i < daysInWeek.length - 1) {
+      daysBetweenCurrent = parseInt(daysInWeek[i]);
+      if (i > 0) {
         // difference in days withint same week
         daysBetween.push(daysBetweenCurrent - daysBetweenPrevious);
-      } else if (i == daysInWeek.length - 1) {
+      }
+      if (i == daysInWeek.length - 1) {
         // difference in days to next week
-        daysBetween.push(daysInWeek[0] + 7 - daysBetweenPrevious);
+        daysBetween.push(parseInt(daysInWeek[0]) + 7 - daysBetweenCurrent);
       }
       daysBetweenPrevious = daysBetweenCurrent;
     }
   }
 
+  Logger.log('Days Between Dates');
+  Logger.log(JSON.stringify(daysBetween));
+
   var dates = [];
-  var daysBetweenIndex = 0;
+  var daysBetweenIndex = nextDayIndex;
   var dateBegin = updateDate(startDate, 'd', nextDayMin);
   for (var i = 0; i < daysDisplay; i++) {
     if (i > 0) {
