@@ -113,9 +113,10 @@ function getDatesForDaily(daysDisplay, start) {
 
   daysDisplay = normalizeDaysDisplay(daysDisplay);
   var dates = [];
-  for(var i = 0; i < daysDisplay; i++){
+  for (var i = 0; i < daysDisplay; i++) {
     dates.push(updateDate(startDate, 'd', 1));
   }
+  return dates;
 }
 
 /**
