@@ -66,14 +66,18 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
   switch (frequency) {
     case 'd':
       {
-        newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
+        newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         newSheet.getRange(1, 1).setValue("Name");
 
-        // configure timetable headers
-        var headersRange = newSheet.getRange(1, 1 + daysDisplay).getA1Notation();
-        var dates = getDatesForDaily(daysDisplay);
-        updateTimetableHeaders(newSheet.getSheetName(), headersRange, dates);
-
+        try {
+          // configure timetable headers
+          var headersRange = newSheet.getRange(1, 2, 1, daysDisplay).getA1Notation();
+          var dates = getDatesForDaily(daysDisplay);
+          updateTimetableHeaders(newSheet.getSheetName(), headersRange, dates);
+        } catch (e) {
+          SpreadsheetApp.getActive().deleteSheet(newSheet);
+          throw e;
+        }
         break;
       }
     case 'w':
@@ -82,14 +86,18 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
           throw "Invalid days for weekly frequency.";
         }
 
-        newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetname);
+        newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         newSheet.getRange(1, 1).setValue("Name");
 
-        // configure timetable headers
-        var headersRange = newSheet.getRange(1, 1 + daysDisplay).getA1Notation();
-        var dates = getDatesForWeekly(daysDisplay, daysInWeek);
-        updateTimetableHeaders(newSheet.getSheetName(), headersRange, dates);
-
+        try {
+          // configure timetable headers
+          var headersRange = newSheet.getRange(1, 2, 1, daysDisplay).getA1Notation();
+          var dates = getDatesForWeekly(daysDisplay, daysInWeek);
+          updateTimetableHeaders(newSheet.getSheetName(), headersRange, dates);
+        } catch (e) {
+          SpreadsheetApp.getActive().deleteSheet(newSheet);
+          throw e;
+        }
         break;
       }
     case 'm':
@@ -123,7 +131,7 @@ function getDatesForDaily(daysDisplay, start) {
   daysDisplay = normalizeDaysDisplay(daysDisplay);
   var dates = [];
   for (var i = 0; i < daysDisplay; i++) {
-    dates.push(updateDate(startDate, 'd', 1));
+    dates.push(updateDate(startDate, 'd', i));
   }
   return dates;
 }
@@ -214,6 +222,9 @@ function normalizeDaysDisplay(daysDisplay) {
  * Helper function to populate roster timeable headers
  */
 function updateTimetableHeaders(sheetname, A1Notation, dates) {
+
+  Logger.log("UpdateTimeTableHeaders");
+
   var sheet = SpreadsheetApp.getActive().getSheetByName(sheetname);
   if (sheet == null) {
     throw "No such sheet:[" + sheetname + "]";
@@ -224,18 +235,21 @@ function updateTimetableHeaders(sheetname, A1Notation, dates) {
     throw "Range give for timable headers must only be a single row."
   }
 
-  if (!dates || dates.constructor !== Array || dates.length) {
+  if (!dates || dates.constructor !== Array || !dates.length) {
+    Logger.log(JSON.stringify(dates));
     throw "Insufficent dates given for timetable headers"
   }
 
   var numColumns = range.getNumColumns();
   if (numColumns !== dates.length) {
-    throw "Dates given does not match with the give range"
+    L
+    Logger.log("Range: " + A1Notation);
+    Logger.log("Dates:" + JSON.stringify(dates));
+    throw "Dates do not match with the give range"
   }
 
   var datesInText = [];
   var datesFormat = [];
-
   for (var i = 0; i < numColumns; i++) {
 
     var dateFormat = "ddd (d-mmm)";
@@ -249,8 +263,8 @@ function updateTimetableHeaders(sheetname, A1Notation, dates) {
     datesInText.push(dateValue);
   }
 
-  range.setNumberFormats();
-  range.setValues(datesInText);
+  range.setNumberFormats([datesFormat]);
+  range.setValues([datesInText]);
 }
 
 /**
