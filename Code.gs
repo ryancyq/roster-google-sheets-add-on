@@ -39,7 +39,7 @@ function showCreateNewSidebar() {
  * @param {String} frequency. Frequency of the inverval - required.
  * @param {String} daysDisplay. Number of days to display per interval - required.
  * @param {String} showNext. To show upcoming interval - required.
- * @param {Array} daysInWeek. The days in a week for weekly/monthly frequency
+ * @param {Array} daysInWeek. The days in a week for weekly frequency
  * @param {String} customSheetname. The sheet name of custom range.
  * @param {String} customRange. The A1 notion of the data rows.
  */
@@ -100,19 +100,16 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
         }
         break;
       }
-    case 'm':
-      {
-        if (!isValidDaysInWeek(daysInWeek)) {
-          throw "Invalid days for monthly frequency.";
-        }
-        break;
-      }
     case 'c':
       {
         if (!isValidRange(customSheetname, customRange)) {
           throw "Invalid custom frequency, sheet:[" + customSheetName + "] range:[" + customRange + "]";
         };
         break;
+      }
+    default:
+      {
+        throw "Unsupported frequency, " + frequency;
       }
   }
 
@@ -294,7 +291,6 @@ function createFromExisting(sheetname) {}
 
 var FREQUENCY_DAILY = 'd';
 var FREQUENCY_WEEKLY = 'w';
-var FREQUENCY_MONTHLY = 'm';
 var FREQUENCY_CUSTOM = 'c';
 
 function isValidFrequency(freq) {
@@ -303,7 +299,6 @@ function isValidFrequency(freq) {
   }
   return freq === FREQUENCY_DAILY ||
     freq === FREQUENCY_WEEKLY ||
-    freq === FREQUENCY_MONTHLY ||
     freq === FREQUENCY_CUSTOM;
 }
 
