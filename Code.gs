@@ -81,14 +81,14 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
       }
     case 'w':
       {
+        // validate days in week
+        var validDays = getValidDaysInWeek(daysInWeek);
+        if (!validDays || validDays.length <= 0) {
+          throw 'Invalid days in week';
+        }
+
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         try {
-          // validate days in week
-          var validDays = getValidDaysInWeek(daysInWeek);
-          if (!validDays || validDays.length <= 0) {
-            throw 'Invalid days in week';
-          }
-
           // configure name column
           newSheet.getRange(1, 1).setValue('Name');
 
@@ -140,7 +140,7 @@ function getDatesForWeekly(daysDisplay, daysInWeek, startDate) {
   if (!start || start.constructor !== Date) {
     startDate = new Date();
   }
-  
+
   // Calculate nearest future day w.r.t the given start date
   // e.g: starts from Monday
   var nextDay = 1;
