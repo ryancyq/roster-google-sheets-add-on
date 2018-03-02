@@ -122,7 +122,7 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
  * Helper function to populate dates for daily frequency
  */
 function getDatesForDaily(daysDisplay, startDate) {
-  if (!start || start.constructor !== Date) {
+  if (!startDate || startDate.constructor !== Date) {
     startDate = new Date();
   }
 
@@ -137,7 +137,7 @@ function getDatesForDaily(daysDisplay, startDate) {
  * Helper function to populate dates for weekly frequency
  */
 function getDatesForWeekly(daysDisplay, daysInWeek, startDate) {
-  if (!start || start.constructor !== Date) {
+  if (!startDate || startDate.constructor !== Date) {
     startDate = new Date();
   }
 
