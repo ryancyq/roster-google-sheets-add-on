@@ -50,9 +50,7 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
   }
   var newSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetname);
   if (newSheet != null) {
-    throw 'A sheet with name '
-    ' + sheetname + '
-    ' existed. Please use another name.';
+    throw 'A sheet with name ' + sheetname + ' existed. Please use another name.';
   }
 
   if (!daysDisplay || isNaN(daysDisplay)) {
