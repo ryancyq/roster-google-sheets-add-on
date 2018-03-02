@@ -46,34 +46,35 @@ function showCreateNewSidebar() {
 function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, customSheetname, customRange) {
 
   if (!sheetname) {
-    throw "Invalid sheet name, " + sheetname;
+    throw 'Invalid sheet name, ' + sheetname;
   }
-
-  if (!isValidFrequency(frequency)) {
-    throw "Invalid frequency, " + frequency;
-  }
-
-  if (!daysDisplay) {
-    throw "Invalid days to display, " + daysDisplay;
-  }
-  daysDisplay = normalizeDaysDisplay(daysDisplay)
-
   var newSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetname);
   if (newSheet != null) {
-    throw "A sheet with name '" + sheetname + "' existed. Please use another name.";
+    throw 'A sheet with name '
+    ' + sheetname + '
+    ' existed. Please use another name.';
+  }
+
+  if (!daysDisplay || isNaN(daysDisplay)) {
+    throw 'Invalid days to display,';
+  }
+  // ensure it is int
+  daysDisplay = parseInt(daysDisplay);
+  if (daysDisplay <= 0) {
+    throw 'Provide positive value for days to display';
   }
 
   switch (frequency) {
     case 'd':
       {
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
-        newSheet.getRange(1, 1).setValue("Name");
-
         try {
+          // configure name column
+          newSheet.getRange(1, 1).setValue('Name');
+
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysDisplay).getA1Notation();
-          var dates = getDatesForDaily(daysDisplay);
-          updateTimetableHeaders(newSheet.getSheetName(), headersRange, dates);
+          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForDaily(daysDisplay));
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
@@ -82,18 +83,20 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
       }
     case 'w':
       {
-        if (!isValidDaysInWeek(daysInWeek)) {
-          throw "Invalid days for weekly frequency.";
-        }
-
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
-        newSheet.getRange(1, 1).setValue("Name");
-
         try {
+          // validate days in week
+          var validDays = getValidDaysInWeek(daysInWeek);
+          if (!validDays || validDays.length <= 0) {
+            throw 'Invalid days in week';
+          }
+
+          // configure name column
+          newSheet.getRange(1, 1).setValue('Name');
+
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysDisplay).getA1Notation();
-          var dates = getDatesForWeekly(daysDisplay, daysInWeek);
-          updateTimetableHeaders(newSheet.getSheetName(), headersRange, dates);
+          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForWeekly(daysDisplay, validDays));
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
@@ -102,14 +105,15 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
       }
     case 'c':
       {
-        if (!isValidRange(customSheetname, customRange)) {
-          throw "Invalid custom frequency, sheet:[" + customSheetName + "] range:[" + customRange + "]";
-        };
+        var customRange = getCustomRange(customSheetname, customRange);
+        if (customRange.getNumColumns() <= 0 || customRange.getNumRows() <= 0) {
+          throw 'Invalid custom range, sheet:' + customSheetname + ', range:' + customRange;
+        }
         break;
       }
     default:
       {
-        throw "Unsupported frequency, " + frequency;
+        throw 'Unsupported frequency, ' + frequency;
       }
   }
 
@@ -119,13 +123,7 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
 /**
  * Helper function to populate dates for daily frequency
  */
-function getDatesForDaily(daysDisplay, start) {
-  var startDate = new Date();
-  if (start && start.constructor === Date) {
-    startDate = new Date(start);
-  }
-
-  daysDisplay = normalizeDaysDisplay(daysDisplay);
+function getDatesForDaily(daysDisplay, startDate) {
   var dates = [];
   for (var i = 0; i < daysDisplay; i++) {
     dates.push(updateDate(startDate, 'd', i));
@@ -136,16 +134,9 @@ function getDatesForDaily(daysDisplay, start) {
 /**
  * Helper function to populate dates for weekly frequency
  */
-function getDatesForWeekly(daysDisplay, daysInWeek, start) {
-  var startDate = new Date();
-  if (start && start.constructor === Date) {
-    startDate = new Date(start);
-  }
-
-  daysDisplay = normalizeDaysDisplay(daysDisplay);
-
+function getDatesForWeekly(daysDisplay, daysInWeek, startDate) {
   // Calculate nearest future day w.r.t the given start date
-  // starts from Monday
+  // e.g: starts from Monday
   var nextDay = 1;
   var nextDayIndex = 0;
   var nextDayMin = 7;
@@ -160,13 +151,13 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
       nextDayIndex = i;
       nextDayMin = diff;
       Logger.log('Next day is today');
-      Logger.log("startDay:" + startDay + ", otherDay:" + otherDay + ", diff:" + diff);
+      Logger.log('startDay:' + startDay + ', otherDay:' + otherDay + ', diff:' + diff);
       break;
     } else if (diff > 0) {
       // future day within same week
       // if min is the same, always take future day
       Logger.log('Next day is located later in the current week');
-      Logger.log("startDay:" + startDay + ", otherDay:" + otherDay + ", diff:" + diff);
+      Logger.log('startDay:' + startDay + ', otherDay:' + otherDay + ', diff:' + diff);
       if (diff <= nextDayMin) {
         nextDay = otherDay;
         nextDayIndex = i;
@@ -176,7 +167,7 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
       // future day out of same week
       var newDiff = diff + 7;
       Logger.log('Next day is located in the upcoming week');
-      Logger.log("startDay:" + startDay + ", otherDay:" + otherDay + ", diff:" + newDiff);
+      Logger.log('startDay:' + startDay + ', otherDay:' + otherDay + ', diff:' + newDiff);
       if (newDiff <= nextDayMin) {
         nextDay = otherDay;
         nextDayIndex = i;
@@ -185,8 +176,7 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
     }
   }
   Logger.log('Calculation of Next Day');
-  Logger.log('nextDay:' + nextDay + ', nextDayIndex:' + nextDayIndex + ", nextDayMin:" + nextDayMin);
-
+  Logger.log('nextDay:' + nextDay + ', nextDayIndex:' + nextDayIndex + ', nextDayMin:' + nextDayMin);
 
   // Calculate days between dates
   var daysBetween = [];
@@ -228,50 +218,41 @@ function getDatesForWeekly(daysDisplay, daysInWeek, start) {
 }
 
 /**
- * Helper function to normalize days display to natural number
- */
-function normalizeDaysDisplay(daysDisplay) {
-  var days = parseInt(daysDisplay);
-  return Math.max(0, isNaN(days) ? 0 : days);
-}
-
-/**
  * Helper function to populate roster timeable headers
  */
 function updateTimetableHeaders(sheetname, A1Notation, dates) {
 
-  Logger.log("UpdateTimeTableHeaders");
+  Logger.log('UpdateTimeTableHeaders');
 
   var sheet = SpreadsheetApp.getActive().getSheetByName(sheetname);
   if (sheet == null) {
-    throw "No such sheet:[" + sheetname + "]";
+    throw 'No such sheet:[' + sheetname + ']';
   }
 
   var range = sheet.getRange(A1Notation);
   if (!isSingleRowRange(range)) {
-    throw "Range give for timable headers must only be a single row."
+    throw 'Range give for timable headers must only be a single row.'
   }
 
   if (!dates || dates.constructor !== Array || !dates.length) {
     Logger.log(JSON.stringify(dates));
-    throw "Insufficent dates given for timetable headers"
+    throw 'Insufficent dates given for timetable headers'
   }
 
   var numColumns = range.getNumColumns();
   if (numColumns !== dates.length) {
     L
-    Logger.log("Range: " + A1Notation);
-    Logger.log("Dates:" + JSON.stringify(dates));
-    throw "Dates do not match with the give range"
+    Logger.log('Range: ' + A1Notation);
+    Logger.log('Dates:' + JSON.stringify(dates));
+    throw 'Dates do not match with the give range'
   }
 
   var datesInText = [];
   var datesFormat = [];
   for (var i = 0; i < numColumns; i++) {
 
-    var dateFormat = "ddd (d-mmm)";
-    var dateValue = "";
-
+    var dateFormat = 'ddd (d-mmm)';
+    var dateValue = '';
     if (dates[i] && dates[i].constructor === Date) {
       dateValue = new Date(dates[i]);
     }
@@ -288,32 +269,6 @@ function updateTimetableHeaders(sheetname, A1Notation, dates) {
  * Create new roster sheet from existing
  */
 function createFromExisting(sheetname) {}
-
-var FREQUENCY_DAILY = 'd';
-var FREQUENCY_WEEKLY = 'w';
-var FREQUENCY_CUSTOM = 'c';
-
-function isValidFrequency(freq) {
-  if (!freq) {
-    return false;
-  }
-  return freq === FREQUENCY_DAILY ||
-    freq === FREQUENCY_WEEKLY ||
-    freq === FREQUENCY_CUSTOM;
-}
-
-function isValidRange(sheetname, range) {
-  var customRange = getCustomRange(sheetname, range);
-  return customRange.getNumColumns() > 0 && customRange.getNumRows() > 0;
-}
-
-function isValidDaysInWeek(daysInWeek) {
-  if (!daysInWeek) {
-    return false;
-  }
-  var validDays = getValidDaysInWeek(daysInWeek);
-  return validDays && validDays.length > 0;
-}
 
 /**
  * Opens a sidebar. The sidebar structure is described in the CreateFromExistingSidebar.html
@@ -359,7 +314,7 @@ function getSelectedRange() {
     var sheet = SpreadsheetApp.getActiveSheet();
     return sheet.getActiveRange().getA1Notation();
   } catch (e) {
-    throw "No range selected.";
+    throw 'No range selected.';
   }
 }
 
@@ -374,31 +329,31 @@ function getSelectedRangeWithSheetname() {
       sheetname: sheet.getName()
     };
   } catch (e) {
-    throw "No range selected.";
+    throw 'No range selected.';
   }
 }
 
 /*
  * Helper function to get range via A1 Notation in current active sheet
  */
-function getRange(A1Notation) {
+function getRangeFromA1Notation(A1Notation) {
   try {
     var sheet = SpreadsheetApp.getActiveSheet();
     return sheet.getRange(A1Notation);
   } catch (e) {
-    throw "Invalid A1 Notation [" + A1Notation + "] for range.";
+    throw 'Invalid A1 Notation [' + A1Notation + '] for range.';
   }
 }
 
 /*
  * Helper function to get range via A1 Notation in the given sheet nane
  */
-function getCustomRange(sheetname, A1Notation) {
+function getCustomRangeFromA1Notation(sheetname, A1Notation) {
   try {
     var sheet = SpreadsheetApp.getActive().getSheetByName(sheetname);
     return sheet.getRange(A1Notation);
   } catch (e) {
-    throw "Invalid A1 Notation [" + A1Notation + "] for sheet [" + sheetname + "].";
+    throw 'Invalid A1 Notation [' + A1Notation + '] for sheet [' + sheetname + '].';
   }
 }
 
@@ -454,7 +409,7 @@ DAY_IN_SECONDS = 86400;
  */
 function updateDate(date, time_unit, time_unit_scalar) {
   if (!date || date.constructor !== Date) {
-    throw "Invalid date";
+    throw 'Invalid date';
   }
 
   var time_unit_seconds = 0;
@@ -467,11 +422,11 @@ function updateDate(date, time_unit, time_unit_scalar) {
   } else if (time_unit === 'd') {
     time_unit_seconds = DAY_IN_SECONDS;
   } else {
-    throw "Unsupported time unit [" + time_unit + "]";
+    throw 'Unsupported time unit [' + time_unit + ']';
   }
 
   if (isNaN(time_unit_scalar)) {
-    throw "Invalid scalar number for time unit";
+    throw 'Invalid scalar number for time unit';
   }
 
   var newMiliseconds = date.getTime() + (time_unit_scalar * time_unit_seconds * 1000)
@@ -536,7 +491,7 @@ function readConfig() {
     config.data_retention.expiry_days = props.getProperty('DATE_RETENTION_EXPIRY_DAYS');
 
   } catch (e) {
-    throw "Unable to read config for the sheet."
+    throw 'Unable to read config for the sheet.'
   }
   return config;
 }
@@ -568,6 +523,6 @@ function saveConfig(config) {
     });
 
   } catch (e) {
-    throw "Unable to save config for the sheet."
+    throw 'Unable to save config for the sheet.'
   }
 }
