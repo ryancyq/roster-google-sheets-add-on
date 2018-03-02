@@ -124,6 +124,10 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
  * Helper function to populate dates for daily frequency
  */
 function getDatesForDaily(daysDisplay, startDate) {
+  if (!start || start.constructor !== Date) {
+    startDate = new Date();
+  }
+
   var dates = [];
   for (var i = 0; i < daysDisplay; i++) {
     dates.push(updateDate(startDate, 'd', i));
@@ -135,6 +139,10 @@ function getDatesForDaily(daysDisplay, startDate) {
  * Helper function to populate dates for weekly frequency
  */
 function getDatesForWeekly(daysDisplay, daysInWeek, startDate) {
+  if (!start || start.constructor !== Date) {
+    startDate = new Date();
+  }
+  
   // Calculate nearest future day w.r.t the given start date
   // e.g: starts from Monday
   var nextDay = 1;
