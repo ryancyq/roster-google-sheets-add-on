@@ -103,9 +103,30 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
       }
     case 'c':
       {
-        var customRange = getCustomRange(customSheetname, customRange);
-        if (customRange.getNumColumns() <= 0 || customRange.getNumRows() <= 0) {
-          throw 'Invalid custom range, sheet:' + customSheetname + ', range:' + customRange;
+        // validate custom range
+        var range = getCustomRangeFromA1Notation(customSheetname, customRange);
+        var isSingleRow = isSingleRowRange(range);
+        var isSingleColumn = isSingleRowRange(range);
+        if (!isSingleRow && !isSingleColumn) {
+          throw 'Provide custom dates in a single row or column only';
+        }
+
+        var validDates = getDatesForCustomRange(range, daysDisplay);
+        if (!validDates || validDates.length <= 0) {
+          throw 'Empty custom dates'
+        }
+
+        newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
+        try {
+          // configure name column
+          newSheet.getRange(1, 1).setValue('Name');
+
+          // configure timetable headers
+          var headersRange = newSheet.getRange(1, 2, 1, daysDisplay).getA1Notation();
+          updateTimetableHeaders(newSheet.getSheetName(), headersRange, validDates);
+        } catch (e) {
+          SpreadsheetApp.getActive().deleteSheet(newSheet);
+          throw e;
         }
         break;
       }
@@ -219,6 +240,29 @@ function getDatesForWeekly(daysDisplay, daysInWeek, startDate) {
       daysBetweenIndex %= daysBetween.length;
     }
     dates.push(dateBegin);
+  }
+  return dates;
+}
+
+/**
+ * Helper function to populate dates for custom frequency
+ */
+function getDatesForCustomRange(customRange, daysDisplay) {
+  var rawDates = customRange.getValues();
+  var validDates = [];
+  for (var r = 0; r < customRange.getNumRows(); r++) {
+    for (var c = 0; c < customRange.getNumColumns(); c++) {
+      var raw = Date.parse(rawDates[r][c]);
+      if(!isNaN(raw)){
+        validDates.push(new Date(raw));
+      }
+    }
+  }
+  validDates.sort();
+
+  var dates = [];
+  for (var i = 0; i < daysDisplay; i++) {
+    // dates.push(updateDate(startDate, 'd', i));
   }
   return dates;
 }
@@ -437,6 +481,44 @@ function updateDate(date, time_unit, time_unit_scalar) {
 
   var newMiliseconds = date.getTime() + (time_unit_scalar * time_unit_seconds * 1000)
   return new Date(newMiliseconds);
+}
+
+/**
+ * https://oli.me.uk/2013/06/08/searching-javascript-arrays-with-a-binary-search/
+ *
+ * Performs a binary search on the host array. This method can either be
+ * injected into Array.prototype or called with a specified scope like this:
+ * binaryIndexOf.call(someArray, searchElement);
+ *
+ * @param {*} searchElement The item to search for within the array.
+ * @return {Number} The index of the element which defaults to -1 when not found.
+ */
+function binaryIndexOf(searchElement) {
+    'use strict';
+ 
+    var minIndex = 0;
+    var maxIndex = this.length - 1;
+    var currentIndex;
+    var currentElement;
+ 
+    while (minIndex <= maxIndex) {
+        currentIndex = (minIndex + maxIndex) / 2 | 0;
+        currentElement = this[currentIndex];
+ 
+        if (currentElement < searchElement) {
+            minIndex = currentIndex + 1;
+        }
+        else if (currentElement > searchElement) {
+            maxIndex = currentIndex - 1;
+        }
+        else {
+            return currentIndex;
+        }
+    }
+ 
+    // return -1;
+    /* Return last visited index */
+    return currentIndex;
 }
 
 /*
