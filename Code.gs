@@ -260,6 +260,17 @@ function getDatesForCustomRange(customRange, daysDisplay) {
   }
   validDates.sort();
 
+  // look for today's date
+  var today = new Date();
+  var closestDateIndex = binaryIndexOf.call(validDates, today);
+  var dateIndex = 0;
+  if((today - validDates[closestDateIndex]) === 0){
+    // today found
+    dateIndex = closestDateIndex;
+  }else if((today - validDates[closestDateIndex + 1]) === 0){
+
+  }
+
   var dates = [];
   for (var i = 0; i < daysDisplay; i++) {
     // dates.push(updateDate(startDate, 'd', i));
