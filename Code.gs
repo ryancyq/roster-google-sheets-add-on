@@ -268,11 +268,22 @@ function getDatesForCustomRange(customRange, daysDisplay) {
     // today found
     dateIndex = closestDateIndex;
   } else if (closestDateIndex + 1 < validDates.length && (today - validDates[closestDateIndex + 1]) === 0) {
+    // next day
+    dateIndex = closestDateIndex + 1;
+  } else if (closestDateIndex - 1 >= 0 && (today - validDates[closestDateIndex - 1]) === 0) {
+    // the day before
+    dateIndex = closestDateIndex - 1;
   }
 
   var dates = [];
+  var validDateIndex = 0;
   for (var i = 0; i < daysDisplay; i++) {
-    // dates.push(updateDate(startDate, 'd', i));
+    if (validDateIndex < validDates.length) {
+      dates.push(new Date(validDates[validDateIndex]));
+      validDateIndex++;
+    } else {
+      dates.push(undefined);
+    }
   }
   return dates;
 }
