@@ -253,7 +253,7 @@ function getDatesForCustomRange(customRange, daysDisplay) {
   for (var r = 0; r < customRange.getNumRows(); r++) {
     for (var c = 0; c < customRange.getNumColumns(); c++) {
       var raw = Date.parse(rawDates[r][c]);
-      if(!isNaN(raw)){
+      if (!isNaN(raw)) {
         validDates.push(new Date(raw));
       }
     }
@@ -264,11 +264,10 @@ function getDatesForCustomRange(customRange, daysDisplay) {
   var today = new Date();
   var closestDateIndex = binaryIndexOf.call(validDates, today);
   var dateIndex = 0;
-  if((today - validDates[closestDateIndex]) === 0){
+  if ((today - validDates[closestDateIndex]) === 0) {
     // today found
     dateIndex = closestDateIndex;
-  }else if((today - validDates[closestDateIndex + 1]) === 0){
-
+  } else if (closestDateIndex + 1 < validDates.length && (today - validDates[closestDateIndex + 1]) === 0) {
   }
 
   var dates = [];
@@ -505,31 +504,29 @@ function updateDate(date, time_unit, time_unit_scalar) {
  * @return {Number} The index of the element which defaults to -1 when not found.
  */
 function binaryIndexOf(searchElement) {
-    'use strict';
- 
-    var minIndex = 0;
-    var maxIndex = this.length - 1;
-    var currentIndex;
-    var currentElement;
- 
-    while (minIndex <= maxIndex) {
-        currentIndex = (minIndex + maxIndex) / 2 | 0;
-        currentElement = this[currentIndex];
- 
-        if (currentElement < searchElement) {
-            minIndex = currentIndex + 1;
-        }
-        else if (currentElement > searchElement) {
-            maxIndex = currentIndex - 1;
-        }
-        else {
-            return currentIndex;
-        }
+  'use strict';
+
+  var minIndex = 0;
+  var maxIndex = this.length - 1;
+  var currentIndex;
+  var currentElement;
+
+  while (minIndex <= maxIndex) {
+    currentIndex = (minIndex + maxIndex) / 2 | 0;
+    currentElement = this[currentIndex];
+
+    if (currentElement < searchElement) {
+      minIndex = currentIndex + 1;
+    } else if (currentElement > searchElement) {
+      maxIndex = currentIndex - 1;
+    } else {
+      return currentIndex;
     }
- 
-    // return -1;
-    /* Return last visited index */
-    return currentIndex;
+  }
+
+  // return -1;
+  /* Return last visited index */
+  return currentIndex;
 }
 
 /*
