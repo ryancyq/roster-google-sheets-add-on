@@ -508,6 +508,38 @@ function updateDate(date, time_unit, time_unit_scalar) {
 }
 
 /**
+ * Helper function to get start of the day date (00:00:00.000)
+ */
+function getStartOfDayDate(date){
+  if(!date || date.constructor !== Date){
+    throw 'Invalid date for start of day';
+  }
+
+  var startOfDay = new Date(date);  
+  startOfDay.setHours(0);
+  startOfDay.setMinutes(0);
+  startOfDay.setSeconds(0);
+  startOfDay.setMilliseconds(0);
+  return startOfDay;
+}
+
+/**
+ * Helper function to get end of the day date (23:59:59.999)
+ */
+function getEndOfDayDate(date){
+  if(!date || date.constructor !== Date){
+    throw 'Invalid date for end of day';
+  }
+
+  var endOfDay = new Date(date);  
+  endOfDay.setHours(23);
+  endOfDay.setMinutes(59);
+  endOfDay.setSeconds(59);
+  endOfDay.setMilliseconds(999);
+  return endOfDay;
+}
+
+/**
  * https://oli.me.uk/2013/06/08/searching-javascript-arrays-with-a-binary-search/
  *
  * Performs a binary search on the host array. This method can either be
