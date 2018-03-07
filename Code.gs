@@ -258,7 +258,11 @@ function getDatesForCustomRange(customRange, daysDisplay) {
       }
     }
   }
-  validDates.sort();
+
+  // ascending sort
+  validDates.sort(function(a, b) {
+    return a < b;
+  });
 
   // look for today's date
   var today = new Date();
