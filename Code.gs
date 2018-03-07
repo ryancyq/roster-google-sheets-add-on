@@ -250,11 +250,18 @@ function getDatesForWeekly(daysDisplay, daysInWeek, startDate) {
 function getDatesForCustomRange(customRange, daysDisplay) {
   var rawDates = customRange.getValues();
   var validDates = [];
+  var validDatesMap = {};
   for (var r = 0; r < customRange.getNumRows(); r++) {
     for (var c = 0; c < customRange.getNumColumns(); c++) {
       var raw = Date.parse(rawDates[r][c]);
       if (!isNaN(raw)) {
-        validDates.push(new Date(raw));
+        var rawDate = new Date(raw);
+        var rawDateTime = getStartOfDayDate(rawDate).getTime();
+        if (!validDatesMap[rawDateTime]) {
+          // only push if raw date time is not added before
+          validDates.push(rawDate);
+          validDatesMap[rawDateTime] = true;
+        }
       }
     }
   }
