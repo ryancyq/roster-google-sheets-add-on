@@ -104,6 +104,9 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
     case 'c':
       {
         // validate custom range
+        if (!customSheetname || !customRange) {
+          throw 'Please select the custom range with dates'
+        }
         var range = getCustomRangeFromA1Notation(customSheetname, customRange);
         var isSingleRow = isSingleRowRange(range);
         var isSingleColumn = isSingleRowRange(range);
