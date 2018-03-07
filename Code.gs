@@ -275,6 +275,9 @@ function getDatesForCustomRange(customRange, daysDisplay) {
     dateIndex = closestDateIndex - 1;
   }
 
+  Logger.log('index: ' + closestDateIndex);
+  Logger.log(JSON.stringify(validDates));
+
   var dates = [];
   var validDateIndex = 0;
   for (var i = 0; i < daysDisplay; i++) {
