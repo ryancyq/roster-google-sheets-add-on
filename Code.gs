@@ -265,25 +265,31 @@ function getDatesForCustomRange(customRange, daysDisplay) {
   });
 
   // look for today's date
-  var today = new Date();
+  var today = getStartOfDayDate(new Date());
   var closestDateIndex = binaryIndexOf.call(validDates, today);
   var dateIndex = 0;
-  if ((today - validDates[closestDateIndex]) === 0) {
+
+  Logger.log('today: ' + today);
+  Logger.log('closest index: ' + closestDateIndex);
+
+  if ((today - getStartOfDayDate(validDates[closestDateIndex])) === 0) {
+    Logger.log('closest: ' + validDates[closestDateIndex]);
     // today found
     dateIndex = closestDateIndex;
-  } else if (closestDateIndex + 1 < validDates.length && (today - validDates[closestDateIndex + 1]) === 0) {
+  } else if (closestDateIndex + 1 < validDates.length && (today - getStartOfDayDate(validDates[closestDateIndex + 1])) === 0) {
+    Logger.log('closest + 1: ' + validDates[closestDateIndex + 1]);
     // next day
     dateIndex = closestDateIndex + 1;
-  } else if (closestDateIndex - 1 >= 0 && (today - validDates[closestDateIndex - 1]) === 0) {
+  } else if (closestDateIndex - 1 >= 0 && (today - getStartOfDayDate(validDates[closestDateIndex - 1])) === 0) {
+    Logger.log('closest - 1: ' + validDates[closestDateIndex - 1]);
     // the day before
     dateIndex = closestDateIndex - 1;
+  } else {
+    throw 'Invalid dates in custom range'
   }
 
-  Logger.log('index: ' + closestDateIndex);
-  Logger.log(JSON.stringify(validDates));
-
   var dates = [];
-  var validDateIndex = 0;
+  var validDateIndex = dateIndex;
   for (var i = 0; i < daysDisplay; i++) {
     if (validDateIndex < validDates.length) {
       dates.push(new Date(validDates[validDateIndex]));
