@@ -1,0 +1,152 @@
+<?!= HtmlService.createHtmlOutputFromFile('StyleSheet').getContent(); ?>
+
+<div class="sidebar roster-create-from-existing">
+  <p>
+  Roster Lookup Data
+  </p>
+  <table id="roster-fillup-options-table" class="table sidebar-value-block" width="100%">
+    <tr>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the range of names.">Names: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-person-name-range', 'sidebar-fillup-person-name-sheetname');">↘</button>
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-person-name-sheetname">Sheet Name</label>
+          <input type="text" id="sidebar-fillup-person-name-sheetname" value="">
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-person-name-range">Range</label>
+          <input type="text" id="sidebar-fillup-person-name-range" value="">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the range of timestamps.">Timeslots: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-timestamp-range', 'sidebar-fillup-timestamp-sheetname');">↘</button>
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-timestamp-sheetname">Sheet Name</label>
+          <input type="text" id="sidebar-fillup-timestamp-sheetname" value="">
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-timestamp-range">Range</label>
+          <input type="text" id="sidebar-fillup-timestamp-range" value="">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the range of timestamps.">Timestamps: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-timestamp-range', 'sidebar-fillup-timestamp-sheetname');">↘</button>
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-timestamp-sheetname">Sheet Name</label>
+          <input type="text" id="sidebar-fillup-timestamp-sheetname" value="">
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-timestamp-range">Range</label>
+          <input type="text" id="sidebar-fillup-timestamp-range" value="">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+       <label style="cursor:help" title="Show upcoming timetable.">Show Upcoming: </label>
+      </td>
+      <td colspan="2">
+        <input type="checkbox" id="sidebar-fillup-show-next" value="show">
+      </td>
+    </tr>
+  </table>
+  <p>
+  Roster Fillup Data
+  </p>
+  <table id="roster-fillup-options-table" class="table sidebar-value-block" width="100%">
+    <tr>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the range of names.">Names: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-person-name-range', 'sidebar-fillup-person-name-sheetname');">↘</button>
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-person-name-sheetname">Sheet Name</label>
+          <input type="text" id="sidebar-fillup-person-name-sheetname" value="">
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-person-name-range">Range</label>
+          <input type="text" id="sidebar-fillup-person-name-range" value="">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the range of timetable.">Timetable: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-timetable-range', 'sidebar-fillup-timetable-sheetname');">↘</button>
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-timetable-header-sheetname">Sheet Name</label>
+          <input type="text" id="sidebar-fillup-timetable-sheetname" value="">
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-timetable-header-range">Range</label>
+          <input type="text" id="sidebar-fillup-timetable-range" value="">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the range of timestamps.">Timestamps: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-timestamp-range', 'sidebar-fillup-timestamp-sheetname');">↘</button>
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-timestamp-sheetname">Sheet Name</label>
+          <input type="text" id="sidebar-fillup-timestamp-sheetname" value="">
+        </div>
+        <div class="block form-group">
+          <label for="sidebar-fillup-timestamp-range">Range</label>
+          <input type="text" id="sidebar-fillup-timestamp-range" value="">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="66%">
+      </td>
+      <td width="33%" style="text-align:right;" class="action">
+        <button id="sidebar-update-button">Update</button>
+      </td>
+    </tr>
+  </table>
+  <div id="sidebar-status"></div>
+</div>
+
+<div class="sidebar bottom">
+  <div id="static" class="show-inline"><img class="logo" width="50" src="https://avatars.githubusercontent.com/ryancyq?v=3&s=80"></div>
+  <div id="loader" class="hidden">
+    <div class="loader">
+      <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- Use a templated HTML printing scriptlet to import JavaScript. -->
+<?!= HtmlService.createHtmlOutputFromFile('CreateNewJavaScript').getContent(); ?>
