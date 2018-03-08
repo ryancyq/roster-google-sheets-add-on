@@ -1,0 +1,148 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+  /**
+   * Displays the given status message in the sidebar.
+   *
+   * @param {String} msg The status message to display.
+   * @param {String} classId The message type (class id) that the message
+   *   should be displayed as.
+   */
+  function showStatus(msg, classId) {
+    $('#sidebar-status').removeClass().html(msg);
+    if (classId) {
+      $('#sidebar-status').addClass(classId);
+    }
+  }
+  
+  /* Custom */
+  
+  function disableButtons() {
+    $("#sidebar-create-button").prop('disabled', true);
+  }
+
+  function enableButtons() {
+    $("#sidebar-create-button").prop('disabled', false);
+  }
+
+  function enableLoader() {
+    $('#static').removeClass().addClass('hidden');
+    $('#loader').removeClass().addClass('show-inline');
+  }
+
+  function disableLoader() {
+    $('#loader').removeClass().addClass('hidden');
+    $('#static').removeClass().addClass('show-inline');
+  }
+
+  function failure(msg) {
+    showStatus(msg, 'error');
+    enableButtons();
+    disableLoader();
+  }
+  
+  $(function() {  
+    $('#sidebar-update-button').click(onUpdateClick);
+    
+    disableButtons();
+    enableLoader();
+
+    // Load Options
+    google.script.run
+      .withSuccessHandler(
+        function(msg){
+          $('#sidebar-lookup-person-name-sheetname').val('';
+          $('#sidebar-lookup-person-name-range').val('');
+          $('#sidebar-lookup-timeslot-sheetname').val('';
+          $('#sidebar-lookup-timeslot-range').val('');
+          $('#sidebar-lookup-timestamp-sheetname').val('';
+          $('#sidebar-lookup-timestamp-range').val('');
+
+          $('#sidebar-fillup-person-name-sheetname').val('';
+          $('#sidebar-fillup-person-name-range').val('');
+          $('#sidebar-fillup-timeslot-sheetname').val('';
+          $('#sidebar-fillup-timeslot-range').val('');
+          $('#sidebar-fillup-timestamp-sheetname').val('';
+          $('#sidebar-fillup-timestamp-range').val('');
+
+          enableButtons();
+          disableLoader();
+        })
+      .withFailureHandler(
+        function(msg) {
+          showStatus(msg, 'error');
+          enableButtons();
+          disableLoader();
+        })
+      .readConfig();
+  });
+  
+  function onUpdateClick() {
+    disableButtons();
+    enableLoader();
+
+    var updateOptions = getOptions();
+    
+    google.script.run
+      .withSuccessHandler(
+        function(msg) {
+          showStatus('Success! The roster timetable has been updated');
+          disableLoader();
+        })
+      .withFailureHandler(
+        function(msg) {
+          showStatus(msg, 'error');
+          enableButtons();
+          disableLoader();
+        })
+      .createFromExisting(updateOptions);
+  }
+  
+  function updateRange(range_element_id, sheetname_element_id) {
+    var $range_element = $('#'+range_element_id);
+    var $sheetname_element = $('#'+sheetname_element_id);
+    
+    google.script.run
+      .withSuccessHandler(function(msg) {
+        if(msg){
+          if(range_element_id){
+            if($range_element.val() != msg.range){
+              $range_element.val(msg.range);
+            }
+          }
+          if(sheetname_element_id){
+            if($sheetname_element.val() != msg.sheetname){
+              $sheetname_element.val(msg.sheetname);
+            }
+          }
+        }
+         showStatus('');
+      })
+      .withFailureHandler(function(msg) {
+        showStatus(msg, 'error');
+      })
+      .getSelectedRangeWithSheetname();
+  }
+
+  function getOptions() {
+    return {
+      lookup:{
+        personNameSheetname : $('#sidebar-lookup-person-name-sheetname').val(),
+        personNameRange : $('#sidebar-lookup-person-name-range').val(),
+        timeslotSheetname : $('#sidebar-lookup-timeslot-sheetname').val(),
+        timeslotRange : $('#sidebar-lookup-timeslot-range').val(),
+        timestampSheetname : $('#sidebar-lookup-timestamp-sheetname').val(),
+        timestampRange : $('#sidebar-lookup-timestamp-range').val(),
+      },
+      fillup:{
+        personNameSheetname : $('#sidebar-fillup-person-name-sheetname').val(),
+        personNameRange : $('#sidebar-fillup-person-name-range').val(),
+        timetableSheetname : $('#sidebar-fillup-timetable-sheetname').val(),
+        timetableRange : $('#sidebar-fillup-timetable-range').val(),
+        timestampSheetname : $('#sidebar-fillup-timestamp-sheetname').val(),
+        timestampRange : $('#sidebar-fillup-timestamp-range').val(),
+      }
+    };
+  }
+
+</script>
