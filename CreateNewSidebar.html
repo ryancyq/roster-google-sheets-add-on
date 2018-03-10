@@ -1,13 +1,13 @@
 <?!= HtmlService.createHtmlOutputFromFile('StyleSheet').getContent(); ?>
 
-<div class="sidebar roster-create-new">
+<div class="sidebar roster roster-create-new">
   <p>
-  Welcome to Roster Creation
+    Welcome to Roster Creation
   </p>
   <table id="roster-options-table" class="table sidebar-value-block" width="100%">
     <tr>
       <td>
-       <label style="cursor:help" title='Roster sheet name'>Name: </label>
+        <label style="cursor:help" title='Roster sheet name'>Name: </label>
       </td>
       <td colspan='2'>
         <? var currentDateTime = Utilities.formatDate(new Date(), SpreadsheetApp.getActive().getSpreadsheetTimeZone(), "dd-MMM-yyyy")?>
@@ -17,7 +17,7 @@
     </tr>
     <tr>
       <td>
-       <label style="cursor:help" title="Select roster frequency." for="sidebar-fillup-frequency">Frequency:</label>
+        <label style="cursor:help" title="Select roster frequency." for="sidebar-fillup-frequency">Frequency:</label>
       </td>
       <td>
         <select id="sidebar-fillup-frequency">
@@ -33,7 +33,7 @@
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-frequency-custom-range', 'sidebar-fillup-frequency-custom-sheetname');">↘</button>
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-fillup-frequency-custom-range', 'sidebar-fillup-frequency-custom-sheetname');">↘</button>
         </div>
         <div class="block form-group">
           <label for="sidebar-fillup-frequency-custom-sheetname">Sheet Name</label>
@@ -43,11 +43,12 @@
           <label for="sidebar-fillup-frequency-custom-range">Range</label>
           <input type="text" id="sidebar-fillup-frequency-custom-range" value="">
         </div>
+
       </td>
     </tr>
     <tr id="sidebar-fillup-days-in-week" class="hidden">
       <td style="vertical-align:top">
-       <label style="cursor:help" title="Select days of the week.">Days: </label>
+        <label style="cursor:help" title="Select days of the week.">Days: </label>
       </td>
       <td colspan="2">
         <div class="block form-group">
@@ -82,7 +83,7 @@
     </tr>
     <tr>
       <td>
-       <label style="cursor:help" title="Number of days to display for the frequency.">Number of days: </label>
+        <label style="cursor:help" title="Number of days to display per interval.">Number of days: </label>
       </td>
       <td colspan="2">
         <input type="number" id="sidebar-fillup-days-display" value="" required>
@@ -90,7 +91,7 @@
     </tr>
     <tr>
       <td>
-       <label style="cursor:help" title="Show upcoming timetable.">Show Upcoming: </label>
+        <label style="cursor:help" title="Show upcoming timetable.">Show Upcoming: </label>
       </td>
       <td colspan="2">
         <input type="checkbox" id="sidebar-fillup-show-next" value="show">
@@ -100,7 +101,7 @@
       <td width="66%">
       </td>
       <td width="33%" style="text-align:right;" class="create">
-        <button id="sidebar-create-button">Create</button>
+        <button class="sidebar-button" id="sidebar-create-button">Create</button>
       </td>
     </tr>
   </table>
@@ -108,8 +109,8 @@
 </div>
 
 <div class="sidebar bottom">
-  <div id="static" class="show-inline"><img class="logo" width="50" src="https://avatars.githubusercontent.com/ryancyq?v=3&s=80"></div>
-  <div id="loader" class="hidden">
+  <div id="static" class="show-inline static-loader">Created by <img class="logo" width="30" src="https://avatars.githubusercontent.com/ryancyq?v=3&s=30"></div>
+  <div id="loader" class="hidden dynamic-loader">
     <div class="loader">
       <svg class="circular" viewBox="25 25 50 50">
         <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
@@ -119,4 +120,5 @@
 </div>
 
 <!-- Use a templated HTML printing scriptlet to import JavaScript. -->
+<?!= HtmlService.createHtmlOutputFromFile('JavaScript').getContent(); ?>
 <?!= HtmlService.createHtmlOutputFromFile('CreateNewJavaScript').getContent(); ?>
