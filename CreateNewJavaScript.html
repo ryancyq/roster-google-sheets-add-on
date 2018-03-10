@@ -65,7 +65,7 @@
         })
       .withFailureHandler(
         function(msg) {
-          util.failure(msg);
+          utils.failure(msg);
         })
       .createNew(createOptions.sheetname, createOptions.frequency, createOptions.daysDisplay, createOptions.showNext, createOptions.daysInWeek, createOptions.customSheetname, createOptions.customRange);
   }
