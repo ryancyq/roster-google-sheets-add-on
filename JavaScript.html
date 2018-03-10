@@ -1,0 +1,69 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+var common = {
+  /**
+   * Displays the given status message in the sidebar.
+   *
+   * @param {String} msg The status message to display.
+   * @param {String} classId The message type (class id) that the message
+   *   should be displayed as.
+   */
+  showStatus: function(msg, classId) {
+    $('.sidebar-status').removeClass().html(msg);
+    if (classId) {
+      $('.sidebar-status').addClass(classId);
+    }
+  },
+  disableButtons: function() {
+    $(".sidebar-button").prop('disabled', true);
+  },
+  enableButtons: function() {
+    $(".sidebar-button").prop('disabled', false);
+  },
+  enableLoader: function() {
+    $('.static-loader').removeClass().addClass('hidden');
+    $('.dynamic-loader').removeClass().addClass('show-inline');
+  },
+  disableLoader: function() {
+    $('.dynamic-loader').removeClass().addClass('hidden');
+    $('.static-loader').removeClass().addClass('show-inline');
+  },
+  success: function(msg) {
+    showStatus(msg);
+    enableButtons();
+    disableLoader();
+  },
+  failure: function(msg) {
+    showStatus(msg, 'error');
+    enableButtons();
+    disableLoader();
+  },
+  updateRange: function(range_element_id, sheetname_element_id) {
+    var $range_element = $('#' + range_element_id);
+    var $sheetname_element = $('#' + sheetname_element_id);
+
+    google.script.run
+      .withSuccessHandler(function(msg) {
+        if (msg) {
+          if (range_element_id) {
+            if ($range_element.val() != msg.range) {
+              $range_element.val(msg.range);
+            }
+          }
+          if (sheetname_element_id) {
+            if ($sheetname_element.val() != msg.sheetname) {
+              $sheetname_element.val(msg.sheetname);
+            }
+          }
+        }
+        success('');
+      })
+      .withFailureHandler(function(msg) {
+        failure(msg);
+      })
+      .getSelectedRangeWithSheetname();
+  }
+}
+
+</script>
