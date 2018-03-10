@@ -10,9 +10,9 @@ var utils = {
    *   should be displayed as.
    */
   showStatus: function(msg, classId) {
-    $('.sidebar-status').removeClass().html(msg);
+    $('#sidebar-status').removeClass().html(msg);
     if (classId) {
-      $('.sidebar-status').addClass(classId);
+      $('#sidebar-status').addClass(classId);
     }
   },
   disableButtons: function() {
@@ -22,12 +22,12 @@ var utils = {
     $(".sidebar-button").prop('disabled', false);
   },
   enableLoader: function() {
-    $('.static-loader').removeClass().addClass('hidden');
-    $('.dynamic-loader').removeClass().addClass('show-inline');
+    $('#static-loader').removeClass().addClass('hidden');
+    $('#dynamic-loader').removeClass().addClass('show-inline');
   },
   disableLoader: function() {
-    $('.dynamic-loader').removeClass().addClass('hidden');
-    $('.static-loader').removeClass().addClass('show-inline');
+    $('#dynamic-loader').removeClass().addClass('hidden');
+    $('#static-loader').removeClass().addClass('show-inline');
   },
   success: function(msg) {
     this.showStatus(msg);
