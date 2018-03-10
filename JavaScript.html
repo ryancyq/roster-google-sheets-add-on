@@ -30,14 +30,14 @@ var utils = {
     $('.static-loader').removeClass().addClass('show-inline');
   },
   success: function(msg) {
-    showStatus(msg);
-    enableButtons();
-    disableLoader();
+    this.showStatus(msg);
+    this.enableButtons();
+    this.disableLoader();
   },
   failure: function(msg) {
-    showStatus(msg, 'error');
-    enableButtons();
-    disableLoader();
+    this.showStatus(msg, 'error');
+    this.enableButtons();
+    this.disableLoader();
   },
   updateRange: function(range_element_id, sheetname_element_id) {
     var $range_element = $('#' + range_element_id);
@@ -57,10 +57,10 @@ var utils = {
             }
           }
         }
-        success('');
+        this.success('');
       })
       .withFailureHandler(function(msg) {
-        failure(msg);
+        this.failure(msg);
       })
       .getSelectedRangeWithSheetname();
   }
