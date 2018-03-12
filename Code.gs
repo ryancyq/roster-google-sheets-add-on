@@ -139,7 +139,7 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
       }
   }
 
-  createFromExisting();
+  showCreateFromExistingSidebar();
 }
 
 /**
