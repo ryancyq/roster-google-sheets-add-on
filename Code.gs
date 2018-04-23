@@ -37,13 +37,13 @@ function showCreateNewSidebar() {
  *
  * @param {String} sheetname - required.
  * @param {String} frequency. Frequency of the inverval - required.
- * @param {String} daysDisplay. Number of days to display per interval - required.
- * @param {String} showNext. To show upcoming interval - required.
+ * @param {String} start date. Start date of the interval 
+ * @param {String} end date. End date of the interval
  * @param {Array} daysInWeek. The days in a week for weekly frequency
  * @param {String} customSheetname. The sheet name of custom range.
  * @param {String} customRange. The A1 notion of the data rows.
  */
-function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, customSheetname, customRange) {
+function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customSheetname, customRange) {
 
   if (!sheetname) {
     throw 'Invalid sheet name, ' + sheetname;
@@ -53,26 +53,34 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
     throw 'A sheet with name ' + sheetname + ' existed. Please use another name.';
   }
 
-  if (!daysDisplay || isNaN(daysDisplay)) {
-    throw 'Invalid days to display,';
-  }
-  // ensure it is int
-  daysDisplay = parseInt(daysDisplay);
-  if (daysDisplay <= 0) {
-    throw 'Provide positive value for days to display';
-  }
-
   switch (frequency) {
     case 'd':
       {
+        // validate number of days
+        if (!startDate || startDate.constructor !== Date) {
+          throw 'Start date is required';
+        }
+        if (!endDate || endDate.constructor !== Date) {
+          throw 'End date is required';
+        }
+        if (startDate < endDate) {
+          throw 'End date cannot be earlier than start date';
+        }
+
+        var daysCount = getDaysBetween(startDate, endDate);
+        if (daysCount <= 0) {
+          // minimum 1 day
+          daysCount = 1;
+        }
+
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         try {
           // configure name column
           newSheet.getRange(1, 1).setValue('Name');
 
           // configure timetable headers
-          var headersRange = newSheet.getRange(1, 2, 1, daysDisplay).getA1Notation();
-          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForDaily(daysDisplay));
+          var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
+          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForDaily(daysCount));
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
@@ -81,6 +89,23 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
       }
     case 'w':
       {
+        // validate number of days
+        if (!startDate || startDate.constructor !== Date) {
+          throw 'Start date is required';
+        }
+        if (!endDate || endDate.constructor !== Date) {
+          throw 'End date is required';
+        }
+        if (startDate < endDate) {
+          throw 'End date cannot be earlier than start date';
+        }
+
+        var daysCount = getDaysBetween(startDate, endDate);
+        if (daysCount <= 0) {
+          // minimum 1 day
+          daysCount = 1;
+        }
+
         // validate days in week
         var validDays = getValidDaysInWeek(daysInWeek);
         if (!validDays || validDays.length <= 0) {
@@ -93,8 +118,8 @@ function createNew(sheetname, frequency, daysDisplay, showNext, daysInWeek, cust
           newSheet.getRange(1, 1).setValue('Name');
 
           // configure timetable headers
-          var headersRange = newSheet.getRange(1, 2, 1, daysDisplay).getA1Notation();
-          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForWeekly(daysDisplay, validDays));
+          var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
+          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForWeekly(daysCount, validDays));
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
