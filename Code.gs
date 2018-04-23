@@ -527,6 +527,24 @@ function updateDate(date, time_unit, time_unit_scalar) {
   return new Date(newMiliseconds);
 }
 
+
+/**
+ * Helper function to calculate days between start & end dates
+ */
+function getDaysBetween(startDate, endDate) {
+  if (!startDate || startDate.constructor !== Date) {
+    startDate = new Date();
+  }
+
+  if (!endDate || endDate.constructor !== Date) {
+    endDate = new Date();
+  }
+
+  // Take the difference between the dates and divide by milliseconds per day.
+  // Round to nearest whole number to deal with DST.
+  return Math.round((endDate - startDate) / (1000 * DAY_IN_SECONDS));
+}
+
 /**
  * Helper function to get start of the day date (00:00:00.000)
  */
