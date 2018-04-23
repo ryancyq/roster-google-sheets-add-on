@@ -5,28 +5,28 @@
   <p>
   Roster Lookup Data
   </p>
-  <table id="roster-fillup-options-table" class="table sidebar-value-block" width="100%">
+  <table id="roster-lookup-options-table" class="table sidebar-value-block" width="100%">
     <tr>
       <td style="vertical-align:top">
         <label style="cursor:help" title="Select the range of names.">Name: </label>
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <input type="text" id="sidebar-fillup-person-name-sheetname" placeholder="Sheet name" value="">
-          <input type="text" id="sidebar-fillup-person-name-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
-          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-person-name-range', 'sidebar-fillup-person-name-sheetname');">↘</button>
+          <input type="text" id="sidebar-lookup-person-name-sheetname" placeholder="Sheet name" value="">
+          <input type="text" id="sidebar-lookup-person-name-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-person-name-range', 'sidebar-lookup-person-name-sheetname');">↘</button>
         </div>
       </td>
     </tr>
     <tr>
       <td style="vertical-align:top">
-        <label style="cursor:help" title="Select the range of timestamps.">Timeslot: </label>
+        <label style="cursor:help" title="Select the range of timeslots.">Timeslot: </label>
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <input type="text" id="sidebar-fillup-timestamp-sheetname" placeholder="Sheet name" value="">
-          <input type="text" id="sidebar-fillup-timestamp-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
-          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-timestamp-range', 'sidebar-fillup-timestamp-sheetname');">↘</button>
+          <input type="text" id="sidebar-lookup-timeslot-sheetname" placeholder="Sheet name" value="">
+          <input type="text" id="sidebar-lookup-timeslot-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-timeslot-range', 'sidebar-lookup-timeslot-sheetname');">↘</button>
         </div>
       </td>
     </tr>
@@ -36,9 +36,9 @@
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <input type="text" id="sidebar-fillup-timestamp-sheetname" placeholder="Sheet name" value="">
-          <input type="text" id="sidebar-fillup-timestamp-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
-          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-timestamp-range', 'sidebar-fillup-timestamp-sheetname');">↘</button>
+          <input type="text" id="sidebar-lookup-timestamp-sheetname" placeholder="Sheet name" value="">
+          <input type="text" id="sidebar-lookup-timestamp-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-timestamp-range', 'sidebar-lookup-timestamp-sheetname');">↘</button>
         </div>
       </td>
     </tr>
@@ -47,7 +47,7 @@
        <label style="cursor:help" title="Show upcoming timetable.">Show Upcoming: </label>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-fillup-show-next" value="show">
+        <input type="checkbox" id="sidebar-lookup-show-next" value="show">
       </td>
     </tr>
   </table>
