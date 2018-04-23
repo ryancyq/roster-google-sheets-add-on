@@ -44,7 +44,8 @@
                 <label style="cursor:help" title="Start date.">Start Date: </label>
             </td>
             <td colspan="2">
-                <input type="text" id="sidebar-fillup-start-date" value="<?!= currentDateTime ?>" required/>
+                <input type="hidden" id="sidebar-fillup-start-date-default" value="<?!= currentDateTime ?>" disabled/>
+                <input type="text" id="sidebar-fillup-start-date" value="" required/>
             </td>
         </tr>
         <tr id="sidebar-fillup-end-date-panel" class="hidden">
@@ -52,15 +53,8 @@
                 <label style="cursor:help" title="End date.">End Date: </label>
             </td>
             <td colspan="2">
-                <input type="text" id="sidebar-fillup-end-date" value="<?!= currentDateTime ?>" required/>
-            </td>
-        </tr>
-        <tr id="sidebar-fillup-days-per-week-panel">
-            <td>
-                <label style="cursor:help" title="Days per week.">Days per week: </label>
-            </td>
-            <td colspan="2">
-                <input type="number" id="sidebar-fillup-days-per-week" value="" required>
+                <input type="hidden" id="sidebar-fillup-end-date-default" value="<?!= currentDateTime ?>" disabled/>
+                <input type="text" id="sidebar-fillup-end-date" value="" required/>
             </td>
         </tr>
         <tr id="sidebar-fillup-days-in-week-panel" class="hidden">
