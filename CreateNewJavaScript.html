@@ -6,8 +6,7 @@
     utils.disableButtons();
 
     clearOptions();
-    updateFrequencyCustom();
-    updateDaysInWeek();
+    onFrequencyChanged();
 
     utils.enableButtons();
   });
@@ -64,8 +63,9 @@
   }
 
   function onFrequencyChanged() {
-    updateFrequencyCustom();
-    updateDaysInWeek();
+    updateFrequencyDaily();
+    updateFrequencyWeekly();
+    updateFrequencyCustomDates();
   }
 
   function onCreateClick() {
