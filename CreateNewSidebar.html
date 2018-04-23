@@ -14,6 +14,24 @@
         <input type="text" id="sidebar-fillup-sheetname" value="" required/>
       </td>
     </tr>
+    <tr id="sidebar-fillup-start-date-panel" class="hidden">
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Start date.">Start Date: </label>
+      </td>
+      <td colspan="2">
+        <input type="hidden" id="sidebar-fillup-start-date-default" value="<?!= currentDateTime ?>" disabled/>
+        <input type="text" id="sidebar-fillup-start-date" value="" required/>
+      </td>
+    </tr>
+    <tr id="sidebar-fillup-end-date-panel" class="hidden">
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="End date.">End Date: </label>
+      </td>
+      <td colspan="2">
+        <input type="hidden" id="sidebar-fillup-end-date-default" value="<?!= currentDateTime ?>" disabled/>
+        <input type="text" id="sidebar-fillup-end-date" value="" required/>
+      </td>
+    </tr>
     <tr>
       <td>
         <label style="cursor:help" title="Select roster frequency." for="sidebar-fillup-frequency">Frequency:</label>
@@ -36,24 +54,6 @@
           <input type="text" id="sidebar-fillup-custom-dates-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
           <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-fillup-custom-dates-range', 'sidebar-fillup-custom-dates-sheetname');">↘</button>
         </div>
-      </td>
-    </tr>
-    <tr id="sidebar-fillup-start-date-panel" class="hidden">
-      <td style="vertical-align:top">
-        <label style="cursor:help" title="Start date.">Start Date: </label>
-      </td>
-      <td colspan="2">
-        <input type="hidden" id="sidebar-fillup-start-date-default" value="<?!= currentDateTime ?>" disabled/>
-        <input type="text" id="sidebar-fillup-start-date" value="" required/>
-      </td>
-    </tr>
-    <tr id="sidebar-fillup-end-date-panel" class="hidden">
-      <td style="vertical-align:top">
-        <label style="cursor:help" title="End date.">End Date: </label>
-      </td>
-      <td colspan="2">
-        <input type="hidden" id="sidebar-fillup-end-date-default" value="<?!= currentDateTime ?>" disabled/>
-        <input type="text" id="sidebar-fillup-end-date" value="" required/>
       </td>
     </tr>
     <tr id="sidebar-fillup-days-in-week-panel" class="hidden">
