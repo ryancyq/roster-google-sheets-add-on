@@ -12,36 +12,52 @@
   });
 
   /**
-   * Show the start date if frequency is Daily/Weekly
+   * Show the start/end date if frequency is Daily/Weekly
    */
-  function updateFrequencyDaily() {
+  function updateStartEndDates() {
     var freq = $('#sidebar-fillup-frequency').find(":selected").val();
     var $startDate = $('#sidebar-fillup-start-date-panel');
+    var $endDate = $('#sidebar-fillup-end-date-panel');
 
     if (freq === 'd' || freq === 'w') {
       // daily or weekly
       $startDate.removeClass('hidden');
+      $endDate.removeClass('hidden');
     } else {
       // others
       $startDate.addClass('hidden');
+      $endDate.addClass('hidden');
     }
   }
 
   /**
-   * Show the end date & selection of days in/per week if frequency is Weekly
+   * TODO
+   * Show the ?? if frequency is Daily
+   */
+  function updateFrequencyDaily() {
+    var freq = $('#sidebar-fillup-frequency').find(":selected").val();
+    
+    if (freq === 'd') {
+      // daily
+      // TODO
+    } else {
+      // others
+      // TODO
+    }
+  }
+
+  /**
+   * Show the selection of days in week if frequency is Weekly
    */
   function updateFrequencyWeekly() {
     var freq = $('#sidebar-fillup-frequency').find(":selected").val();
-    var $endDate = $('#sidebar-fillup-end-date-panel');
     var $daysInWeek = $('#sidebar-fillup-days-in-week-panel');
 
     if (freq === 'w') {
       // weekly
-      $endDate.removeClass('hidden');
       $daysInWeek.removeClass('hidden');
     } else {
       // others
-      $endDate.addClass('hidden');
       $daysInWeek.addClass('hidden');
     }
   }
@@ -63,6 +79,7 @@
   }
 
   function onFrequencyChanged() {
+    updateStartEndDates();
     updateFrequencyDaily();
     updateFrequencyWeekly();
     updateFrequencyCustomDates();
