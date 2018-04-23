@@ -13,36 +13,53 @@
   });
 
   /**
-   * Show/hide the selection of days in week
-   * if frequency not Weekly or Monthly
+   * Show the start date if frequency is Daily/Weekly
    */
-  function updateDaysInWeek() {
+  function updateFrequencyDaily() {
     var freq = $('#sidebar-fillup-frequency').find(":selected").val();
-    var $daysInWeek = $('#sidebar-fillup-days-in-week');
+    var $startDate = $('#sidebar-fillup-start-date-panel');
 
-    if (freq === 'w' || freq === 'm') {
-      // weekly or monthly
-      $daysInWeek.removeClass('hidden');
+    if (freq === 'd' || freq === 'w') {
+      // daily or weekly
+      $startDate.removeClass('hidden');
     } else {
       // others
-      $daysInWeek.addClass('hidden');
+      $startDate.addClass('hidden');
     }
   }
 
   /**
-   * Show/hide the sheet name and range for custom frequency
-   * if frequency not Weekly or Monthly
+   * Show the end date & selection of days in/per week if frequency is Weekly
    */
-  function updateFrequencyCustom() {
+  function updateFrequencyWeekly() {
     var freq = $('#sidebar-fillup-frequency').find(":selected").val();
-    var $customFreq = $('#sidebar-fillup-frequency-custom');
+    var $endDate = $('#sidebar-fillup-end-date-panel');
+    var $daysInWeek = $('#sidebar-fillup-days-in-week-panel');
 
-    if (freq === 'c') {
-      // custom frequency
-      $customFreq.removeClass('hidden');
+    if (freq === 'w') {
+      // weekly
+      $endDate.removeClass('hidden');
+      $daysInWeek.removeClass('hidden');
     } else {
       // others
-      $customFreq.addClass('hidden');
+      $endDate.addClass('hidden');
+      $daysInWeek.removeClass('hidden');
+    }
+  }
+
+  /**
+   * Show the sheet name and range for custom dates if frequency is Custom Dates
+   */
+  function updateFrequencyCustomDates() {
+    var freq = $('#sidebar-fillup-frequency').find(":selected").val();
+    var $customDates = $('#sidebar-fillup-custom-dates-panel');
+
+    if (freq === 'c') {
+      // custom dates
+      $customDates.removeClass('hidden');
+    } else {
+      // others
+      $customDates.addClass('hidden');
     }
   }
 
