@@ -279,89 +279,6 @@ function getDatesForWeekly(daysDisplay, daysInWeek, startDate) {
 }
 
 /**
- * Helper function to get validated and sorted dates from custom range
- */
-function getDatesFromCustomRange(customRange) {
-  var rawDates = customRange.getValues();
-  var validDates = [];
-  var validDatesMap = {};
-  for (var r = 0; r < customRange.getNumRows(); r++) {
-    for (var c = 0; c < customRange.getNumColumns(); c++) {
-      var raw = Date.parse(rawDates[r][c]);
-      if (!isNaN(raw)) {
-        var rawDate = new Date(raw);
-        var rawDateTime = getStartOfDayDate(rawDate).getTime();
-        if (!validDatesMap[rawDateTime]) {
-          // only push if raw date time is not added before
-          validDates.push(rawDate);
-          validDatesMap[rawDateTime] = true;
-        }
-      }
-    }
-  }
-
-  // ascending sort
-  validDates.sort(function(a, b) {
-    return a < b;
-  });
-  return validDates;
-}
-
-/**
- * Helper function to filter dates that is later than the given date
- * @param {Array} dates, array of dates to filter
- * @param {Date} pivotDate, the date filter to apply
- * @param {int} maxDays, maximum days in the filter result, -1 indicates no limit - optional.
- */
-function filterDates(dates, pivotDate, maxDays = -1) {
-
-  if (!dates || dates.constructor !== Array) {
-    throw 'Invalid dates given';
-  }
-
-  usePivot = true;
-  if (!pivotDate || pivotDate.constructor !== Date) {
-    usePivot = false;
-  }
-
-  if (usePivot) {
-    // look for pivot date
-    var pivotDay = getStartOfDayDate(pivotDate);
-    var possibleDateIndex = binaryIndexOf.call(dates, pivotDay);
-    var closestDateIndex = 0;
-
-    Logger.log('pivot day: ' + pivotDay);
-    Logger.log('possible index: ' + possibleDateIndex);
-
-    if ((pivotDay - getStartOfDayDate(dates[possibleDateIndex])) === 0) {
-      Logger.log('closest: ' + dates[possibleDateIndex]);
-      // pivot day found
-      closestDateIndex = possibleDateIndex;
-    } else if (possibleDateIndex + 1 < dates.length && (today - getStartOfDayDate(dates[possibleDateIndex + 1])) === 0) {
-      Logger.log('closest + 1: ' + dates[possibleDateIndex + 1]);
-      // the day after pivot day
-      closestDateIndex = possibleDateIndex + 1;
-    } else if (possibleDateIndex - 1 >= 0 && (today - getStartOfDayDate(dates[possibleDateIndex - 1])) === 0) {
-      Logger.log('closest - 1: ' + dates[possibleDateIndex - 1]);
-      // the day before pivot day
-      closestDateIndex = possibleDateIndex - 1;
-    } else {
-      throw 'Pivot date not found in the given dates';
-    }
-  }
-
-  var filteredDates = [];
-  var filteredDateIndex = closestDateIndex;
-  for (var i = 0; i < daysDisplay; i++) {
-    if (filteredDateIndex < dates.length) {
-      filteredDates.push(new Date(dates[filteredDateIndex]));
-      filteredDateIndex++;
-    }
-  }
-  return filteredDates;
-}
-
-/**
  * Helper function to populate roster timeable headers
  */
 function updateTimetableHeaders(sheetname, A1Notation, dates) {
@@ -448,6 +365,93 @@ function purge() {
   var ui = SpreadsheetApp.getUi();
   // Or DocumentApp or FormApp.
   ui.alert('You clicked the first menu item!');
+}
+
+/*
+ **************** HELPER FUNCTIONS SECTION ****************
+ */
+
+/**
+ * Helper function to get validated and sorted dates from custom range
+ */
+function getDatesFromCustomRange(customRange) {
+  var rawDates = customRange.getValues();
+  var validDates = [];
+  var validDatesMap = {};
+  for (var r = 0; r < customRange.getNumRows(); r++) {
+    for (var c = 0; c < customRange.getNumColumns(); c++) {
+      var raw = Date.parse(rawDates[r][c]);
+      if (!isNaN(raw)) {
+        var rawDate = new Date(raw);
+        var rawDateTime = getStartOfDayDate(rawDate).getTime();
+        if (!validDatesMap[rawDateTime]) {
+          // only push if raw date time is not added before
+          validDates.push(rawDate);
+          validDatesMap[rawDateTime] = true;
+        }
+      }
+    }
+  }
+
+  // ascending sort
+  validDates.sort(function(a, b) {
+    return a < b;
+  });
+  return validDates;
+}
+
+/**
+ * Helper function to filter dates that is later than the given date
+ * @param {Array} dates, array of dates to filter
+ * @param {Date} pivotDate, the date filter to apply
+ * @param {int} maxDays, maximum days in the filter result, -1 indicates no limit - optional.
+ */
+function filterDates(dates, pivotDate, maxDays = -1) {
+
+  if (!dates || dates.constructor !== Array) {
+    throw 'Invalid dates given';
+  }
+
+  usePivot = true;
+  if (!pivotDate || pivotDate.constructor !== Date) {
+    usePivot = false;
+  }
+
+  if (usePivot) {
+    // look for pivot date
+    var pivotDay = getStartOfDayDate(pivotDate);
+    var possibleDateIndex = binaryIndexOf.call(dates, pivotDay);
+    var closestDateIndex = 0;
+
+    Logger.log('pivot day: ' + pivotDay);
+    Logger.log('possible index: ' + possibleDateIndex);
+
+    if ((pivotDay - getStartOfDayDate(dates[possibleDateIndex])) === 0) {
+      Logger.log('closest: ' + dates[possibleDateIndex]);
+      // pivot day found
+      closestDateIndex = possibleDateIndex;
+    } else if (possibleDateIndex + 1 < dates.length && (today - getStartOfDayDate(dates[possibleDateIndex + 1])) === 0) {
+      Logger.log('closest + 1: ' + dates[possibleDateIndex + 1]);
+      // the day after pivot day
+      closestDateIndex = possibleDateIndex + 1;
+    } else if (possibleDateIndex - 1 >= 0 && (today - getStartOfDayDate(dates[possibleDateIndex - 1])) === 0) {
+      Logger.log('closest - 1: ' + dates[possibleDateIndex - 1]);
+      // the day before pivot day
+      closestDateIndex = possibleDateIndex - 1;
+    } else {
+      throw 'Pivot date not found in the given dates';
+    }
+  }
+
+  var filteredDates = [];
+  var filteredDateIndex = closestDateIndex;
+  for (var i = 0; i < daysDisplay; i++) {
+    if (filteredDateIndex < dates.length) {
+      filteredDates.push(new Date(dates[filteredDateIndex]));
+      filteredDateIndex++;
+    }
+  }
+  return filteredDates;
 }
 
 /*
