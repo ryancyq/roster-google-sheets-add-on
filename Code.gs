@@ -140,7 +140,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           throw 'Empty custom dates'
         }
 
-        daysCount = validDates.length;
+        var daysCount = validDates.length;
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         try {
           // configure name column
@@ -293,7 +293,6 @@ function updateTimetableHeaders(sheetname, A1Notation, dates) {
 
   var numColumns = range.getNumColumns();
   if (numColumns !== dates.length) {
-    L
     Logger.log('Range: ' + A1Notation);
     Logger.log('Dates:' + JSON.stringify(dates));
     throw 'Dates do not match with the give range'
