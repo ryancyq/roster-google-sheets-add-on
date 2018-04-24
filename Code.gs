@@ -63,7 +63,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         if (!endDate || endDate.constructor !== Date) {
           throw 'End date is required';
         }
-        if (startDate < endDate) {
+        if (startDate > endDate) {
           throw 'End date cannot be earlier than start date';
         }
 
@@ -96,7 +96,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         if (!endDate || endDate.constructor !== Date) {
           throw 'End date is required';
         }
-        if (startDate < endDate) {
+        if (startDate > endDate) {
           throw 'End date cannot be earlier than start date';
         }
 
