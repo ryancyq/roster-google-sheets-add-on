@@ -107,7 +107,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         }
 
         // validate days in week
-        var validDays = getValidDaysInWeek(daysInWeek);
+        var validDays = filterDaysInWeek(daysInWeek);
         if (!validDays || validDays.length <= 0) {
           throw 'Invalid days in week';
         }
@@ -132,7 +132,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         if (!customSheetname || !customRange) {
           throw 'Please select the custom range with dates'
         }
-        var range = getCustomRangeFromA1Notation(customSheetname, customRange);
+        var range = getRangeFromA1Notation(customSheetname, customRange);
         var isSingleRow = isSingleRowRange(range);
         var isSingleColumn = isSingleRowRange(range);
         if (!isSingleRow && !isSingleColumn) {
@@ -496,7 +496,7 @@ function getRangeFromA1Notation(A1Notation) {
 /*
  * Helper function to get range via A1 Notation in the given sheet nane
  */
-function getCustomRangeFromA1Notation(sheetname, A1Notation) {
+function getRangeFromA1Notation(sheetname, A1Notation) {
   try {
     var sheet = SpreadsheetApp.getActive().getSheetByName(sheetname);
     return sheet.getRange(A1Notation);
@@ -522,9 +522,10 @@ function isSingleRowRange(range) {
 }
 
 /**
- * Helper function to return valid days in week
+ * Helper function to filter out invalid days in week.
+ * @output {Array} array of days in week, values (1-7)
  */
-function getValidDaysInWeek(daysInWeek) {
+function filterDaysInWeek(daysInWeek) {
   var days = [];
   if (typeof daysInWeek === 'string') {
     days = daysInWeek.split(',');
