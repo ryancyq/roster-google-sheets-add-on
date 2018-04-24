@@ -406,7 +406,7 @@ function getDatesFromCustomRange(customRange) {
  * @param {Date} pivotDate, the date filter to apply
  * @param {int} maxDays, maximum days in the filter result, -1 indicates no limit - optional.
  */
-function filterDates(dates, pivotDate, maxDays = -1) {
+function filterDates(dates, pivotDate, maxDays) {
 
   if (!dates || dates.constructor !== Array) {
     throw 'Invalid dates given';
@@ -415,6 +415,10 @@ function filterDates(dates, pivotDate, maxDays = -1) {
   usePivot = true;
   if (!pivotDate || pivotDate.constructor !== Date) {
     usePivot = false;
+  }
+
+  if (maxDays === undefined || isNaN(maxDays)) {
+    maxDays = -1;
   }
 
   if (usePivot) {
@@ -445,7 +449,7 @@ function filterDates(dates, pivotDate, maxDays = -1) {
 
   var filteredDates = [];
   var filteredDateIndex = closestDateIndex;
-  for (var i = 0; i < daysDisplay; i++) {
+  for (var i = 0; i < dates.length && (maxDays < 0 || i < maxDays); i++) {
     if (filteredDateIndex < dates.length) {
       filteredDates.push(new Date(dates[filteredDateIndex]));
       filteredDateIndex++;
