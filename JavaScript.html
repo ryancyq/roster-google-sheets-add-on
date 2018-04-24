@@ -1,69 +1,67 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
+  var utils = {
+    /**
+     * Displays the given status message in the sidebar.
+     *
+     * @param {String} msg The status message to display.
+     * @param {String} classId The message type (class id) that the message
+     *   should be displayed as.
+     */
+    showStatus: function(msg, classId) {
+      $('#sidebar-status').removeClass().html(msg);
+      if (classId) {
+        $('#sidebar-status').addClass(classId);
+      }
+    },
+    disableButtons: function() {
+      $(".sidebar-button").prop('disabled', true);
+    },
+    enableButtons: function() {
+      $(".sidebar-button").prop('disabled', false);
+    },
+    enableLoader: function() {
+      $('#static-loader').removeClass().addClass('hidden');
+      $('#dynamic-loader').removeClass().addClass('show-inline');
+    },
+    disableLoader: function() {
+      $('#dynamic-loader').removeClass().addClass('hidden');
+      $('#static-loader').removeClass().addClass('show-inline');
+    },
+    success: function(msg) {
+      utils.showStatus(msg);
+      utils.enableButtons();
+      utils.disableLoader();
+    },
+    failure: function(msg) {
+      utils.showStatus(msg, 'error');
+      utils.enableButtons();
+      utils.disableLoader();
+    },
+    updateRange: function(range_element_id, sheetname_element_id) {
+      var $range_element = $('#' + range_element_id);
+      var $sheetname_element = $('#' + sheetname_element_id);
 
-var utils = {
-  /**
-   * Displays the given status message in the sidebar.
-   *
-   * @param {String} msg The status message to display.
-   * @param {String} classId The message type (class id) that the message
-   *   should be displayed as.
-   */
-  showStatus: function(msg, classId) {
-    $('#sidebar-status').removeClass().html(msg);
-    if (classId) {
-      $('#sidebar-status').addClass(classId);
+      google.script.run
+        .withSuccessHandler(function(msg) {
+          if (msg) {
+            if (range_element_id) {
+              if ($range_element.val() != msg.range) {
+                $range_element.val(msg.range);
+              }
+            }
+            if (sheetname_element_id) {
+              if ($sheetname_element.val() != msg.sheetname) {
+                $sheetname_element.val(msg.sheetname);
+              }
+            }
+          }
+          utils.success('');
+        })
+        .withFailureHandler(function(msg) {
+          utils.failure(msg);
+        })
+        .getSelectedRangeWithSheetname();
     }
-  },
-  disableButtons: function() {
-    $(".sidebar-button").prop('disabled', true);
-  },
-  enableButtons: function() {
-    $(".sidebar-button").prop('disabled', false);
-  },
-  enableLoader: function() {
-    $('#static-loader').removeClass().addClass('hidden');
-    $('#dynamic-loader').removeClass().addClass('show-inline');
-  },
-  disableLoader: function() {
-    $('#dynamic-loader').removeClass().addClass('hidden');
-    $('#static-loader').removeClass().addClass('show-inline');
-  },
-  success: function(msg) {
-    this.showStatus(msg);
-    this.enableButtons();
-    this.disableLoader();
-  },
-  failure: function(msg) {
-    this.showStatus(msg, 'error');
-    this.enableButtons();
-    this.disableLoader();
-  },
-  updateRange: function(range_element_id, sheetname_element_id) {
-    var $range_element = $('#' + range_element_id);
-    var $sheetname_element = $('#' + sheetname_element_id);
-
-    google.script.run
-      .withSuccessHandler(function(msg) {
-        if (msg) {
-          if (range_element_id) {
-            if ($range_element.val() != msg.range) {
-              $range_element.val(msg.range);
-            }
-          }
-          if (sheetname_element_id) {
-            if ($sheetname_element.val() != msg.sheetname) {
-              $sheetname_element.val(msg.sheetname);
-            }
-          }
-        }
-        this.success('');
-      })
-      .withFailureHandler(function(msg) {
-        this.failure(msg);
-      })
-      .getSelectedRangeWithSheetname();
   }
-}
-
 </script>
