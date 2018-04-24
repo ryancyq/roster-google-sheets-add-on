@@ -144,12 +144,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           throw 'Empty custom dates'
         }
 
-        if (validDates.length == 1) {
-          daysCount = 1;
-        } else {
-          daysCount = getDaysBetween(validDates[0], validDates[validDates.length - 1]);
-        }
-
+        daysCount = validDates.length;
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         try {
           // configure name column
