@@ -100,17 +100,13 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           throw 'End date cannot be earlier than start date';
         }
 
-        var daysCount = getDaysBetween(startDate, endDate);
-        if (daysCount <= 0) {
-          // minimum 1 day
-          daysCount = 1;
-        }
-
         // validate days in week
         var validDays = filterDaysInWeek(daysInWeek);
         if (!validDays || validDays.length <= 0) {
           throw 'Invalid days in week';
         }
+
+        var daysCount = getDaysBetweenForWeek(startDate, endDate, validDays);
 
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         try {
@@ -581,6 +577,20 @@ function updateDate(date, time_unit, time_unit_scalar) {
   return new Date(newMiliseconds);
 }
 
+/**
+ * Helper function to calculate days between start & end dates with days in week to filter
+ */
+function getDaysBetweenForWeek(startDate, endDate, daysInWeek) {
+  if (!startDate || startDate.constructor !== Date) {
+    startDate = new Date();
+  }
+
+  if (!endDate || endDate.constructor !== Date) {
+    endDate = new Date();
+  }
+  // TODO: get start/end date (day in week), for every 7 days, count daysInWeek.length
+  return 0;
+}
 
 /**
  * Helper function to calculate days between start & end dates
