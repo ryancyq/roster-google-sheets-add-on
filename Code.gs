@@ -101,12 +101,12 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         }
 
         // validate days in week
-        var validDays = filterDaysInWeek(daysInWeek);
-        if (!validDays || validDays.length <= 0) {
+        var validDaysInWeek = filterDaysInWeek(daysInWeek);
+        if (!validDaysInWeek || validDaysInWeek.length <= 0) {
           throw 'Invalid days in week';
         }
 
-        var daysCount = getDaysBetweenForWeek(startDate, endDate, validDays);
+        var daysCount = getDaysBetweenForWeek(startDate, endDate, validDaysInWeek);
 
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         try {
@@ -115,7 +115,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
 
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
-          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForWeekly(daysCount, validDays));
+          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForWeekly(daysCount, validDaysInWeek));
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
