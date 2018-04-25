@@ -1,20 +1,29 @@
 <?!= HtmlService.createHtmlOutputFromFile('StyleSheet').getContent(); ?>
 <?!= HtmlService.createHtmlOutputFromFile('CreateFromExistingStyleSheet').getContent(); ?>
-
 <div class="sidebar roster roster-create-from-existing">
   <p>
-  Roster Lookup Data
+    Roster Lookup Data
   </p>
   <table id="roster-lookup-options-table" class="table sidebar-value-block" width="100%">
+    <tr>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the sheet name.">Sheet: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <input type="text" id="sidebar-lookup-sheetname" placeholder="Sheet name" value="">
+          <button class="narrow-button" title="Use selected sheet" onclick="utils.updateRange('', 'sidebar-lookup-sheetname');">↘</button>
+        </div>
+      </td>
+    </tr>
     <tr>
       <td style="vertical-align:top">
         <label style="cursor:help" title="Select the range of names.">Name: </label>
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <input type="text" id="sidebar-lookup-person-name-sheetname" placeholder="Sheet name" value="">
           <input type="text" id="sidebar-lookup-person-name-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
-          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-person-name-range', 'sidebar-lookup-person-name-sheetname');">↘</button>
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-person-name-range', '');">↘</button>
         </div>
       </td>
     </tr>
@@ -24,9 +33,8 @@
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <input type="text" id="sidebar-lookup-timeslot-sheetname" placeholder="Sheet name" value="">
           <input type="text" id="sidebar-lookup-timeslot-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
-          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-timeslot-range', 'sidebar-lookup-timeslot-sheetname');">↘</button>
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-timeslot-range', '');">↘</button>
         </div>
       </td>
     </tr>
@@ -36,66 +44,66 @@
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <input type="text" id="sidebar-lookup-timestamp-sheetname" placeholder="Sheet name" value="">
           <input type="text" id="sidebar-lookup-timestamp-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
-          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-timestamp-range', 'sidebar-lookup-timestamp-sheetname');">↘</button>
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-lookup-timestamp-range', '');">↘</button>
         </div>
       </td>
     </tr>
     <tr>
-      <td>
-       <label style="cursor:help" title="Show upcoming timetable.">Show Upcoming: </label>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Number of days for data to retend (used to remove old data).">Data rentention days: </label>
       </td>
       <td colspan="2">
-        <input type="checkbox" id="sidebar-lookup-show-next" value="show">
+        <input type="text" id="sidebar-lookup-data-retention-days" value="" required/>
       </td>
     </tr>
   </table>
   <p>
-  Roster Fillup Data
+    Roster Fillup Data
   </p>
   <table id="roster-fillup-options-table" class="table sidebar-value-block" width="100%">
+    <tr>
+      <td style="vertical-align:top">
+        <label style="cursor:help" title="Select the sheet name.">Sheet: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <input type="text" id="sidebar-fillup-sheetname" placeholder="Sheet name" value="" style="width:10em;margin-top:1px;">
+          <button class="narrow-button" title="Use selected sheet" onclick="utils.updateRange('', 'sidebar-fillup-sheetname');">↘</button>
+        </div>
+      </td>
+    </tr>
     <tr>
       <td style="vertical-align:top">
         <label style="cursor:help" title="Select the range of names.">Name: </label>
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <input type="text" id="sidebar-fillup-person-name-sheetname" placeholder="Sheet name" value=""> 
           <input type="text" id="sidebar-fillup-person-name-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
-          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-person-name-range', 'sidebar-fillup-person-name-sheetname');">↘</button>
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-fillup-person-name-range', '');">↘</button>
         </div>
       </td>
     </tr>
     <tr>
       <td style="vertical-align:top">
-        <label style="cursor:help" title="Select the range of timetable.">Timetable: </label>
+        <label style="cursor:help" title="Select the range of timetable (to be fill up regularly).">Timetable: </label>
       </td>
       <td colspan="2">
         <div class="block form-group">
-        <input type="text" id="sidebar-fillup-timetable-range" placeholder="Sheet name" value="">
-          <input type="text" id="sidebar-fillup-timetable-sheetname" placeholder="Range" value="" style="width:10em;margin-top:1px;">
-          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-timetable-range', 'sidebar-fillup-timetable-sheetname');">↘</button>
+          <input type="text" id="sidebar-fillup-timetable-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-fillup-timetable-range', '');">↘</button>
         </div>
       </td>
     </tr>
     <tr>
       <td style="vertical-align:top">
-        <label style="cursor:help" title="Select the range of timestamps.">Submitted On: </label>
+        <label style="cursor:help" title="Select the range of last updated on.">Last updated on: </label>
       </td>
       <td colspan="2">
         <div class="block form-group">
-          <input type="text" id="sidebar-fillup-timestamp-sheetname" placeholder="Sheet name" value="">
-          <input type="text" id="sidebar-fillup-timestamp-range" placeholder="Range" value="">
-          <button class="narrow-button" title="Use selected range" onclick="updateRange('sidebar-fillup-timestamp-range', 'sidebar-fillup-timestamp-sheetname');">↘</button>
+          <input type="text" id="sidebar-fillup-timestamp-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-fillup-timestamp-range', '');">↘</button>
         </div>
-      </td>
-    </tr>
-    <tr>
-      <td width="66%">
-      </td>
-      <td width="33%" style="text-align:right;" class="action">
-        <button id="sidebar-update-button">Update</button>
       </td>
     </tr>
   </table>
