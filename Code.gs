@@ -587,8 +587,35 @@ function getDaysBetweenForWeek(startDate, endDate, daysInWeek) {
   if (!endDate || endDate.constructor !== Date) {
     endDate = new Date();
   }
-  // TODO: get start/end date (day in week), for every 7 days, count daysInWeek.length
-  return 0;
+
+  if (!daysInWeek || daysInWeek.constructor !== Array || daysInWeek.length <= 0) {
+    return getDaysBetween(startDate, endDate);
+  }
+
+  var startDay = startDate.getDay();
+  var endDay = endDate.getDay();
+  var betweenDays = getDaysBetween(startDate, endDate);
+
+  var startToWeekEnd = 7 - startDay;
+  var endToWeekStart = endDay;
+  var days = 0;
+  for (var i in daysInWeek) {
+    if (daysInWeek[i] >= startToWeekEnd) {
+      days++;
+    }
+  }
+  for (var i in daysInWeek) {
+    if (daysInWeek[i] <= endToWeekStart) {
+      days++;
+    }
+  }
+  var remainingDays = betweenDays - days;
+  if (remainingDays > 0) {
+    var numberOfWeeks = Math.ceil(remainingDays / 7);
+    days += (numberOfWeeks * daysInWeek.length);
+  }
+
+  return days;
 }
 
 /**
