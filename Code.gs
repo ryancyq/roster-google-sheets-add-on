@@ -37,8 +37,8 @@ function showCreateNewSidebar() {
  *
  * @param {String} sheetname - required.
  * @param {String} frequency. Frequency of the inverval - required.
- * @param {String} start date. Start date of the interval 
- * @param {String} end date. End date of the interval
+ * @param {String} startDate. Start date of the interval 
+ * @param {String} endDate. End date of the interval
  * @param {Array} daysInWeek. The days in a week for weekly frequency
  * @param {String} customSheetname. The sheet name of custom range.
  * @param {String} customRange. The A1 notion of the data rows.
@@ -392,8 +392,8 @@ function getDatesFromCustomRange(customRange) {
 
 /**
  * Helper function to filter dates that is later than the given date
- * @param {Array} dates, array of dates to filter
- * @param {Date} pivotDate, the date filter to apply
+ * @param {Array} dates. array of dates to filter
+ * @param {Date} pivotDate. the date filter to apply
  * @param {int} maxDays, maximum days in the filter result, -1 indicates no limit - optional.
  */
 function filterDates(dates, pivotDate, maxDays) {
