@@ -81,6 +81,9 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
           updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForDaily(daysCount));
+          
+          // configure submitted on column
+          newSheet.getRange(1, 2, daysCount, 1).setValue('Submitted On');
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
@@ -116,6 +119,9 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
           updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForWeekly(daysCount, validDaysInWeek));
+          
+          // configure submitted on column
+          newSheet.getRange(1, 2, daysCount, 1).setValue('Submitted On');
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
@@ -149,6 +155,9 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
           updateTimetableHeaders(newSheet.getSheetName(), headersRange, validDates);
+          
+          // configure submitted on column
+          newSheet.getRange(1, 2, daysCount, 1).setValue('Submitted On');
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
