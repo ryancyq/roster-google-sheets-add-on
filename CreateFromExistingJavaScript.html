@@ -97,32 +97,6 @@
         })
       .createFromExisting(updateOptions);
   }
-  
-  function updateRange(range_element_id, sheetname_element_id) {
-    var $range_element = $('#'+range_element_id);
-    var $sheetname_element = $('#'+sheetname_element_id);
-    
-    google.script.run
-      .withSuccessHandler(function(msg) {
-        if(msg){
-          if(range_element_id){
-            if($range_element.val() != msg.range){
-              $range_element.val(msg.range);
-            }
-          }
-          if(sheetname_element_id){
-            if($sheetname_element.val() != msg.sheetname){
-              $sheetname_element.val(msg.sheetname);
-            }
-          }
-        }
-         showStatus('');
-      })
-      .withFailureHandler(function(msg) {
-        showStatus(msg, 'error');
-      })
-      .getSelectedRangeWithSheetname();
-  }
 
   function getOptions() {
     return {
