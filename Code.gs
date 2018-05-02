@@ -57,11 +57,23 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
     case 'd':
       {
         // validate number of days
-        if (!startDate || startDate.constructor !== Date) {
+        if (!startDate) {
           throw 'Start date is required';
         }
-        if (!endDate || endDate.constructor !== Date) {
+        if(startDate.constructor !== Date){
+          startDate = new Date(startDate);
+        }
+        if(isNaN(startDate.getTime())){
+          throw 'Start date is invalid'; 
+        }
+        if (!endDate) {
           throw 'End date is required';
+        }
+        if(endDate.constructor !== Date){
+          endDate = new Date(endDate);
+        }
+        if(isNaN(endDate.getTime())){
+          throw 'End date is invalid'; 
         }
         if (startDate > endDate) {
           throw 'End date cannot be earlier than start date';
@@ -93,11 +105,24 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
     case 'w':
       {
         // validate number of days
-        if (!startDate || startDate.constructor !== Date) {
+        // validate number of days
+        if (!startDate) {
           throw 'Start date is required';
         }
-        if (!endDate || endDate.constructor !== Date) {
+        if(startDate.constructor !== Date){
+          startDate = new Date(startDate);
+        }
+        if(isNaN(startDate.getTime())){
+          throw 'Start date is invalid'; 
+        }
+        if (!endDate) {
           throw 'End date is required';
+        }
+        if(endDate.constructor !== Date){
+          endDate = new Date(endDate);
+        }
+        if(isNaN(endDate.getTime())){
+          throw 'End date is invalid'; 
         }
         if (startDate > endDate) {
           throw 'End date cannot be earlier than start date';
