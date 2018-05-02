@@ -1,121 +1,59 @@
 <script>
+$(function() {
+    utils.disableButtons();
 
-  /**
-   * Displays the given status message in the sidebar.
-   *
-   * @param {String} msg The status message to display.
-   * @param {String} classId The message type (class id) that the message
-   *   should be displayed as.
-   */
-  function showStatus(msg, classId) {
-    $('#sidebar-status').removeClass().html(msg);
-    if (classId) {
-      $('#sidebar-status').addClass(classId);
-    }
-  }
-  
-  /* Custom */
-  
-  function disableButtons() {
-    $("#sidebar-create-button").prop('disabled', true);
-  }
-
-  function enableButtons() {
-    $("#sidebar-create-button").prop('disabled', false);
-  }
-
-  function enableLoader() {
-    $('#static').removeClass().addClass('hidden');
-    $('#loader').removeClass().addClass('show-inline');
-  }
-
-  function disableLoader() {
-    $('#loader').removeClass().addClass('hidden');
-    $('#static').removeClass().addClass('show-inline');
-  }
-
-  function failure(msg) {
-    showStatus(msg, 'error');
-    enableButtons();
-    disableLoader();
-  }
-  
-  $(function() {  
-    $('#sidebar-update-button').click(onUpdateClick);
+    clearOptions();
     
-    disableButtons();
-    enableLoader();
-
-    // Load Options
-    google.script.run
-      .withSuccessHandler(
-        function(msg){
-          $('#sidebar-lookup-person-name-sheetname').val('';
-          $('#sidebar-lookup-person-name-range').val('');
-          $('#sidebar-lookup-timeslot-sheetname').val('';
-          $('#sidebar-lookup-timeslot-range').val('');
-          $('#sidebar-lookup-timestamp-sheetname').val('';
-          $('#sidebar-lookup-timestamp-range').val('');
-
-          $('#sidebar-fillup-person-name-sheetname').val('';
-          $('#sidebar-fillup-person-name-range').val('');
-          $('#sidebar-fillup-timeslot-sheetname').val('';
-          $('#sidebar-fillup-timeslot-range').val('');
-          $('#sidebar-fillup-timestamp-sheetname').val('';
-          $('#sidebar-fillup-timestamp-range').val('');
-
-          enableButtons();
-          disableLoader();
-        })
-      .withFailureHandler(
-        function(msg) {
-          showStatus(msg, 'error');
-          enableButtons();
-          disableLoader();
-        })
-      .readConfig();
+    utils.enableButtons();
   });
   
-  function onUpdateClick() {
-    disableButtons();
-    enableLoader();
+  function onCreateClick() {
+    utils.disableButtons();
+    utils.enableLoader();
 
-    var updateOptions = getOptions();
-    
+    var createOptions = getOptions();
+
     google.script.run
       .withSuccessHandler(
         function(msg) {
-          showStatus('Success! The roster timetable has been updated');
-          disableLoader();
+          utils.success('Success! The roster timetable has been created');
         })
       .withFailureHandler(
         function(msg) {
-          showStatus(msg, 'error');
-          enableButtons();
-          disableLoader();
+          utils.failure(msg);
         })
-      .createFromExisting(updateOptions);
+      .createNew(
+        createOptions.sheetname, 
+        createOptions.frequency, 
+        createOptions.startDate, 
+        createOptions.endDate, 
+        createOptions.daysInWeek, 
+        createOptions.customSheetname, 
+        createOptions.customRange
+        );
   }
 
   function getOptions() {
     return {
-      lookup:{
-        personNameSheetname : $('#sidebar-lookup-person-name-sheetname').val(),
-        personNameRange : $('#sidebar-lookup-person-name-range').val(),
-        timeslotSheetname : $('#sidebar-lookup-timeslot-sheetname').val(),
-        timeslotRange : $('#sidebar-lookup-timeslot-range').val(),
-        timestampSheetname : $('#sidebar-lookup-timestamp-sheetname').val(),
-        timestampRange : $('#sidebar-lookup-timestamp-range').val(),
-      },
-      fillup:{
-        personNameSheetname : $('#sidebar-fillup-person-name-sheetname').val(),
-        personNameRange : $('#sidebar-fillup-person-name-range').val(),
-        timetableSheetname : $('#sidebar-fillup-timetable-sheetname').val(),
-        timetableRange : $('#sidebar-fillup-timetable-range').val(),
-        timestampSheetname : $('#sidebar-fillup-timestamp-sheetname').val(),
-        timestampRange : $('#sidebar-fillup-timestamp-range').val(),
-      }
+      sheetname: $('#sidebar-fillup-sheetname').val().trim(),
+      frequency: $('#sidebar-fillup-frequency').val(),
+      startDate: $('#sidebar-fillup-start-date').val(),
+      endDate: $('#sidebar-fillup-end-date').val(),
+      daysInWeek: $.map($('#sidebar-fillup-days-in-week input:checked'), function(e) {
+        return $(e).val();
+      }),
+      customSheetname: $('#sidebar-fillup-custom-dates-sheetname').val(),
+      customRange: $('#sidebar-fillup-custom-dates-range').val()
     };
   }
 
+  function clearOptions() {
+    $('#sidebar-fillup-sheetname').val($('#sidebar-fillup-sheetname-default').val());
+    $('#sidebar-fillup-frequency').val('d');
+    $('#sidebar-fillup-start-date').val($('#sidebar-fillup-start-date-default').val());
+    $('#sidebar-fillup-end-date').val($('#sidebar-fillup-end-date-default').val());
+    $('#sidebar-fillup-days-in-week input:checkbox').removeAttr('checked');
+    $('#sidebar-fillup-custom-dates-sheetname').val('');
+    $('#sidebar-fillup-custom-dates-range').val('');
+  }
 </script>
