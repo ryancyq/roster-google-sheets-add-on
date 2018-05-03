@@ -3,11 +3,6 @@
     $('#sidebar-fillup-frequency').change(onFrequencyChanged);
     $('#sidebar-create-button').click(onCreateClick);
 
-    utils.disableButtons();
-
-    clearOptions();
-    onFrequencyChanged();
-    
     $("#sidebar-fillup-start-date").datepicker({
       altFormat: "dd-MM-yy",
       dateFormat: "dd-M-yy",
@@ -18,6 +13,11 @@
       dateFormat: "dd-M-yy",
       showOn: "focus"
     });
+
+    utils.disableButtons();
+
+    clearOptions();
+    onFrequencyChanged();
 
     utils.enableButtons();
   });
