@@ -7,6 +7,17 @@
 
     clearOptions();
     onFrequencyChanged();
+    
+    $("#sidebar-fillup-start-date").datepicker({
+      altFormat: "dd-MM-yy",
+      dateFormat: "dd-M-yy",
+      showOn: "focus"
+    });
+    $("#sidebar-fillup-end-date").datepicker({
+      altFormat: "dd-MM-yy",
+      dateFormat: "dd-M-yy",
+      showOn: "focus"
+    });
 
     utils.enableButtons();
   });
