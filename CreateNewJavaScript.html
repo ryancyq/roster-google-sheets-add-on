@@ -128,7 +128,7 @@
       frequency: $('#sidebar-fillup-frequency').val(),
       startDate: $('#sidebar-fillup-start-date').datepicker("getDate"),
       endDate: $('#sidebar-fillup-end-date').datepicker("getDate"),
-      daysInWeek: $.map($('#sidebar-fillup-days-in-week input:checked'), function(e) {
+      daysInWeek: $.map($('#sidebar-fillup-days-in-week-panel input:checked'), function(e) {
         return $(e).val();
       }),
       customSheetname: $('#sidebar-fillup-custom-dates-sheetname').val(),
@@ -141,7 +141,7 @@
     $('#sidebar-fillup-frequency').val('d');
     $('#sidebar-fillup-start-date').datepicker("setDate", new Date());
     $('#sidebar-fillup-end-date').datepicker("setDate", new Date());
-    $('#sidebar-fillup-days-in-week input:checkbox').removeAttr('checked');
+    $('#sidebar-fillup-days-in-week-panel input:checkbox').removeAttr('checked');
     $('#sidebar-fillup-custom-dates-sheetname').val('');
     $('#sidebar-fillup-custom-dates-range').val('');
   }
