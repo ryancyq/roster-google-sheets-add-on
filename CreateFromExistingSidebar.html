@@ -105,14 +105,119 @@
         </div>
       </td>
     </tr>
+  </table>
+  <?!= HtmlService.createHtmlOutputFromFile('StyleSheet').getContent(); ?>
+<? var currentDateTime = Utilities.formatDate(new Date(), SpreadsheetApp.getActive().getSpreadsheetTimeZone(), "dd-MMM-yyyy")?>
+<div class="sidebar roster roster-create-new">
+  <p>
+    Welcome to Roster Creation
+  </p>
+  <table id="roster-options-table" class="table sidebar-value-block" width="100%">
     <tr>
-      <td width="66%">
+      <td>
+        <label style="cursor:help" title='Roster sheet name'>Name: </label>
       </td>
-      <td width="33%" style="text-align:right;" class="create">
-        <button class="sidebar-button" id="sidebar-create-button">Create</button>
+      <td colspan='2'>
+        <input type="hidden" id="sidebar-fillup-sheetname-default" value="Roster <?!= currentDateTime ?>" disabled/>
+        <input type="text" id="sidebar-fillup-sheetname" value="" required/>
+      </td>
+    </tr>
+    <tr id="sidebar-fillup-start-date-panel" class="hidden">
+      <td>
+        <label style="cursor:help" title="Start date.">Start Date: </label>
+      </td>
+      <td colspan="2">
+        <input type="text" id="sidebar-fillup-start-date" value="" required/>
+      </td>
+    </tr>
+    <tr id="sidebar-fillup-end-date-panel" class="hidden">
+      <td>
+        <label style="cursor:help" title="End date.">End Date: </label>
+      </td>
+      <td colspan="2">
+        <input type="text" id="sidebar-fillup-end-date" value="" required/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label style="cursor:help" title="Select roster frequency." for="sidebar-fillup-frequency">Frequency:</label>
+      </td>
+      <td>
+        <select id="sidebar-fillup-frequency">
+          <option value="d">Daily</option>
+          <option value="w">Weekly</option>
+          <option value="c">Custom</option>
+        </select>
+      </td>
+    </tr>
+    <tr id="sidebar-fillup-custom-dates-panel" class="hidden">
+      <td>
+        <label style="cursor:help" title="Select the range of custom dates.">Dates: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <input type="text" id="sidebar-fillup-custom-dates-sheetname" placeholder="Sheet name" value="">
+          <input type="text" id="sidebar-fillup-custom-dates-range" placeholder="Range" value="" style="width:10em;margin-top:1px;">
+          <button class="narrow-button" title="Use selected range" onclick="utils.updateRange('sidebar-fillup-custom-dates-range', 'sidebar-fillup-custom-dates-sheetname');">↘</button>
+        </div>
+      </td>
+    </tr>
+    <tr id="sidebar-fillup-days-in-week-panel" class="hidden">
+      <td>
+        <label style="cursor:help" title="Select days of the week.">Days: </label>
+      </td>
+      <td colspan="2">
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-1" value="1">
+          <label for="sidebar-fillup-days-in-week-1">Monday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-2" value="2">
+          <label for="sidebar-fillup-days-in-week-2">Tuesday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-3" value="3">
+          <label for="sidebar-fillup-days-in-week-3">Wednesday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-4" value="4">
+          <label for="sidebar-fillup-days-in-week-4">Thursday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-5" value="5">
+          <label for="sidebar-fillup-days-in-week-5">Friday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-6" value="6">
+          <label for="sidebar-fillup-days-in-week-6">Saturday</label>
+        </div>
+        <div class="block form-group">
+          <input type="checkbox" id="sidebar-fillup-days-in-week-7" value="7">
+          <label for="sidebar-fillup-days-in-week-7">Sunday</label>
+        </div>
       </td>
     </tr>
   </table>
+  <div class="block sidebar-button-group">
+    <button class="action" id="sidebar-create-button">Create</button>
+  </div>
+  <div id="sidebar-status"></div>
+</div>
+
+<div class="sidebar bottom">
+  <div id="static-loader" class="show-inline gray">Created by <a href="https://github.com/ryancyq/roster-google-sheets-add-on"><img class="logo" width="20" src="https://avatars.githubusercontent.com/ryancyq?v=3&s=20s"></a></div>
+  <div id="dynamic-loader" class="hidden">
+    <div class="loader">
+      <svg class="circular" viewBox="30 30 30 30">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- Use a templated HTML printing scriptlet to import JavaScript. -->
+<?!= HtmlService.createHtmlOutputFromFile('JavaScript').getContent(); ?>
+<?!= HtmlService.createHtmlOutputFromFile('CreateNewJavaScript').getContent(); ?>
   <div id="sidebar-status"></div>
 </div>
 
