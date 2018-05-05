@@ -32,9 +32,8 @@ function showCreateNewSidebar() {
   SpreadsheetApp.getUi().showSidebar(ui);
 }
 
-
 /**
- * Create new roster fill up sheet
+ * Create new roster fill up sheet with new look up data
  *
  * @param {String} sheetname - required.
  * @param {String} frequency. Frequency of the inverval - required.
@@ -160,6 +159,47 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
   }
 
   showCreateFromExistingSidebar();
+}
+
+/**
+ * Create new roster fill up sheet from existing look up data
+ */
+function createFromExisting(sheetname) {}
+
+/**
+ * Opens a sidebar. The sidebar structure is described in the CreateFromExistingSidebar.html
+ * project file.
+ */
+function showCreateFromExistingSidebar() {
+  var ui = HtmlService.createTemplateFromFile('CreateFromExistingSidebar')
+    .evaluate()
+    .setTitle('Create With ...');
+  SpreadsheetApp.getUi().showSidebar(ui);
+}
+
+/**
+ * Opens a sidebar. The sidebar structure is described in the EditOptionsSidebar.html
+ * project file.
+ */
+function showEditSidebar() {
+  var ui = HtmlService.createTemplateFromFile('EditSidebar')
+    .evaluate()
+    .setTitle('Edit Roster');
+  SpreadsheetApp.getUi().showSidebar(ui);
+}
+
+function update() {}
+
+function refresh() {
+  var ui = SpreadsheetApp.getUi();
+  // Or DocumentApp or FormApp.
+  ui.alert('You clicked the first menu item!');
+}
+
+function purge() {
+  var ui = SpreadsheetApp.getUi();
+  // Or DocumentApp or FormApp.
+  ui.alert('You clicked the first menu item!');
 }
 
 /**
@@ -345,47 +385,6 @@ function updateTimetableHeaders(sheetname, A1Notation, dates) {
 
   range.setNumberFormats([datesFormat]);
   range.setValues([datesInText]);
-}
-
-/**
- * Create new roster sheet from existing
- */
-function createFromExisting(sheetname) {}
-
-/**
- * Opens a sidebar. The sidebar structure is described in the CreateFromExistingSidebar.html
- * project file.
- */
-function showCreateFromExistingSidebar() {
-  var ui = HtmlService.createTemplateFromFile('CreateFromExistingSidebar')
-    .evaluate()
-    .setTitle('Create With ...');
-  SpreadsheetApp.getUi().showSidebar(ui);
-}
-
-/**
- * Opens a sidebar. The sidebar structure is described in the EditOptionsSidebar.html
- * project file.
- */
-function showEditSidebar() {
-  var ui = HtmlService.createTemplateFromFile('EditSidebar')
-    .evaluate()
-    .setTitle('Edit Roster');
-  SpreadsheetApp.getUi().showSidebar(ui);
-}
-
-function update() {}
-
-function refresh() {
-  var ui = SpreadsheetApp.getUi();
-  // Or DocumentApp or FormApp.
-  ui.alert('You clicked the first menu item!');
-}
-
-function purge() {
-  var ui = SpreadsheetApp.getUi();
-  // Or DocumentApp or FormApp.
-  ui.alert('You clicked the first menu item!');
 }
 
 /*
