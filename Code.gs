@@ -840,3 +840,15 @@ function saveConfig(config) {
     throw 'Unable to save config for the sheet.'
   }
 }
+
+function readSheetConfigProperty(props, sheetname, propertyName){
+  return props.getProperty(sheetConfigProperty(sheetname, propertyName));
+}
+
+function saveSheetConfigProperty(props, sheetname, propertyName, propertyValue){
+  return props.setProperty(sheetConfigProperty(sheetname, propertyName), propertyValue);
+}
+
+function sheetConfigProperty(sheetname, propertyName){
+  return sheetname +'_'+propertyName;
+}
