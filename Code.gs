@@ -734,30 +734,44 @@ function binaryIndexOf(searchElement) {
 }
 
 /*
- * Helper function to get the default configurations
+ * Helper function to get the default configurations for the given sheet (default to current active sheet)
+ * Note: Sheet refers to fill up
  */
-function getDefaultConfig() {
+function getDefaultConfig(sheetname) {
+  if (!sheetname) {
+    var sheet = SpreadsheetApp.getActiveSheet();
+    sheetname = sheet.getName();
+    Logger.log('getDefaultConfig: sheetname not given, using current active sheet[' + sheetname + ']')
+  } else {
+    var givenSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetname);
+    if (givenSheet == null) {
+      throw 'Sheetname[' + sheetname + '] given not found'
+    }
+  }
+
   return {
-    is_initialized: false,
-    lookup: {
-      sheet_name: 'Sheet1',
-      range: {
-        person_name: 'A:A',
-        timeslot: 'B:B',
-        timestamp: 'C:C'
-      }
+    sheet_name: sheetname,
+    range: {
+      person_name: 'A:A',
+      timeslot: 'B:B',
+      timestamp: 'C:C'
     },
-    fillup: {
-      sheet_name: 'Sheet2',
+    start_date: 0,
+    end_date: 0,
+    frequency: 'd',
+    days_in_week: [1, 2, 3, 4, 5, 6, 7],
+    custom_dates: {
+      sheet_name: '',
+      range: ''
+    },
+    look_up: {
+      sheet_name: '',
       range: {
-        person_name: 'A:A',
-        timetable_weekly: 'B:H',
-        timestamp: 'I:I'
+        person_name: '',
+        timeslot: '',
+        timestamp: ''
       },
-      schedule_weekly: [1, 2, 3, 4, 5, 6, 7]
-    },
-    data_retention: {
-      expiry_days: -1
+      data_retention_days: -1
     }
   }
 };
