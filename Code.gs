@@ -75,7 +75,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
           updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForDaily(daysCount));
-          
+
           // configure submitted on column
           newSheet.getRange(1, daysCount + 1, 1, 1).setValue('Submitted On');
         } catch (e) {
@@ -107,7 +107,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
           updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForWeekly(daysCount, validDaysInWeek));
-          
+
           // configure submitted on column
           newSheet.getRange(1, daysCount + 1, 1, 1).setValue('Submitted On');
         } catch (e) {
@@ -143,7 +143,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           // configure timetable headers
           var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
           updateTimetableHeaders(newSheet.getSheetName(), headersRange, validDates);
-          
+
           // configure submitted on column
           newSheet.getRange(1, daysCount + 1, 1, 1).setValue('Submitted On');
         } catch (e) {
@@ -206,29 +206,29 @@ function purge() {
  * Helper function to validate start date and end dates
  * return validated startDate & endDate in a object
  */
-function validateStartEndDates(startDate, endDate){
+function validateStartEndDates(startDate, endDate) {
   if (!startDate) {
     throw 'Start date is required';
   }
-  if(startDate.constructor !== Date){
+  if (startDate.constructor !== Date) {
     startDate = new Date(startDate);
   }
-  if(isNaN(startDate.getTime())){
-    throw 'Start date is invalid'; 
+  if (isNaN(startDate.getTime())) {
+    throw 'Start date is invalid';
   }
   if (!endDate) {
     throw 'End date is required';
   }
-  if(endDate.constructor !== Date){
+  if (endDate.constructor !== Date) {
     endDate = new Date(endDate);
   }
-  if(isNaN(endDate.getTime())){
-    throw 'End date is invalid'; 
+  if (isNaN(endDate.getTime())) {
+    throw 'End date is invalid';
   }
   if (startDate > endDate) {
     throw 'End date cannot be earlier than start date';
   }
-  
+
   return {
     startDate: startDate,
     endDate: endDate
@@ -747,19 +747,20 @@ function getDefaultConfig(sheetname) {
     if (givenSheet == null) {
       throw 'Sheetname[' + sheetname + '] given not found'
     }
+    sheetname = givenSheet.getName();
   }
 
   return {
     sheet_name: sheetname,
     range: {
-      person_name: 'A:A',
-      timeslot: 'B:B',
-      timestamp: 'C:C'
+      person_name: '',
+      timeslot: '',
+      timestamp: ''
     },
     start_date: 0,
     end_date: 0,
     frequency: 'd',
-    days_in_week: [1, 2, 3, 4, 5, 6, 7],
+    days_in_week: [],
     custom_dates: {
       sheet_name: '',
       range: ''
@@ -872,14 +873,14 @@ function saveConfig(config) {
   }
 }
 
-function readSheetConfigProperty(props, sheetname, propertyName){
+function readSheetConfigProperty(props, sheetname, propertyName) {
   return props.getProperty(sheetConfigProperty(sheetname, propertyName));
 }
 
-function saveSheetConfigProperty(props, sheetname, propertyName, propertyValue){
+function saveSheetConfigProperty(props, sheetname, propertyName, propertyValue) {
   return props.setProperty(sheetConfigProperty(sheetname, propertyName), propertyValue);
 }
 
-function sheetConfigProperty(sheetname, propertyName){
-  return sheetname +'_'+propertyName;
+function sheetConfigProperty(sheetname, propertyName) {
+  return sheetname + '_' + propertyName;
 }
