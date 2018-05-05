@@ -822,27 +822,46 @@ function readConfig(sheetname) {
  * Helper function to save the configurations to Document properties service
  */
 function saveConfig(config) {
-  var props = PropertiesService.getDocumentProperties();
-  try {
-    if (!props.getProperty('IS_INITIALIZED')) {
-      // only update 'IS_INITIALIZED' if it is not initialized
-      props.setProperty('IS_INITIALIZED', config.is_initialized);
+  var sheetConfig = readConfig(config.sheet_name);
+
+  // map all values in given config to existing config
+  for (var c in config) {
+    if (sheetConfig[c] === undefined) {
+      // skip unknow config
+      continue;
     }
-    props.setProperties({
-      // 'IS_INITIALIZED' : config.is_initialized,
+    sheetConfig[c] = config[c];
+  }
 
-      'LOOKUP_SHEET_NAME': config.lookup.sheet_name,
-      'LOOKUP_RANGE_PERSON_NAME': config.lookup.range.person_name,
-      'LOOKUP_RANGE_TIMESLOT': config.lookup.range.timeslot,
-      'LOOKUP_RANGE_TIMESTAMP': config.lookup.range.timestamp,
+  try {
+    var props = PropertiesService.getDocumentProperties();
+    var unsavedProps = {};
 
-      'FILLUP_SHEET_NAME': config.fillup.sheet_name,
-      'FILLUP_RANGE_PERSON_NAME': config.fillup.range.person_name,
-      'FILLUP_RANGE_TIMETABLE_WEEKLY': config.fillup.range.timetable_weekly,
-      'FILLUP_RANGE_TIMESTAMP': config.fillup.range.timestamp,
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_SHEETNAME')] = sheetConfig.sheet_name;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_RANGE_PERSON_NAME')] = sheetConfig.range.person_name;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_RANGE_TIMESLOT')] = sheetConfig.range.timeslot;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_RANGE_TIMESTAMP')] = sheetConfig.range.timestamp;
 
-      'DATE_RETENTION_EXPIRY_DAYS': config.data_retention.expiry_days,
-    });
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_START_DATE')] = sheetConfig.start_date.toISOString();
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_END_DATE')] = sheetConfig.end_date.toISOString();
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_FREQUENCY')] = sheetConfig.frequency;
+
+    var days_in_week_string = '';
+    if (sheetConfig.days_in_week && sheetConfig.days_in_week.constructor === Array) {
+      days_in_week_string = sheetConfig.days_in_week.join(',');
+    }
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_DAYS_IN_WEEK')] = days_in_week_string;
+
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_CUSTOM_DATES_SHEET_NAME')] = sheetConfig.custom_dates.sheet_name;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_CUSTOM_DATES_RANGE')] = sheetConfig.custom_dates.range;
+
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_SHEET_NAME')] = config.lookup.sheet_name;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_PERSON_NAME')] = config.lookup.range.person_name;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_TIMESLOT')] = config.lookup.range.timeslot;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_TIMESTAMP')] = config.lookup.range, timestamp;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOK_UP_DATE_RETENTION_DAYS')] = config.lookup.data_retention_days;
+
+    props.setProperties(unsavedProps);
 
   } catch (e) {
     throw 'Unable to save config for the sheet.'
