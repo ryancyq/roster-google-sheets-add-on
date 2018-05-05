@@ -57,27 +57,9 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
     case 'd':
       {
         // validate number of days
-        if (!startDate) {
-          throw 'Start date is required';
-        }
-        if(startDate.constructor !== Date){
-          startDate = new Date(startDate);
-        }
-        if(isNaN(startDate.getTime())){
-          throw 'Start date is invalid'; 
-        }
-        if (!endDate) {
-          throw 'End date is required';
-        }
-        if(endDate.constructor !== Date){
-          endDate = new Date(endDate);
-        }
-        if(isNaN(endDate.getTime())){
-          throw 'End date is invalid'; 
-        }
-        if (startDate > endDate) {
-          throw 'End date cannot be earlier than start date';
-        }
+        var validatedDates = validateStartEndDates(startDate, endDate);
+        startDate = validatedDates.startDate;
+        endDate = validatedDates.endDate;
 
         var daysCount = getDaysBetween(startDate, endDate);
         if (daysCount <= 0) {
@@ -105,28 +87,9 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
     case 'w':
       {
         // validate number of days
-        // validate number of days
-        if (!startDate) {
-          throw 'Start date is required';
-        }
-        if(startDate.constructor !== Date){
-          startDate = new Date(startDate);
-        }
-        if(isNaN(startDate.getTime())){
-          throw 'Start date is invalid'; 
-        }
-        if (!endDate) {
-          throw 'End date is required';
-        }
-        if(endDate.constructor !== Date){
-          endDate = new Date(endDate);
-        }
-        if(isNaN(endDate.getTime())){
-          throw 'End date is invalid'; 
-        }
-        if (startDate > endDate) {
-          throw 'End date cannot be earlier than start date';
-        }
+        var validatedDates = validateStartEndDates(startDate, endDate);
+        startDate = validatedDates.startDate;
+        endDate = validatedDates.endDate;
 
         // validate days in week
         var validDaysInWeek = filterDaysInWeek(daysInWeek);
@@ -196,6 +159,39 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
   }
 
   showCreateFromExistingSidebar();
+}
+
+/**
+ * Helper function to validate start date and end dates
+ * return validated startDate & endDate in a object
+ */
+function validateStartEndDates(startDate, endDate){
+  if (!startDate) {
+    throw 'Start date is required';
+  }
+  if(startDate.constructor !== Date){
+    startDate = new Date(startDate);
+  }
+  if(isNaN(startDate.getTime())){
+    throw 'Start date is invalid'; 
+  }
+  if (!endDate) {
+    throw 'End date is required';
+  }
+  if(endDate.constructor !== Date){
+    endDate = new Date(endDate);
+  }
+  if(isNaN(endDate.getTime())){
+    throw 'End date is invalid'; 
+  }
+  if (startDate > endDate) {
+    throw 'End date cannot be earlier than start date';
+  }
+  
+  return {
+    startDate: startDate,
+    endDate: endDate
+  }
 }
 
 /**
