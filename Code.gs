@@ -32,8 +32,9 @@ function showCreateNewSidebar() {
   SpreadsheetApp.getUi().showSidebar(ui);
 }
 
+
 /**
- * Create new roster sheet
+ * Create new roster fill up sheet
  *
  * @param {String} sheetname - required.
  * @param {String} frequency. Frequency of the inverval - required.
@@ -145,7 +146,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           updateTimetableHeaders(newSheet.getSheetName(), headersRange, validDates);
           
           // configure submitted on column
-          newSheet.getRange(1, 2, daysCount, 1).setValue('Submitted On');
+          newSheet.getRange(1, daysCount + 1, 1, 1).setValue('Submitted On');
         } catch (e) {
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
