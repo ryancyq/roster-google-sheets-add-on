@@ -782,39 +782,43 @@ function getDefaultConfig(sheetname) {
 function readConfig(sheetname) {
   var props = PropertiesService.getDocumentProperties();
   var config = getDefaultConfig(sheetname);
-  
-  try {
-    config.sheet_name = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_SHEETNAME');
-    config.range.person_name = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_RANGE_PERSON_NAME');
-    config.range.timeslot = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_RANGE_TIMELOST');
-    config.range.timestamp = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_RANGE_TIMESTAMP');
-    
-    config.start_date = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_START_DATE');
-    config.end_date = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_END_DATE');
-    config.frequency = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_FREQUENCY');
 
-    var days_in_week_string = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_DAYS_IN_WEEK');
+  try {
+    config.sheet_name = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_SHEETNAME');
+    config.range.person_name = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_RANGE_PERSON_NAME');
+    config.range.timeslot = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_RANGE_TIMELOST');
+    config.range.timestamp = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_RANGE_TIMESTAMP');
+
+    var startDateISO = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_START_DATE');
+    config.start_date = new Date(startDateISO);
+
+    var endDateISO = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_END_DATE');
+    config.end_date = new Date(endDateISO);
+
+    config.frequency = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_FREQUENCY');
+
+    var days_in_week_string = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_DAYS_IN_WEEK');
     var days_in_week_arr = [];
-    if(days_in_week_string){
-      days_in_week_string.split(',').forEach(function(v, i){
+    if (days_in_week_string) {
+      days_in_week_string.split(',').forEach(function(v, i) {
         days_in_week_arr.push(v);
       });
     }
     config.days_in_week = days_in_week_arr;
-    
-    config.custom_dates.sheet_name = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_CUSTOM_DATES_SHEETNAME');
-    config.custom_dates.range = readSheetConfigProperty(props, config,sheet_name, 'FILLUP_CUSTOM_DATES_RANGE');
-    
-    config.lookup.sheet_name = readSheetConfigProperty(props, config,sheet_name, 'LOOKUP_SHEET_NAME');
-    config.lookup.range.person_name = readSheetConfigProperty(props, config,sheet_name, 'LOOKUP_RANGE_PERSON_NAME');
-    config.lookup.range.timeslot = readSheetConfigProperty(props, config,sheet_name, 'LOOKUP_RANGE_TIMESLOT');
-    config.lookup.range.timestamp = readSheetConfigProperty(props, config,sheet_name, 'LOOKUP_RANGE_TIMESTAMP');
-    config.lookup.data_retention_days = readSheetConfigProperty(props, config,sheet_name, 'DATE_RETENTION_DAYS');
-    
+
+    config.custom_dates.sheet_name = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_CUSTOM_DATES_SHEETNAME');
+    config.custom_dates.range = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_CUSTOM_DATES_RANGE');
+
+    config.lookup.sheet_name = readSheetConfigProperty(props, config, sheet_name, 'LOOKUP_SHEET_NAME');
+    config.lookup.range.person_name = readSheetConfigProperty(props, config, sheet_name, 'LOOKUP_RANGE_PERSON_NAME');
+    config.lookup.range.timeslot = readSheetConfigProperty(props, config, sheet_name, 'LOOKUP_RANGE_TIMESLOT');
+    config.lookup.range.timestamp = readSheetConfigProperty(props, config, sheet_name, 'LOOKUP_RANGE_TIMESTAMP');
+    config.lookup.data_retention_days = readSheetConfigProperty(props, config, sheet_name, 'LOOK_UP_DATE_RETENTION_DAYS');
+
   } catch (e) {
     throw 'Unable to read config for the sheet.'
   }
-  
+
   return config;
 }
 
