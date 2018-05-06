@@ -84,7 +84,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
 
           var newConfig = {
             sheet_name: newSheet.getName(),
-            range = {
+            range: {
               person_name: personNameRange.getA1Notation(),
               timeslot: timeslotRange.getA1Notation(),
               timestamp: submittedOnRange.getA1Notation()
@@ -129,7 +129,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
 
           var newConfig = {
             sheet_name: newSheet.getName(),
-            range = {
+            range: {
               person_name: personNameRange.getA1Notation(),
               timeslot: timeslotRange.getA1Notation(),
               timestamp: submittedOnRange.getA1Notation()
@@ -179,7 +179,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
 
           var newConfig = {
             sheet_name: newSheet.getName(),
-            range = {
+            range: {
               person_name: personNameRange.getA1Notation(),
               timeslot: timeslotRange.getA1Notation(),
               timestamp: submittedOnRange.getA1Notation()
