@@ -119,15 +119,34 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
         try {
           // configure name column
-          newSheet.getRange(1, 1).setValue('Name');
+          var personNameRange = newSheet.getRange(1, 1);
+          personNameRange.setValue('Name');
 
           // configure timetable headers
-          var headersRange = newSheet.getRange(1, 2, 1, daysCount).getA1Notation();
-          updateTimetableHeaders(newSheet.getSheetName(), headersRange, getDatesForWeekly(daysCount, validDaysInWeek));
+          var timeslotRange = newSheet.getRange(1, 2, 1, daysCount);
+          updateTimetableHeaders(newSheet.getSheetName(), timeslotRange.getA1Notation(), getDatesForWeekly(daysCount, validDaysInWeek));
 
           // configure submitted on column
-          newSheet.getRange(1, daysCount + 1, 1, 1).setValue('Submitted On');
+          var submittedOnRange = newSheet.getRange(1, daysCount + 1, 1, 1);
+          submittedOnRange.setValue('Submitted On');
+
+          var newConfig = {
+            sheet_name: newSheet.getName(),
+            range = {
+              person_name: personNameRange.getA1Notation(),
+              timeslot: timeslotRange.getA1Notation(),
+              timestamp: submittedOnRange.getA1Notation()
+            },
+            start_date: startDate,
+            end_date: endDate,
+            frequency: 'w',
+            days_in_week: validDaysInWeek
+          };
+
+          saveConfig(newConfig);
+
         } catch (e) {
+          removeConfig(newSheet.getName());
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
         }
