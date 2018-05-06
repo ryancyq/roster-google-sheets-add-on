@@ -53,7 +53,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
     throw 'A sheet with name ' + sheetname + ' existed. Please use another name.';
   }
 
-  try{
+  try {
     switch (frequency) {
       case 'd':
         {
@@ -141,7 +141,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           };
 
           saveConfig(newConfig);
-          
+
           break;
         }
       case 'c':
@@ -164,7 +164,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
 
           var daysCount = validDates.length;
           newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
-          
+
           // configure name column
           var personNameRange = newSheet.getRange(1, 1);
           personNameRange.setValue('Name');
@@ -194,7 +194,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           };
 
           saveConfig(newConfig);
-          
+
           break;
         }
       default:
@@ -827,21 +827,21 @@ function getDefaultConfig(sheetname) {
   }
 };
 
-function getDefaultConfigNames(){
+function getDefaultConfigNames() {
   return {
     sheet_name: 'FILLUP_SHEETNAME',
     range_person_name: 'FILLUP_RANGE_PERSON_NAME',
     range_timeslot: 'FILLUP_RANGE_TIMESLOT',
     range_timestamp: 'FILLUP_RANGE_TIMESTAMP',
-    
+
     start_date: 'FILLUP_START_DATE',
     end_date: 'FILLUP_END_DATE',
     frequency: 'FILLUP_FREQUENCY',
-    
+
     days_in_week: 'FILLUP_DAYS_IN_WEEK',
     custom_dates_sheet_name: 'FILLUP_CUSTOM_DATES_SHEET_NAME',
     custom_dates_range: 'FILLUP_CUSTOM_DATES_RANGE',
-    
+
     look_up_sheet_name: 'LOOKUP_SHEET_NAME',
     look_up_range_person_name: 'LOOKUP_RANGE_PERSON_NAME',
     look_up_range_timeslot: 'LOOKUP_RANGE_TIMESLOT',
@@ -850,9 +850,9 @@ function getDefaultConfigNames(){
   }
 }
 
-function getDefaultSheetConfigNames(sheetname){
+function getDefaultSheetConfigNames(sheetname) {
   var config = getDefaultConfigNames();
-  for(var c in config){
+  for (var c in config) {
     config[c] = sheetname + '_' + config[c];
   }
   return config;
@@ -907,16 +907,16 @@ function readConfig(sheetname) {
 /*
  * Helper function to remove the configurations in Document properties service
  */
-function removeConfig(config){
+function removeConfig(config) {
   var sheetname = '';
-  if(typeof config === 'String'){
+  if (typeof config === 'String') {
     sheetname = config;
-  }else{
+  } else {
     sheetname = config.sheet_name;
   }
   var sheetConfigNames = getDefaultSheetConfigNames(sheetname);
   var props = PropertiesService.getDocumentProperties();
-  for(var n in sheetConfigNames){
+  for (var n in sheetConfigNames) {
     props.deleteProperty(sheetConfigNames[n]);
   }
 }
