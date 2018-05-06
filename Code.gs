@@ -881,7 +881,7 @@ function saveConfig(config) {
     unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_PERSON_NAME')] = config.lookup.range.person_name;
     unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_TIMESLOT')] = config.lookup.range.timeslot;
     unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_TIMESTAMP')] = config.lookup.range, timestamp;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOK_UP_DATE_RETENTION_DAYS')] = config.lookup.data_retention_days;
+    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_DATE_RETENTION_DAYS')] = config.lookup.data_retention_days;
 
     props.setProperties(unsavedProps);
 
