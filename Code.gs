@@ -96,6 +96,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           saveConfig(newConfig);
 
         } catch (e) {
+          removeConfig(newSheet.getName());
           SpreadsheetApp.getActive().deleteSheet(newSheet);
           throw e;
         }
