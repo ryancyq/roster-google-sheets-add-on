@@ -53,22 +53,23 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
     throw 'A sheet with name ' + sheetname + ' existed. Please use another name.';
   }
 
-  switch (frequency) {
-    case 'd':
-      {
-        // validate number of days
-        var validatedDates = validateStartEndDates(startDate, endDate);
-        startDate = validatedDates.startDate;
-        endDate = validatedDates.endDate;
+  try{
+    switch (frequency) {
+      case 'd':
+        {
+          // validate number of days
+          var validatedDates = validateStartEndDates(startDate, endDate);
+          startDate = validatedDates.startDate;
+          endDate = validatedDates.endDate;
 
-        var daysCount = getDaysBetween(startDate, endDate);
-        if (daysCount <= 0) {
-          // minimum 1 day
-          daysCount = 1;
-        }
+          var daysCount = getDaysBetween(startDate, endDate);
+          if (daysCount <= 0) {
+            // minimum 1 day
+            daysCount = 1;
+          }
 
-        newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
-        try {
+          newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
+
           // configure name column
           var personNameRange = newSheet.getRange(1, 1);
           personNameRange.setValue('Name');
@@ -95,30 +96,25 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
 
           saveConfig(newConfig);
 
-        } catch (e) {
-          removeConfig(newSheet.getName());
-          SpreadsheetApp.getActive().deleteSheet(newSheet);
-          throw e;
+          break;
         }
-        break;
-      }
-    case 'w':
-      {
-        // validate number of days
-        var validatedDates = validateStartEndDates(startDate, endDate);
-        startDate = validatedDates.startDate;
-        endDate = validatedDates.endDate;
+      case 'w':
+        {
+          // validate number of days
+          var validatedDates = validateStartEndDates(startDate, endDate);
+          startDate = validatedDates.startDate;
+          endDate = validatedDates.endDate;
 
-        // validate days in week
-        var validDaysInWeek = filterDaysInWeek(daysInWeek);
-        if (!validDaysInWeek || validDaysInWeek.length <= 0) {
-          throw 'Invalid days in week';
-        }
+          // validate days in week
+          var validDaysInWeek = filterDaysInWeek(daysInWeek);
+          if (!validDaysInWeek || validDaysInWeek.length <= 0) {
+            throw 'Invalid days in week';
+          }
 
-        var daysCount = getDaysBetweenForWeek(startDate, endDate, validDaysInWeek);
+          var daysCount = getDaysBetweenForWeek(startDate, endDate, validDaysInWeek);
 
-        newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
-        try {
+          newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
+
           // configure name column
           var personNameRange = newSheet.getRange(1, 1);
           personNameRange.setValue('Name');
@@ -145,35 +141,30 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           };
 
           saveConfig(newConfig);
+          
+          break;
+        }
+      case 'c':
+        {
+          // validate custom range
+          if (!customSheetname || !customRange) {
+            throw 'Please select the custom range with dates'
+          }
+          var range = getRangeFromA1Notation(customSheetname, customRange);
+          var isSingleRow = isSingleRowRange(range);
+          var isSingleColumn = isSingleRowRange(range);
+          if (!isSingleRow && !isSingleColumn) {
+            throw 'Provide custom dates in a single row or column only';
+          }
 
-        } catch (e) {
-          removeConfig(newSheet.getName());
-          SpreadsheetApp.getActive().deleteSheet(newSheet);
-          throw e;
-        }
-        break;
-      }
-    case 'c':
-      {
-        // validate custom range
-        if (!customSheetname || !customRange) {
-          throw 'Please select the custom range with dates'
-        }
-        var range = getRangeFromA1Notation(customSheetname, customRange);
-        var isSingleRow = isSingleRowRange(range);
-        var isSingleColumn = isSingleRowRange(range);
-        if (!isSingleRow && !isSingleColumn) {
-          throw 'Provide custom dates in a single row or column only';
-        }
+          var validDates = getDatesFromCustomRange(range);
+          if (!validDates || validDates.length <= 0) {
+            throw 'Empty custom dates'
+          }
 
-        var validDates = getDatesFromCustomRange(range);
-        if (!validDates || validDates.length <= 0) {
-          throw 'Empty custom dates'
-        }
-
-        var daysCount = validDates.length;
-        newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
-        try {
+          var daysCount = validDates.length;
+          newSheet = SpreadsheetApp.getActive().insertSheet(sheetname);
+          
           // configure name column
           var personNameRange = newSheet.getRange(1, 1);
           personNameRange.setValue('Name');
@@ -203,18 +194,18 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           };
 
           saveConfig(newConfig);
-
-        } catch (e) {
-          removeConfig(newSheet.getName());
-          SpreadsheetApp.getActive().deleteSheet(newSheet);
-          throw e;
+          
+          break;
         }
-        break;
-      }
-    default:
-      {
-        throw 'Unsupported frequency, ' + frequency;
-      }
+      default:
+        {
+          throw 'Unsupported frequency, ' + frequency;
+        }
+    }
+  } catch (e) {
+    removeConfig(newSheet.getName());
+    SpreadsheetApp.getActive().deleteSheet(newSheet);
+    throw e;
   }
 
   showCreateFromExistingSidebar();
