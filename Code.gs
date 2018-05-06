@@ -794,6 +794,28 @@ function getDefaultConfig(sheetname) {
   }
 };
 
+function getDefaultConfigNames(){
+  return {
+    sheet_name: 'FILLUP_SHEETNAME',
+    range_person_name: 'FILLUP_RANGE_PERSON_NAME',
+    range_timeslot: 'FILLUP_RANGE_TIMESLOT',
+    range_timestamp: 'FILLUP_RANGE_TIMESTAMP',
+    
+    start_date: 'FILLUP_START_DATE',
+    end_date: 'FILLUP_END_DATE',
+    frequency: 'FILLUP_FREQUENCY',
+    
+    days_in_week: 'FILLUP_DAYS_IN_WEEK',
+    custom_dates_sheet_name: 'FILLUP_CUSTOM_DATES_SHEET_NAME',
+    custom_dates_range: 'FILLUP_CUSTOM_DATES_RANGE',
+    
+    look_up_sheet_name: 'LOOKUP_SHEET_NAME',
+    look_up_range_person_name: 'LOOKUP_RANGE_PERSON_NAME',
+    look_up_range_timeslot: 'LOOKUP_RANGE_TIMESLOT',
+    look_up_range_timestamp: 'LOOKUP_RANGE_TIMESTAMP',
+    look_up_data_retention_days: 'LOOKUP_DATE_RETENTION_DAYS'
+  }
+}
 /*
  * Helper function to read the configurations from Document properties service
  */
