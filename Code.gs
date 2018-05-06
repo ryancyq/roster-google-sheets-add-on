@@ -816,6 +816,15 @@ function getDefaultConfigNames(){
     look_up_data_retention_days: 'LOOKUP_DATE_RETENTION_DAYS'
   }
 }
+
+function getDefaultSheetConfigNames(sheetname){
+  var config = getDefaultConfigNames();
+  for(var c in config){
+    config[c] = sheetname + '_' + config[c];
+  }
+  return config;
+}
+
 /*
  * Helper function to read the configurations from Document properties service
  */
