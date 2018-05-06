@@ -872,6 +872,23 @@ function readConfig(sheetname) {
 }
 
 /*
+ * Helper function to remove the configurations in Document properties service
+ */
+function removeConfig(config){
+  var sheetname = '';
+  if(typeof config === 'String'){
+    sheetname = config;
+  }else{
+    sheetname = config.sheet_name;
+  }
+  var sheetConfigNames = getDefaultSheetConfigNames(sheetname);
+  var props = PropertiesService.getDocumentProperties();
+  for(var n in sheetConfigNames){
+    props.deleteProperty(sheetConfigNames[n]);
+  }
+}
+
+/*
  * Helper function to save the configurations to Document properties service
  */
 function saveConfig(config) {
