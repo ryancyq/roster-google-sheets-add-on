@@ -857,15 +857,18 @@ function getDefaultSheetConfigNames(sheetname) {
  * Helper function to read the configurations from Document properties service
  */
 function readConfig(sheetname) {
-  var props = PropertiesService.getDocumentProperties();
+
   var config = getDefaultConfig(sheetname);
   var configNames = getDefaultSheetConfigNames(sheetname);
   var ouputConfig = {};
 
   try {
+    var props = PropertiesService.getDocumentProperties();
+
     for (var c in config) {
       outputConfig[c] = props.getProperty(configNames[c]);
-      switch (outputConfig[c]) {
+
+      switch (c) {
         case 'start_date':
         case 'end_date':
           {
@@ -911,7 +914,6 @@ function removeConfig(config) {
     props.deleteProperty(sheetConfigNames[n]);
   }
 }
-
 
 /*
  * Helper function to save the configurations to Document properties service
