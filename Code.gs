@@ -912,48 +912,51 @@ function removeConfig(config) {
   }
 }
 
+
 /*
  * Helper function to save the configurations to Document properties service
  */
 function saveConfig(config) {
-  var sheetConfig = readConfig(config.sheet_name);
 
-  // map all values in given config to existing config
-  for (var c in config) {
-    if (sheetConfig[c] === undefined) {
-      // skip unknow config
-      continue;
-    }
-    sheetConfig[c] = config[c];
-  }
+  var sheetConfig = readConfig(config.sheet_name);
+  var configNames = getDefaultSheetConfigNames(sheetname);
 
   try {
+
+    // map all values in given config to existing config
+    for (var c in config) {
+      if (config[c] === undefined || configNames[c] === undefined) {
+        // skip unknown config
+        continue;
+      }
+      sheetConfig[c] = config[c];
+
+      switch (c) {
+        case 'start_date':
+        case 'end_date':
+          {
+            var dateISO = sheetConfig[c];
+            sheetConfig[c] = new Date(sheetConfig[c]);
+            break;
+          }
+        case 'days_in_week':
+          {
+            var days_in_week_string = '';
+            if (sheetConfig[c] && sheetConfig[c].constructor === Array) {
+              days_in_week_string = sheetConfig[c].join(',');
+            }
+            sheetConfig[c] = days_in_week_string;
+            break;
+          }
+      }
+    }
+
     var props = PropertiesService.getDocumentProperties();
     var unsavedProps = {};
 
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_SHEETNAME')] = sheetConfig.sheet_name;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_RANGE_PERSON_NAME')] = sheetConfig.range.person_name;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_RANGE_TIMESLOT')] = sheetConfig.range.timeslot;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_RANGE_TIMESTAMP')] = sheetConfig.range.timestamp;
-
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_START_DATE')] = sheetConfig.start_date.toISOString();
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_END_DATE')] = sheetConfig.end_date.toISOString();
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_FREQUENCY')] = sheetConfig.frequency;
-
-    var days_in_week_string = '';
-    if (sheetConfig.days_in_week && sheetConfig.days_in_week.constructor === Array) {
-      days_in_week_string = sheetConfig.days_in_week.join(',');
+    for (var c in sheetConfig) {
+      unsavedProps[configNames[c]] = sheetConfig[c];
     }
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_DAYS_IN_WEEK')] = days_in_week_string;
-
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_CUSTOM_DATES_SHEET_NAME')] = sheetConfig.custom_dates.sheet_name;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'FILLUP_CUSTOM_DATES_RANGE')] = sheetConfig.custom_dates.range;
-
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_SHEET_NAME')] = config.lookup.sheet_name;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_PERSON_NAME')] = config.lookup.range.person_name;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_TIMESLOT')] = config.lookup.range.timeslot;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_RANGE_TIMESTAMP')] = config.lookup.range, timestamp;
-    unsavedProps[sheetConfigProperty(sheetConfig.sheet_name, 'LOOKUP_DATE_RETENTION_DAYS')] = config.lookup.data_retention_days;
 
     props.setProperties(unsavedProps);
 
