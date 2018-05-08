@@ -805,15 +805,15 @@ function getDefaultConfig(sheetname) {
     range_person_name: '',
     range_timeslot: '',
     range_timestamp: '',
-    
+
     start_date: 0,
     end_date: 0,
     frequency: 'd',
     days_in_week: [],
-    
+
     custom_dates_sheet_name: '',
     custom_dates_range: '',
-    
+
     lookup_sheet_name: '',
     lookup_range_person_name: '',
     lookup_range_timeslot: '',
@@ -859,39 +859,35 @@ function getDefaultSheetConfigNames(sheetname) {
 function readConfig(sheetname) {
   var props = PropertiesService.getDocumentProperties();
   var config = getDefaultConfig(sheetname);
+  var configNames = getDefaultSheetConfigNames(sheetname);
+  var ouputConfig = {};
 
   try {
-    config.sheet_name = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_SHEETNAME');
-    config.range.person_name = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_RANGE_PERSON_NAME');
-    config.range.timeslot = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_RANGE_TIMESLOT');
-    config.range.timestamp = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_RANGE_TIMESTAMP');
+    for (var c in config) {
+      outputConfig[c] = props.getProperty(configNames[c]);
+      switch (outputConfig[c]) {
+        case 'start_date':
+        case 'end_date':
+          {
+            var dateISO = outputConfig[c];
+            outputConfig[c] = new Date(dateISO);
+            break;
+          }
+        case 'days_in_week':
+          {
+            var days_in_week_string = outputConfig[c];
+            var days_in_week_arr = [];
+            if (days_in_week_string) {
+              days_in_week_string.split(',').forEach(function(v, i) {
+                days_in_week_arr.push(v);
+              });
+            }
+            outputConfig[c] = days_in_week_arr;
+            break;
+          }
 
-    var startDateISO = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_START_DATE');
-    config.start_date = new Date(startDateISO);
-
-    var endDateISO = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_END_DATE');
-    config.end_date = new Date(endDateISO);
-
-    config.frequency = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_FREQUENCY');
-
-    var days_in_week_string = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_DAYS_IN_WEEK');
-    var days_in_week_arr = [];
-    if (days_in_week_string) {
-      days_in_week_string.split(',').forEach(function(v, i) {
-        days_in_week_arr.push(v);
-      });
+      }
     }
-    config.days_in_week = days_in_week_arr;
-
-    config.custom_dates.sheet_name = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_CUSTOM_DATES_SHEET_NAME');
-    config.custom_dates.range = readSheetConfigProperty(props, config, sheet_name, 'FILLUP_CUSTOM_DATES_RANGE');
-
-    config.lookup.sheet_name = readSheetConfigProperty(props, config, sheet_name, 'LOOKUP_SHEET_NAME');
-    config.lookup.range.person_name = readSheetConfigProperty(props, config, sheet_name, 'LOOKUP_RANGE_PERSON_NAME');
-    config.lookup.range.timeslot = readSheetConfigProperty(props, config, sheet_name, 'LOOKUP_RANGE_TIMESLOT');
-    config.lookup.range.timestamp = readSheetConfigProperty(props, config, sheet_name, 'LOOKUP_RANGE_TIMESTAMP');
-    config.lookup.data_retention_days = readSheetConfigProperty(props, config, sheet_name, 'LOOK_UP_DATE_RETENTION_DAYS');
-
   } catch (e) {
     throw 'Unable to read config for the sheet.'
   }
@@ -964,14 +960,6 @@ function saveConfig(config) {
   } catch (e) {
     throw 'Unable to save config for the sheet.'
   }
-}
-
-function readSheetConfigProperty(props, sheetname, propertyName) {
-  return props.getProperty(sheetConfigProperty(sheetname, propertyName));
-}
-
-function saveSheetConfigProperty(props, sheetname, propertyName, propertyValue) {
-  return props.setProperty(sheetConfigProperty(sheetname, propertyName), propertyValue);
 }
 
 function sheetConfigProperty(sheetname, propertyName) {
