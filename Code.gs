@@ -802,28 +802,23 @@ function getDefaultConfig(sheetname) {
 
   return {
     sheet_name: sheetname,
-    range: {
-      person_name: '',
-      timeslot: '',
-      timestamp: ''
-    },
+    range_person_name: '',
+    range_timeslot: '',
+    range_timestamp: '',
+    
     start_date: 0,
     end_date: 0,
     frequency: 'd',
     days_in_week: [],
-    custom_dates: {
-      sheet_name: '',
-      range: ''
-    },
-    look_up: {
-      sheet_name: '',
-      range: {
-        person_name: '',
-        timeslot: '',
-        timestamp: ''
-      },
-      data_retention_days: -1
-    }
+    
+    custom_dates_sheet_name: '',
+    custom_dates_range: '',
+    
+    lookup_sheet_name: '',
+    lookup_range_person_name: '',
+    lookup_range_timeslot: '',
+    lookup_range_timestamp: '',
+    lookup_data_retention_days: -1
   }
 };
 
