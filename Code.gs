@@ -842,11 +842,11 @@ function getDefaultConfigNames() {
     custom_dates_sheet_name: 'FILLUP_CUSTOM_DATES_SHEET_NAME',
     custom_dates_range: 'FILLUP_CUSTOM_DATES_RANGE',
 
-    look_up_sheet_name: 'LOOKUP_SHEET_NAME',
-    look_up_range_person_name: 'LOOKUP_RANGE_PERSON_NAME',
-    look_up_range_timeslot: 'LOOKUP_RANGE_TIMESLOT',
-    look_up_range_timestamp: 'LOOKUP_RANGE_TIMESTAMP',
-    look_up_data_retention_days: 'LOOKUP_DATE_RETENTION_DAYS'
+    lookup_sheet_name: 'LOOKUP_SHEET_NAME',
+    lookup_range_person_name: 'LOOKUP_RANGE_PERSON_NAME',
+    lookup_range_timeslot: 'LOOKUP_RANGE_TIMESLOT',
+    lookup_range_timestamp: 'LOOKUP_RANGE_TIMESTAMP',
+    lookup_data_retention_days: 'LOOKUP_DATE_RETENTION_DAYS'
   }
 }
 
