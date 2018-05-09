@@ -211,6 +211,16 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
   showCreateFromExistingSidebar();
 }
 
+function readConfigForActiveSheet(){
+
+}
+
+function readConfigForSheet(sheetname){
+  if (!sheetname || typeof sheetname !== 'string') {
+    throw 'Sheetname is required';
+  }
+}
+
 /**
  * Create new roster fill up sheet from existing look up data
  */
