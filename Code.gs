@@ -148,7 +148,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         {
           // validate custom range
           if (!customSheetname || !customRange) {
-            throw 'Please select the custom range with dates'
+            throw 'Please select the custom range with dates';
           }
           var range = getRangeFromA1Notation(customSheetname, customRange);
           var isSingleRow = isSingleRowRange(range);
@@ -159,7 +159,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
 
           var validDates = getDatesFromCustomRange(range);
           if (!validDates || validDates.length <= 0) {
-            throw 'Empty custom dates'
+            throw 'Empty custom dates';
           }
 
           var daysCount = validDates.length;
@@ -282,7 +282,7 @@ function validateStartEndDates(startDate, endDate) {
   return {
     startDate: startDate,
     endDate: endDate
-  }
+  };
 }
 
 /**
@@ -404,19 +404,19 @@ function updateTimetableHeaders(sheetname, A1Notation, dates) {
 
   var range = sheet.getRange(A1Notation);
   if (!isSingleRowRange(range)) {
-    throw 'Range give for timable headers must only be a single row.'
+    throw 'Range give for timable headers must only be a single row.';
   }
 
   if (!dates || dates.constructor !== Array || !dates.length) {
     Logger.log(JSON.stringify(dates));
-    throw 'Insufficent dates given for timetable headers'
+    throw 'Insufficent dates given for timetable headers';
   }
 
   var numColumns = range.getNumColumns();
   if (numColumns !== dates.length) {
     Logger.log('Range: ' + A1Notation);
     Logger.log('Dates:' + JSON.stringify(dates));
-    throw 'Dates do not match with the give range'
+    throw 'Dates do not match with the give range';
   }
 
   var datesInText = [];
@@ -491,11 +491,11 @@ function filterDates(dates, pivotDate, maxDays) {
     maxDays = -1;
   }
 
+  var closestDateIndex = 0;
   if (usePivot) {
     // look for pivot date
     var pivotDay = getStartOfDayDate(pivotDate);
     var possibleDateIndex = binaryIndexOf.call(dates, pivotDay);
-    var closestDateIndex = 0;
 
     Logger.log('pivot day: ' + pivotDay);
     Logger.log('possible index: ' + possibleDateIndex);
@@ -652,7 +652,7 @@ function updateDate(date, time_unit, time_unit_scalar) {
     throw 'Invalid scalar number for time unit';
   }
 
-  var newMiliseconds = date.getTime() + (time_unit_scalar * time_unit_seconds * 1000)
+  var newMiliseconds = date.getTime() + (time_unit_scalar * time_unit_seconds * 1000);
   return new Date(newMiliseconds);
 }
 
@@ -791,11 +791,11 @@ function getDefaultConfig(sheetname) {
   if (!sheetname) {
     var sheet = SpreadsheetApp.getActiveSheet();
     sheetname = sheet.getName();
-    Logger.log('getDefaultConfig: sheetname not given, using current active sheet[' + sheetname + ']')
+    Logger.log('getDefaultConfig: sheetname not given, using current active sheet[' + sheetname + ']');
   } else {
     var givenSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetname);
     if (givenSheet == null) {
-      throw 'Sheetname[' + sheetname + '] given not found'
+      throw 'Sheetname[' + sheetname + '] given not found';
     }
     sheetname = givenSheet.getName();
   }
@@ -819,8 +819,8 @@ function getDefaultConfig(sheetname) {
     lookup_range_timeslot: '',
     lookup_range_timestamp: '',
     lookup_data_retention_days: -1
-  }
-};
+  };
+}
 
 function getDefaultConfigNames() {
   return {
@@ -842,7 +842,7 @@ function getDefaultConfigNames() {
     lookup_range_timeslot: 'LOOKUP_RANGE_TIMESLOT',
     lookup_range_timestamp: 'LOOKUP_RANGE_TIMESTAMP',
     lookup_data_retention_days: 'LOOKUP_DATE_RETENTION_DAYS'
-  }
+  };
 }
 
 function getDefaultSheetConfigNames(sheetname) {
@@ -892,7 +892,7 @@ function readConfig(sheetname) {
       }
     }
   } catch (e) {
-    throw 'Unable to read config for the sheet.'
+    throw 'Unable to read config for the sheet.';
   }
 
   return config;
@@ -903,7 +903,7 @@ function readConfig(sheetname) {
  */
 function removeConfig(config) {
   var sheetname = '';
-  if (typeof config === 'String') {
+  if (typeof config === 'string') {
     sheetname = config;
   } else {
     sheetname = config.sheet_name;
@@ -963,7 +963,7 @@ function saveConfig(config) {
     props.setProperties(unsavedProps);
 
   } catch (e) {
-    throw 'Unable to save config for the sheet.'
+    throw 'Unable to save config for the sheet.';
   }
 }
 
