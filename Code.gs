@@ -933,7 +933,7 @@ function removeConfig(config) {
 function saveConfig(config) {
 
   var sheetConfig = readConfig(config.sheet_name);
-  var configNames = getDefaultSheetConfigNames(sheetname);
+  var configNames = getDefaultSheetConfigNames(config.sheet_name);
 
   try {
 
