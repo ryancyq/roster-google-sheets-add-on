@@ -211,14 +211,16 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
   showCreateFromExistingSidebar();
 }
 
-function readConfigForActiveSheet(){
-
+function readConfigForActiveSheet() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  return readConfigForSheet(sheet.getName());
 }
 
-function readConfigForSheet(sheetname){
+function readConfigForSheet(sheetname) {
   if (!sheetname || typeof sheetname !== 'string') {
     throw 'Sheetname is required';
   }
+  return readConfig(sheetname);
 }
 
 /**
