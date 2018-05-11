@@ -203,8 +203,10 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         }
     }
   } catch (e) {
-    removeConfig(newSheet.getName());
-    SpreadsheetApp.getActive().deleteSheet(newSheet);
+    if (newSheet != null) {
+      removeConfig(newSheet.getName());
+      SpreadsheetApp.getActive().deleteSheet(newSheet);
+    }
     throw e;
   }
 
