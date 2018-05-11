@@ -872,7 +872,7 @@ function readConfig(sheetname) {
 
   var config = getDefaultConfig(sheetname);
   var configNames = getDefaultSheetConfigNames(sheetname);
-  var ouputConfig = {};
+  var outputConfig = {};
 
   try {
     var props = PropertiesService.getDocumentProperties();
