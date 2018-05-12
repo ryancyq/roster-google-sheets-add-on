@@ -36,15 +36,16 @@
 
   function getOptions() {
     return {
-      sheetname: $('#sidebar-fillup-sheetname').val().trim(),
-      frequency: $('#sidebar-fillup-frequency').val(),
-      startDate: $('#sidebar-fillup-start-date').val(),
-      endDate: $('#sidebar-fillup-end-date').val(),
-      daysInWeek: $.map($('#sidebar-fillup-days-in-week input:checked'), function(e) {
-        return $(e).val();
-      }),
-      customSheetname: $('#sidebar-fillup-custom-dates-sheetname').val(),
-      customRange: $('#sidebar-fillup-custom-dates-range').val()
+      lookup_sheet_name: $('#sidebar-lookup-sheetname').val().trim(),
+      lookup_range_person_name: $('#sidebar-lookup-person-name-range').val(),
+      lookup_range_timeslot: $('#sidebar-lookup-timeslot-range').val(),
+      lookup_range_timestamp: $('#sidebar-lookup-timestamp-range').val(),
+      lookup_date_retention_days: $('#sidebar-lookup-data-retention-days').val(),
+
+      sheet_name: $('#sidebar-fillup-sheetname').val(),
+      range_person_name: $('#sidebar-fillup-person-name-range').val(),
+      range_timetable: $('#sidebar-fillup-timetable-range').val(),
+      range_timestamp: $('#sidebar-fillup-timestamp-range').val()
     };
   }
 
