@@ -909,7 +909,7 @@ function readConfig(sheetname) {
           {
             var days_in_week_string = outputConfig[c];
             var days_in_week_arr = [];
-            if (days_in_week_string) {
+            if (typeof days_in_week_string === 'string' && days_in_week_string) {
               days_in_week_string.split(',').forEach(function(v, i) {
                 days_in_week_arr.push(v);
               });
