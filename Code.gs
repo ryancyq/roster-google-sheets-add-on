@@ -820,9 +820,9 @@ function getDefaultConfig(sheetname) {
     range_timeslot: '',
     range_timestamp: '',
 
-    start_date: 0,
-    end_date: 0,
-    frequency: 'd',
+    start_date: undefined,
+    end_date: undefined,
+    frequency: '',
     days_in_week: [],
 
     custom_dates_sheet_name: '',
@@ -880,14 +880,23 @@ function readConfig(sheetname) {
     var props = PropertiesService.getDocumentProperties();
 
     for (var c in config) {
-      outputConfig[c] = props.getProperty(configNames[c]);
+      // Logger.log(c + '@' + config[c] + '@' + configNames[c]);
+      var configProp = props.getProperty(configNames[c]);
+      if (configProp == null) {
+        // read from default config
+        outputConfig[c] = config[c];
+      } else {
+        outputConfig[c] = configProp;
+      }
 
       switch (c) {
         case 'start_date':
         case 'end_date':
           {
             var dateISO = outputConfig[c];
-            outputConfig[c] = new Date(dateISO);
+            if (dateISO) {
+              outputConfig[c] = new Date(dateISO);
+            }
             break;
           }
         case 'days_in_week':
@@ -906,10 +915,10 @@ function readConfig(sheetname) {
       }
     }
   } catch (e) {
+    Logger.log('Read Config excpetion: %s', e);
     throw 'Unable to read config for the sheet.';
   }
-
-  return config;
+  return outputConfig;
 }
 
 /*
@@ -952,7 +961,9 @@ function saveConfig(config) {
         case 'end_date':
           {
             var dateISO = sheetConfig[c];
-            sheetConfig[c] = new Date(sheetConfig[c]);
+            if (dateISO) {
+              sheetConfig[c] = new Date(sheetConfig[c]);
+            }
             break;
           }
         case 'days_in_week':
@@ -977,6 +988,7 @@ function saveConfig(config) {
     props.setProperties(unsavedProps);
 
   } catch (e) {
+    Logger.log('Save Config excpetion: %s', e);
     throw 'Unable to save config for the sheet.';
   }
 }
