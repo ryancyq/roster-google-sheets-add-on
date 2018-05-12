@@ -150,7 +150,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           if (!customSheetname || !customRange) {
             throw 'Please select the custom range with dates';
           }
-          var range = getRangeFromA1Notation(customSheetname, customRange);
+          var range = getRangeFromSheetA1Notation(customSheetname, customRange);
           var isSingleRow = isSingleRowRange(range);
           var isSingleColumn = isSingleRowRange(range);
           if (!isSingleRow && !isSingleColumn) {
@@ -203,7 +203,9 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
         }
     }
   } catch (e) {
+    Logger.log('Create New exception: %s', e);
     if (newSheet != null) {
+      Logger.log('Create New roll back sheet creation');
       removeConfig(newSheet.getName());
       SpreadsheetApp.getActive().deleteSheet(newSheet);
     }
@@ -550,6 +552,7 @@ function getSelectedRange() {
     var sheet = SpreadsheetApp.getActiveSheet();
     return sheet.getActiveRange().getA1Notation();
   } catch (e) {
+    Logger.log('Get Selected Range exception: %s', e);
     throw 'No range selected.';
   }
 }
@@ -565,6 +568,7 @@ function getSelectedRangeWithSheetname() {
       sheetname: sheet.getName()
     };
   } catch (e) {
+    Logger.log('Get Selected Range with Sheet Name exception: %s', e);
     throw 'No range selected.';
   }
 }
@@ -577,6 +581,7 @@ function getRangeFromA1Notation(A1Notation) {
     var sheet = SpreadsheetApp.getActiveSheet();
     return sheet.getRange(A1Notation);
   } catch (e) {
+    Logger.log('Get Range From A1 Notation exception: %s', e);
     throw 'Invalid A1 Notation [' + A1Notation + '] for range.';
   }
 }
@@ -584,11 +589,12 @@ function getRangeFromA1Notation(A1Notation) {
 /*
  * Helper function to get range via A1 Notation in the given sheet nane
  */
-function getRangeFromA1Notation(sheetname, A1Notation) {
+function getRangeFromSheetA1Notation(sheetname, A1Notation) {
   try {
     var sheet = SpreadsheetApp.getActive().getSheetByName(sheetname);
     return sheet.getRange(A1Notation);
   } catch (e) {
+    Logger.log('Get Range From Sheet A1 Notation exception: %s', e);
     throw 'Invalid A1 Notation [' + A1Notation + '] for sheet [' + sheetname + '].';
   }
 }
@@ -915,7 +921,7 @@ function readConfig(sheetname) {
       }
     }
   } catch (e) {
-    Logger.log('Read Config excpetion: %s', e);
+    Logger.log('Read Config exception: %s', e);
     throw 'Unable to read config for the sheet.';
   }
   return outputConfig;
@@ -988,7 +994,7 @@ function saveConfig(config) {
     props.setProperties(unsavedProps);
 
   } catch (e) {
-    Logger.log('Save Config excpetion: %s', e);
+    Logger.log('Save Config exception: %s', e);
     throw 'Unable to save config for the sheet.';
   }
 }
