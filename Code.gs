@@ -220,6 +220,11 @@ function readConfigForActiveSheet() {
   return readConfigForSheet(sheet.getName());
 }
 
+function readConfigForUserSheet() {
+  // TODO: read sheetname from user property, else use active sheet
+  return readConfigForSheet('');
+}
+
 function readConfigForSheet(sheetname) {
   if (!sheetname || typeof sheetname !== 'string') {
     throw 'Sheetname is required';
