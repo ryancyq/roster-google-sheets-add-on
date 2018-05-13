@@ -32,7 +32,7 @@
       .createFromExisting(
         saveOptions.sheet_name,
         saveOptions.range_person_name,
-        saveOptions.range_timetable,
+        saveOptions.range_timeslot,
         saveOptions.range_timestamp,
         saveOptions.lookup_sheet_name.
         saveOptions.lookup_range_person_name,
@@ -52,7 +52,7 @@
 
       sheet_name: $('#sidebar-fillup-sheetname').val(),
       range_person_name: $('#sidebar-fillup-person-name-range').val(),
-      range_timetable: $('#sidebar-fillup-timetable-range').val(),
+      range_timeslot: $('#sidebar-fillup-timeslot-range').val(),
       range_timestamp: $('#sidebar-fillup-timestamp-range').val()
     };
   }
@@ -70,7 +70,7 @@
 
             $('#sidebar-fillup-sheetname').val(config.sheet_name);
             $('#sidebar-fillup-person-name-range').val(config.range_person_name);
-            $('#sidebar-fillup-timetable-range').val(config.range_timetable);
+            $('#sidebar-fillup-timeslot-range').val(config.range_timeslot);
             $('#sidebar-fillup-timestamp-range').val(config.range_timestamp);
           } else {
             console.log('unable to load config');
@@ -92,7 +92,7 @@
 
     $('#sidebar-fillup-sheetname').val('');
     $('#sidebar-fillup-person-name-range').val('');
-    $('#sidebar-fillup-timetable-range').val('');
+    $('#sidebar-fillup-timeslot-range').val('');
     $('#sidebar-fillup-timestamp-range').val('');
   }
 </script>
