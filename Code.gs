@@ -233,11 +233,6 @@ function readConfigForSheet(sheetname) {
 }
 
 /**
- * Create new roster fill up sheet from existing look up data
- */
-function createFromExisting(sheetname) {}
-
-/**
  * Opens a sidebar. The sidebar structure is described in the CreateFromExistingSidebar.html
  * project file.
  */
@@ -246,6 +241,14 @@ function showCreateFromExistingSidebar() {
     .evaluate()
     .setTitle('Create With ...');
   SpreadsheetApp.getUi().showSidebar(ui);
+}
+
+/**
+ * Create new roster fill up sheet from existing look up data
+ */
+function createFromExisting(sheetname, range_person_name, range_timeslot, range_timestamp, 
+  lookup_sheet_name, lookup_range_person_name, lookup_range_timeslot, lookup_range_timestamp, lookup_data_retention_days) {
+
 }
 
 /**
