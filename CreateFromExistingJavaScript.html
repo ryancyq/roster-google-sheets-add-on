@@ -34,6 +34,11 @@
         saveOptions.range_person_name,
         saveOptions.range_timetable,
         saveOptions.range_timestamp,
+        saveOptions.lookup_sheet_name.
+        saveOptions.lookup_range_person_name,
+        saveOptions.lookup_range_timeslot,
+        saveOptions.lookup_range_timestamp,
+        saveOptions.lookup_data_retention_days
       );
   }
 
@@ -43,7 +48,7 @@
       lookup_range_person_name: $('#sidebar-lookup-person-name-range').val(),
       lookup_range_timeslot: $('#sidebar-lookup-timeslot-range').val(),
       lookup_range_timestamp: $('#sidebar-lookup-timestamp-range').val(),
-      lookup_date_retention_days: $('#sidebar-lookup-data-retention-days').val(),
+      lookup_data_retention_days: $('#sidebar-lookup-data-retention-days').val(),
 
       sheet_name: $('#sidebar-fillup-sheetname').val(),
       range_person_name: $('#sidebar-fillup-person-name-range').val(),
@@ -61,7 +66,7 @@
             $('#sidebar-lookup-person-name-range').val(config.lookup_range_person_name);
             $('#sidebar-lookup-timeslot-range').val(config.lookup_range_timeslot);
             $('#sidebar-lookup-timestamp-range').val(config.lookup_range_timestamp);
-            $('#sidebar-lookup-date-retention-days').val(config.lookup_data_retention_days);
+            $('#sidebar-lookup-data-retention-days').val(config.lookup_data_retention_days);
 
             $('#sidebar-fillup-sheetname').val(config.sheet_name);
             $('#sidebar-fillup-person-name-range').val(config.range_person_name);
@@ -83,7 +88,7 @@
     $('#sidebar-lookup-person-name-range').val('');
     $('#sidebar-lookup-timeslot-range').val('');
     $('#sidebar-lookup-timestamp-range').val('');
-    $('#sidebar-lookup-date-retention-days').val('');
+    $('#sidebar-lookup-data-retention-days').val('');
 
     $('#sidebar-fillup-sheetname').val('');
     $('#sidebar-fillup-person-name-range').val('');
