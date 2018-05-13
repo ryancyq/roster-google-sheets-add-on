@@ -1,5 +1,7 @@
 <script>
   $(function() {
+    $('#sidebar-save-button').click(onSaveClick);
+
     utils.disableButtons();
 
     clearOptions();
@@ -8,29 +10,30 @@
     utils.enableButtons();
   });
 
-  function onCreateClick() {
+  function onSaveClick() {
     utils.disableButtons();
     utils.enableLoader();
 
-    var createOptions = getOptions();
+    var saveOptions = getOptions();
 
     google.script.run
       .withSuccessHandler(
         function(msg) {
-          utils.success('Success! The roster timetable has been created');
+          if(msg){
+            console.log(msg);
+          }else{
+            console.log('Config saved.');
+          }
         })
       .withFailureHandler(
         function(msg) {
           utils.failure(msg);
         })
-      .createNew(
-        createOptions.sheetname,
-        createOptions.frequency,
-        createOptions.startDate,
-        createOptions.endDate,
-        createOptions.daysInWeek,
-        createOptions.customSheetname,
-        createOptions.customRange
+      .createFromExisting(
+        saveOptions.sheet_name,
+        saveOptions.range_person_name,
+        saveOptions.range_timetable,
+        saveOptions.range_timestamp,
       );
   }
 
