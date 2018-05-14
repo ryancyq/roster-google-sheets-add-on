@@ -262,6 +262,10 @@ function createFromExisting(sheet_name, range_person_name, range_timeslot, range
 
   validateFillupConfig(config);
   validateLookupConfig(config);
+
+  // TODO: detect user input for fill up range, comment require to commit user input
+
+  saveConfig(config);
 }
 
 function validateFillupConfig(config) {
