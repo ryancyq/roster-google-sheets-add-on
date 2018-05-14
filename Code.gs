@@ -318,30 +318,44 @@ function validateLookupConfig(config) {
 
   // validate lookup range
   var lookupRangePersonName = getRangeFromSheetA1Notation(config.lookup_sheet_name, config.lookup_range_person_name);
+  if (isSingleRowRange(lookupRangePersonName)) {
+    throw 'Range of person name (lookup) must be more than 1 row (headers inclusive)';
+  }
   if (!isSingleColumnRange(lookupRangePersonName)) {
     throw 'Range of person name (lookup) can only be a single column';
   }
-  if (!lookupRangePersonName.canEdit()) {
-    throw 'Insufficent permission to update range of person name (lookup)';
-  }
   var lookupRangeTimeslot = getRangeFromSheetA1Notation(config.lookup_sheet_name, config.lookup_range_timeslot);
+  if (isSingleRowRange(lookupRangeTimeslot)) {
+    throw 'Range of timeslot (lookup) must be more than 1 row (headers inclusive)';
+  }
   if (!isSingleColumnRange(lookupRangeTimeslot)) {
     throw 'Range of timeslot (lookup) can only be a single column';
   }
-  if (!lookupRangeTimeslot.canEdit()) {
-    throw 'Insufficent permission to update range of timeslot (lookup)';
-  }
   var lookupRangeTimestamp = getRangeFromSheetA1Notation(config.lookup_sheet_name, config.lookup_range_timestamp);
+  if (isSingleRowRange(lookupRangeTimestamp)) {
+    throw 'Range of timestamp (lookup) must be more than 1 row (headers inclusive)';
+  }
   if (!isSingleColumnRange(lookupRangeTimestamp)) {
     throw 'Range of timestamp (lookup) can only be a single column';
   }
-  if (!lookupRangeTimestamp.canEdit()) {
-    throw 'Insufficent permission to update range of timestamp (lookup)';
-  }
 
   // validate data retention days
-  if(isNaN(config.lookup_data_retention_days)){
+  if (isNaN(config.lookup_data_retention_days)) {
     throw 'Invalid data retention days';
+  }
+
+  // Ensure edit permission is given for data purge
+  if (config.lookup_data_retention_days >= 0) {
+
+    if (!lookupRangePersonName.canEdit()) {
+      throw 'Insufficent permission to update range of person name (lookup)';
+    }
+    if (!lookupRangeTimeslot.canEdit()) {
+      throw 'Insufficent permission to update range of timeslot (lookup)';
+    }
+    if (!lookupRangeTimestamp.canEdit()) {
+      throw 'Insufficent permission to update range of timestamp (lookup)';
+    }
   }
 }
 
