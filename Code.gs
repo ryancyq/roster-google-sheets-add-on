@@ -152,7 +152,7 @@ function createNew(sheetname, frequency, startDate, endDate, daysInWeek, customS
           }
           var range = getRangeFromSheetA1Notation(customSheetname, customRange);
           var isSingleRow = isSingleRowRange(range);
-          var isSingleColumn = isSingleRowRange(range);
+          var isSingleColumn = isSingleColumnRange(range);
           if (!isSingleRow && !isSingleColumn) {
             throw 'Provide custom dates in a single row or column only';
           }
