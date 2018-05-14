@@ -276,20 +276,28 @@ function validateFillupConfig(config) {
 
   // validate fillup range
   var rangePersonName = getRangeFromSheetA1Notation(config.sheet_name, config.range_person_name);
+  if (isSingleRowRange(rangePersonName)) {
+    throw 'Range of person name (fillup) must be more than 1 row (headers inclusive)';
+  }
   if (!isSingleColumnRange(rangePersonName)) {
     throw 'Range of person name (fillup) can only be a single column';
   }
-  if (!rangePersonName.canEdit()) {
+  // Do not need to check for edit permission since we only need read permission
+  if (false && !rangePersonName.canEdit()) {
     throw 'Insufficent permission to update range of person name (fillup)';
   }
   var rangeTimeslot = getRangeFromSheetA1Notation(config.sheet_name, config.range_timeslot);
-  if (!isSingleColumnRange(rangeTimeslot)) {
-    throw 'Range of timeslot (fillup) can only be a single column';
+  // Ensure more than 1 rows since headers are inclusive
+  if (isSingleRowRange(rangeTimeslot)) {
+    throw 'Range of timeslot (fillup) must be more than 1 row (headers inclusive)';
   }
   if (!rangeTimeslot.canEdit()) {
     throw 'Insufficent permission to update range of timeslot (fillup)';
   }
   var rangeTimestamp = getRangeFromSheetA1Notation(config.sheet_name, config.range_timestamp);
+  if (isSingleRowRange(rangeTimestamp)) {
+    throw 'Range of timestamp (fillup) must be more than 1 row (headers inclusive)';
+  }
   if (!isSingleColumnRange(rangeTimestamp)) {
     throw 'Range of timestamp (fillup) can only be a single column';
   }
