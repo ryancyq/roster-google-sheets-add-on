@@ -246,9 +246,72 @@ function showCreateFromExistingSidebar() {
 /**
  * Create new roster fill up sheet from existing look up data
  */
-function createFromExisting(sheetname, range_person_name, range_timeslot, range_timestamp, 
+function createFromExisting(sheet_name, range_person_name, range_timeslot, range_timestamp,
   lookup_sheet_name, lookup_range_person_name, lookup_range_timeslot, lookup_range_timestamp, lookup_data_retention_days) {
 
+  // validate fillup sheet
+  if (!sheet_name) {
+    throw 'Sheetname for fillup is required';
+  }
+  var sheetFillup = SpreadsheetApp.getActive().getSheetByName(sheet_name);
+  if (sheetFillup == null) {
+    throw 'Invalid sheet [' + sheet_name + ']';
+  }
+
+  // validate fillup range
+  var rangePersonName = getRangeFromSheetA1Notation(sheet_name, range_person_name);
+  if (!isSingleColumnRange(rangePersonName)) {
+    throw 'Range of person name (fillup) can only be a single column';
+  }
+  if (!rangePersonName.canEdit()) {
+    throw 'Insufficent permission to update range of person name (fillup)';
+  }
+  var rangeTimeslot = getRangeFromSheetA1Notation(sheet_name, range_timeslot);
+  if (!isSingleColumnRange(rangeTimeslot)) {
+    throw 'Range of timeslot (fillup) can only be a single column';
+  }
+  if (!rangeTimeslot.canEdit()) {
+    throw 'Insufficent permission to update range of timeslot (fillup)';
+  }
+  var rangeTimestamp = getRangeFromSheetA1Notation(sheet_name, range_timestamp);
+  if (!isSingleColumnRange(rangeTimestamp)) {
+    throw 'Range of timestamp (fillup) can only be a single column';
+  }
+  if (!rangeTimestamp.canEdit()) {
+    throw 'Insufficent permission to update range of timestamp (fillup)';
+  }
+
+  // validate lookup sheet
+  if (!lookup_sheet_name) {
+    throw 'Sheetname for lookup is required';
+  }
+  var sheetLookup = SpreadsheetApp.getActive().getSheetByName(lookup_sheet_name);
+  if (sheetLookup == null) {
+    throw 'Invalid sheet [' + lookup_sheet_name + ']';
+  }
+
+  // validate lookup range
+  var lookupRangePersonName = getRangeFromSheetA1Notation(lookup_sheet_name, lookup_range_person_name);
+  if (!isSingleColumnRange(lookupRangePersonName)) {
+    throw 'Range of person name (lookup) can only be a single column';
+  }
+  if (!lookupRangePersonName.canEdit()) {
+    throw 'Insufficent permission to update range of person name (lookup)';
+  }
+  var lookupRangeTimeslot = getRangeFromSheetA1Notation(lookup_sheet_name, lookup_range_timeslot);
+  if (!isSingleColumnRange(lookupRangeTimeslot)) {
+    throw 'Range of timeslot (lookup) can only be a single column';
+  }
+  if (!lookupRangeTimeslot.canEdit()) {
+    throw 'Insufficent permission to update range of timeslot (lookup)';
+  }
+  var lookupRangeTimestamp = getRangeFromSheetA1Notation(lookup_sheet_name, lookup_range_timestamp);
+  if (!isSingleColumnRange(lookupRangeTimestamp)) {
+    throw 'Range of timestamp (lookup) can only be a single column';
+  }
+  if (!lookupRangeTimestamp.canEdit()) {
+    throw 'Insufficent permission to update range of timestamp (lookup)';
+  }
 }
 
 /**
