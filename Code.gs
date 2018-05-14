@@ -330,6 +330,11 @@ function validateLookupConfig(config) {
   if (!lookupRangeTimestamp.canEdit()) {
     throw 'Insufficent permission to update range of timestamp (lookup)';
   }
+
+  // validate data retention days
+  if(isNaN(config.lookup_data_retention_days)){
+    throw 'Invalid data retention days';
+  }
 }
 
 /**
