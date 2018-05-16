@@ -380,6 +380,8 @@ function refresh() {
   var ui = SpreadsheetApp.getUi();
   // Or DocumentApp or FormApp.
   ui.alert('You clicked the first menu item!');
+
+  updateRosters();
 }
 
 function purge() {
@@ -388,9 +390,22 @@ function purge() {
   ui.alert('You clicked the first menu item!');
 }
 
-function updateRoster(){
-  
-  var config = readConfigForSheet(sheetname);
+function updateRosters(){
+  var sheets = SpreadsheetApp.getActive().getSheets();
+  var props = PropertiesService.getDocumentProperties();
+
+  // TODO: change to read from list of configured sheets in property service
+  for(var s in sheets){
+    var sheet = sheets[s];
+    if(sheet != null){
+      // get configured lookup sheets
+      var configNames = getDefaultSheetConfigNames(sheet.getName());
+      var prop = props.getProperty(configNames['sheet_name']);
+      if(prop != null){
+        updateRosterBySheetName(prop);
+      }
+    }
+  }
 }
 
 /**
