@@ -408,6 +408,10 @@ function updateRosters(){
   }
 }
 
+function updateRosterBySheetName(sheetname){
+
+}
+
 /**
  * Helper function to validate start date and end dates
  * return validated startDate & endDate in a object
