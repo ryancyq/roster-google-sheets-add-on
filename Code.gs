@@ -388,6 +388,11 @@ function purge() {
   ui.alert('You clicked the first menu item!');
 }
 
+function updateRoster(){
+  
+  var config = readConfigForSheet(sheetname);
+}
+
 /**
  * Helper function to validate start date and end dates
  * return validated startDate & endDate in a object
